@@ -1,0 +1,10 @@
+# Core Pipeline Requirements
+pydantic>=2.5.0
+rich>=13.0.0
+pymupdf>=1.23.0
+python-dotenv>=1.0.0
+
+# Optional LLM Provider Clients
+openai>=1.0.0
+google-genai>=0.1.0
+langchain-core>=0.3.0

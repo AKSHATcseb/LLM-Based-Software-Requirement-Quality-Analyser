@@ -1,0 +1,34 @@
+[
+  {
+    "pair_id": "REQ-FROG-01",
+    "project_name": "1_FROG",
+    "section": "Navigation & Guidance",
+    "v_n_text": "The vehicle shall quickly recalculate its trajectory if an obstacle is detected in its path.",
+    "v_n1_text": "The vehicle shall recalculate its trajectory within 500 milliseconds if an obstacle is detected within 10 meters of its path.",
+    "human_historical_rationale": "Clarified latency constraint and obstacle proximity threshold in v3.0."
+  },
+  {
+    "pair_id": "REQ-SMIRK-02",
+    "project_name": "2_SMIRK",
+    "section": "Sensor Management",
+    "v_n_text": "The system shall ingest sensor readings and shall also transmit telemetry to ground control if applicable.",
+    "v_n1_text": "The system shall ingest sensor readings at a minimum sampling rate of 50 Hz.",
+    "human_historical_rationale": "Separated telemetry transmission into companion requirement REQ-SMIRK-03 to enforce singularity."
+  },
+  {
+    "pair_id": "REQ-ONEM-03",
+    "project_name": "3_ONEM",
+    "section": "Emergency Response",
+    "v_n_text": "When a Vital Anomaly occurs, the system shall alert the supervisor within 2 seconds.",
+    "v_n1_text": "When a Vital Anomaly occurs, the system shall alert the supervisor within 2 seconds.",
+    "human_historical_rationale": "Unchanged in later version because 'Vital Anomaly' was already fully defined in glossary."
+  },
+  {
+    "pair_id": "REQ-UIC-04",
+    "project_name": "4_UIC",
+    "section": "User Interface",
+    "v_n_text": "The system shall provide an intuitive dashboard displaying current train speed and brake status.",
+    "v_n1_text": "The system shall display current train speed and brake status on the Driver Console adhering to the UIC 612 standard.",
+    "human_historical_rationale": "Replaced vague subjective term 'intuitive' with explicit UIC 612 interface specification."
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "pair_id": "REQ-FROG-01",
+    "project_name": "1_FROG",
+    "section": "Section 3.2 - Sensor Polling",
+    "v_n_text": "The gesture recognizer shall quickly poll glove sensor telemetry during movement.",
+    "v_n1_text": "The gesture recognizer shall poll glove sensor telemetry at a sampling frequency of 60 Hz.",
+    "human_historical_rationale": "Replaced vague subjective adverb 'quickly' with quantifiable 60 Hz rate in v3.0."
+  },
+  {
+    "pair_id": "REQ-FROG-02",
+    "project_name": "1_FROG",
+    "section": "Section 3.3 - Classification",
+    "v_n_text": "The system shall classify hand gestures and shall also update visual feedback if applicable.",
+    "v_n1_text": "The system shall classify hand gestures within 100ms of gesture completion.",
+    "human_historical_rationale": "Separated visual feedback into companion requirement to preserve singularity and bounded latency."
+  },
+  {
+    "pair_id": "REQ-SMIRK-01",
+    "project_name": "2_SMIRK",
+    "section": "Section 3.1 - Hazard Mitigation",
+    "v_n_text": "When an uncommanded track obstacle is detected, the SMIRK safety controller shall initiate braking promptly.",
+    "v_n1_text": "When an uncommanded track obstacle is detected, the SMIRK safety controller shall initiate emergency service braking within 200 milliseconds.",
+    "human_historical_rationale": "Replaced 'promptly' with concrete 200ms latency requirement in v0.91."
+  },
+  {
+    "pair_id": "REQ-UIC-01",
+    "project_name": "4_UIC",
+    "section": "Section 4.1 - Voice Call Prioritization",
+    "v_n_text": "The cab radio shall immediately pre-empt non-safety voice transmissions when a Railway Emergency Call is initiated.",
+    "v_n1_text": "The cab radio shall pre-empt lower priority voice calls within 100 milliseconds upon initiation of a Railway Emergency Call (eMLPP Priority 0).",
+    "human_historical_rationale": "Standardized priority hierarchy (eMLPP) and bounded pre-emption time in EIRENE SRS v16."
+  },
+  {
+    "pair_id": "REQ-BANK-01",
+    "project_name": "15",
+    "section": "Section 3.2 - Fund Transfer",
+    "v_n_text": "The system shall quickly transfer funds between accounts and notify the customer in an appropriate manner.",
+    "v_n1_text": "The system shall process funds transfers within 3 seconds and send an SMS receipt to the registered mobile number.",
+    "human_historical_rationale": "Eliminated ambiguous descriptors 'quickly' and 'appropriate manner' in SRS v2."
+  }
+]

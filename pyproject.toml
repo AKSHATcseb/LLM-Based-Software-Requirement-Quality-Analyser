@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sqam-analyzer"
+version = "1.0.0"
+description = "LLM-Based Software Requirement Quality Analyzer: AI-assisted editor following a 5-layer pipeline."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [
+    { name = "SQAM Research Team" }
+]
+keywords = [
+    "requirements-engineering",
+    "software-quality",
+    "ISO-IEC-IEEE-29148",
+    "llm",
+    "prompt-engineering",
+    "specifications",
+    "nlp"
+]
+dependencies = [
+    "pydantic>=2.5.0",
+    "rich>=13.0.0",
+    "pymupdf>=1.23.0",
+    "python-dotenv>=1.0.0"
+]
+
+[project.optional-dependencies]
+openai = ["openai>=1.0.0"]
+gemini = ["google-genai>=0.1.0"]
+langchain = ["langchain-core>=0.3.0"]
+all = [
+    "openai>=1.0.0",
+    "google-genai>=0.1.0",
+    "langchain-core>=0.3.0"
+]
+
+[project.scripts]
+sqam-main = "main:main"
+sqam-evaluate = "evaluate_srs:main"
+sqam-test-doc = "test_srs_doc:main"
+sqam-build-dataset = "build_dataset:main"
+
+[tool.setuptools.packages.find]
+include = ["sqam_analyzer*"]
