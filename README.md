@@ -3,7 +3,7 @@
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![Standard: ISO/IEC/IEEE 29148](https://img.shields.io/badge/Standard-ISO%2FIEC%2FIEEE%2029148-green.svg)](https://standards.ieee.org/ieee/29148/7342/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Tests: 13 Passed](https://img.shields.io/badge/Tests-13%2F13%20Passing-brightgreen.svg)]()
+[![Tests: 22 Passed](https://img.shields.io/badge/Tests-22%2F22%20Passing-brightgreen.svg)]()
 
 An AI-assisted Software Requirements Engineering editor and quality analyzer built around a structured **5-layer LLM pipeline**. 
 
@@ -177,7 +177,21 @@ This automatically computes:
 * **FSR** (Flawed Suggestion Rate)
 * **IPR** (Intent Preservation Rate)
 * **APL** (Average Pipeline Latency)
-* **Historical Classification**: `Matched`, `Partially Matched`, `Not Matched`
+### 4. Historical SRS Version Evolution Pipeline (Pipeline 2)
+Extract, align, and classify human modifications across document versions and evaluate Pipeline 1's refinements against actual stakeholder edits:
+```bash
+# Compare Version N and Version N+1 for any project
+python run_evolution_pipeline.py --project 1_FROG --limit 10
+
+# Compare arbitrary PDF or Markdown files
+python run_evolution_pipeline.py --v1 "path/to/SRS_v1.0.pdf" --v2 "path/to/SRS_v2.0.pdf"
+
+# Export Markdown report, CSV summary, and full JSON trace
+python run_evolution_pipeline.py --project 1_FROG --output-markdown frog_evolution.md --output-csv frog_evolution.csv --output-json frog_trace.json
+
+# Run with Gemini or OpenAI live LLMs
+python run_evolution_pipeline.py --project 2_SMIRK --provider gemini --model gemini-2.5-flash
+```
 
 ---
 
@@ -229,8 +243,9 @@ sqam-requirement-analyzer/
 ├── test_srs_doc.py               # Direct test runner for real PDF/MD documents
 ├── build_dataset.py              # Dataset builder and parser for 15 SRS projects
 ├── evaluate_srs.py               # Research metrics & historical benchmark evaluator
+├── run_evolution_pipeline.py     # Pipeline 2 runner: Version N vs N+1 evolution benchmark
 ├── sample_benchmark.json         # Version N vs N+1 benchmark dataset
-├── sqam_analyzer/                # Core Python package
+├── sqam_analyzer/                # Pipeline 1: 5-Layer Quality Analyzer
 │   ├── __init__.py               # Exports
 │   ├── models.py                 # Pydantic data schemas
 │   ├── llm_provider.py           # Swappable LLM clients (OpenAI, Gemini, LangChain, Mock)
@@ -246,9 +261,17 @@ sqam-requirement-analyzer/
 │       ├── layer3_generator.py   # Layer 3: Targeted Refinement
 │       ├── layer4_validator.py   # Layer 4: Independent Auditor Validation
 │       └── layer5_decision.py    # Layer 5: Comparison & Human Decision Dossier
+├── srs_evolution/                # Pipeline 2: Historical Version Evolution Engine
+│   ├── __init__.py               # Exports
+│   ├── models.py                 # Pydantic schemas (Alignment, Taxonomy, Correspondence)
+│   ├── aligner.py                # Document ingestion (PDF/MD) & multi-stage requirement alignment
+│   ├── change_classifier.py      # LLM taxonomy classifier (ISO 29148 quality vs scope vs editorial)
+│   ├── evaluator.py              # Semantic correspondence evaluator (Matched / Partial / Not Matched)
+│   └── pipeline.py               # End-to-end evolution orchestrator & CSV/JSON exporter
 ├── tests/
 │   ├── __init__.py
-│   └── test_pipeline.py          # Complete unit test suite (13 tests)
+│   ├── test_pipeline.py          # Pipeline 1 unit test suite (13 tests)
+│   └── test_evolution.py         # Pipeline 2 unit test suite (9 tests)
 └── srs doc versions/             # 15 Versioned SRS Projects dataset
 ```
 
