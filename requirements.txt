@@ -4,7 +4,7 @@ rich>=13.0.0
 pymupdf>=1.23.0
 python-dotenv>=1.0.0
 
-# Optional LLM Provider Clients
+# Compulsory LLM Providers (At least one API backend is required)
 openai>=1.0.0
 google-genai>=0.1.0
 langchain-core>=0.3.0

@@ -25,6 +25,7 @@ from sqam_analyzer import (
     Requirement,
     RequirementQualityPipeline,
     SRSContext,
+    resolve_llm_client,
 )
 from sqam_analyzer.cli import display_comparison_dossier, run_interactive_review
 from build_dataset import extract_candidate_requirements, extract_text_from_file
@@ -103,14 +104,14 @@ def main():
     )
     parser.add_argument(
         "--provider",
-        choices=["mock", "openai", "gemini"],
-        default="mock",
-        help="LLM provider (default: mock)",
+        choices=["gemini", "openai", "mock"],
+        default=None,
+        help="LLM provider (default: auto-detects configured GEMINI_API_KEY or OPENAI_API_KEY)",
     )
     parser.add_argument(
         "--model",
-        default="gpt-4o",
-        help="LLM model name (e.g. gpt-4o, gemini-2.5-flash)",
+        default=None,
+        help="LLM model name (defaults to gemini-2.5-flash or gpt-4o)",
     )
     parser.add_argument(
         "--interactive",
@@ -174,15 +175,16 @@ def main():
         for idx, text in enumerate(selected_texts, start=1)
     ]
 
-    # 3. Setup LLM and Pipeline
-    if args.provider == "mock":
-        llm_client = MockLLMClient()
-    elif args.provider == "openai":
-        llm_client = OpenAILLMClient(model_name=args.model)
-    elif args.provider == "gemini":
-        llm_client = GeminiLLMClient(model_name=args.model)
-    else:
-        raise ValueError(f"Unknown provider: {args.provider}")
+    # 3. Setup LLM and Pipeline (Mandatory Live LLM)
+    try:
+        llm_client = resolve_llm_client(
+            provider=args.provider,
+            model=args.model,
+            allow_mock=(args.provider == "mock"),
+        )
+    except ValueError as e:
+        console.print(f"[bold red]{e}[/bold red]")
+        sys.exit(1)
 
     pipeline = RequirementQualityPipeline(default_llm=llm_client)
 

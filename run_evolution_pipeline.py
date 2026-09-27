@@ -18,7 +18,12 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 
-from sqam_analyzer.llm_provider import GeminiLLMClient, MockLLMClient, OpenAILLMClient
+from sqam_analyzer.llm_provider import (
+    GeminiLLMClient,
+    MockLLMClient,
+    OpenAILLMClient,
+    resolve_llm_client,
+)
 from sqam_analyzer.models import SRSContext
 from srs_evolution import (
     AlignmentType,
@@ -162,8 +167,8 @@ def main():
     parser.add_argument("--v1", type=str, help="Path to Version N earlier SRS file")
     parser.add_argument("--v2", type=str, help="Path to Version N+1 later SRS file")
     parser.add_argument("--limit", type=int, default=5, help="Maximum requirements to analyze (default: 5)")
-    parser.add_argument("--provider", choices=["mock", "openai", "gemini"], default="mock", help="LLM backend")
-    parser.add_argument("--model", default="gpt-4o", help="Model name (e.g. gpt-4o, gemini-2.5-flash)")
+    parser.add_argument("--provider", choices=["gemini", "openai", "mock"], default=None, help="LLM backend (default: auto-detects configured GEMINI_API_KEY or OPENAI_API_KEY)")
+    parser.add_argument("--model", default=None, help="Model name (defaults to gemini-2.5-flash or gpt-4o)")
     parser.add_argument("--output-markdown", type=str, help="Path to save Markdown audit report")
     parser.add_argument("--output-csv", type=str, help="Path to save CSV evaluation summary")
     parser.add_argument("--output-json", type=str, help="Path to save full JSON execution trace")
@@ -182,24 +187,25 @@ def main():
         project_name = "1_FROG"
         v1_path, v2_path = get_version_files_for_project("1_FROG")
 
+    # Initialize LLM (Mandatory Live LLM)
+    try:
+        llm_client = resolve_llm_client(
+            provider=args.provider,
+            model=args.model,
+            allow_mock=(args.provider == "mock"),
+        )
+    except ValueError as e:
+        console.print(f"[bold red]{e}[/bold red]")
+        sys.exit(1)
+
     console.print(Panel(
         f"[bold white]Project:[/bold white] [cyan]{project_name}[/cyan]\n"
         f"[bold white]Version N (Earlier):[/bold white] [green]{v1_path}[/green]\n"
         f"[bold white]Version N+1 (Later):[/bold white] [green]{v2_path}[/green]\n"
-        f"[bold white]LLM Backend:[/bold white] [yellow]{args.provider} ({args.model})[/yellow]",
+        f"[bold white]LLM Backend:[/bold white] [yellow]{args.provider or type(llm_client).__name__} ({args.model or getattr(llm_client, 'model_name', 'default')})[/yellow]",
         title="[bold yellow]Pipeline 2: Historical SRS Version Comparison & Change Extraction[/bold yellow]",
         border_style="yellow",
     ))
-
-    # Initialize LLM
-    if args.provider == "mock":
-        llm_client = MockLLMClient()
-    elif args.provider == "openai":
-        llm_client = OpenAILLMClient(model_name=args.model)
-    elif args.provider == "gemini":
-        llm_client = GeminiLLMClient(model_name=args.model)
-    else:
-        raise ValueError(f"Unknown provider: {args.provider}")
 
     # Build Pipeline
     pipeline = HistoricalEvolutionPipeline(llm_client=llm_client)

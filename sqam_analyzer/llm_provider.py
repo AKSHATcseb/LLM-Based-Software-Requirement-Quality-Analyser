@@ -19,6 +19,12 @@ from typing import Any, Dict, Optional, Type, TypeVar
 
 from pydantic import BaseModel
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 logger = logging.getLogger(__name__)
 T = TypeVar("T", bound=BaseModel)
 
@@ -112,9 +118,14 @@ class OpenAILLMClient(BaseLLMClient):
         except ImportError:
             raise ImportError("openai package is required. Install with: pip install openai")
 
-        resolved_key = api_key or os.getenv("OPENAI_API_KEY") or "EMPTY"
+        resolved_key = api_key or os.getenv("OPENAI_API_KEY")
+        if not resolved_key and not base_url:
+            raise ValueError(
+                "OPENAI_API_KEY environment variable is required to run the OpenAI LLM client. "
+                "Please set OPENAI_API_KEY in your environment or .env file, or provide base_url for local models."
+            )
         self.model_name = model_name
-        self.client = OpenAI(api_key=resolved_key, base_url=base_url, timeout=timeout)
+        self.client = OpenAI(api_key=resolved_key or "EMPTY", base_url=base_url, timeout=timeout)
 
     def generate_text(
         self,
@@ -158,6 +169,11 @@ class GeminiLLMClient(BaseLLMClient):
             raise ImportError("google-genai package is required. Install with: pip install google-genai")
 
         resolved_key = api_key or os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+        if not resolved_key:
+            raise ValueError(
+                "GEMINI_API_KEY (or GOOGLE_API_KEY) environment variable is required to run the Gemini LLM client. "
+                "Please set GEMINI_API_KEY in your environment or .env file."
+            )
         self.client = genai.Client(api_key=resolved_key)
         self.model_name = model_name
 
@@ -498,3 +514,58 @@ class MockLLMClient(BaseLLMClient):
             })
 
         return "{}"
+
+
+def resolve_llm_client(
+    provider: Optional[str] = None,
+    model: Optional[str] = None,
+    allow_mock: bool = False,
+) -> BaseLLMClient:
+    """
+    Resolves the required LLM client.
+    Because this is an LLM-Based Quality Analyzer, a live LLM is compulsory.
+    Auto-detects between Google Gemini and OpenAI if provider is not explicitly set.
+    """
+    p = (provider or "").strip().lower()
+
+    if p == "mock":
+        if not allow_mock:
+            raise ValueError(
+                "Mock client is restricted to offline testing. "
+                "To use real LLM analysis, set GEMINI_API_KEY or OPENAI_API_KEY, "
+                "or pass allow_mock=True."
+            )
+        return MockLLMClient()
+
+    if p == "gemini":
+        return GeminiLLMClient(model_name=model or "gemini-2.5-flash")
+
+    if p == "openai":
+        return OpenAILLMClient(model_name=model or "gpt-4o")
+
+    # If provider is not specified, auto-detect available keys
+    gemini_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+    openai_key = os.getenv("OPENAI_API_KEY")
+
+    if gemini_key:
+        return GeminiLLMClient(model_name=model or "gemini-2.5-flash")
+    elif openai_key:
+        return OpenAILLMClient(model_name=model or "gpt-4o")
+    else:
+        raise ValueError(
+            "\n" + "=" * 76 + "\n"
+            "[MANDATORY LLM SETUP REQUIRED]\n"
+            "This system is an LLM-Based Software Requirement Quality Analyzer.\n"
+            "A live LLM backend (Google Gemini or OpenAI) is compulsory to perform\n"
+            "requirement quality scoring, reasoning, refinement, and validation.\n\n"
+            "Please configure at least one API key in your environment or .env file:\n\n"
+            "  Option 1 (Google Gemini - Recommended):\n"
+            '    PowerShell: $env:GEMINI_API_KEY = "your-key"\n'
+            '    Bash/Linux: export GEMINI_API_KEY="your-key"\n\n'
+            "  Option 2 (OpenAI):\n"
+            '    PowerShell: $env:OPENAI_API_KEY = "your-key"\n'
+            '    Bash/Linux: export OPENAI_API_KEY="your-key"\n\n'
+            "  Option 3 (Offline CI Testing Only):\n"
+            "    Pass --provider mock to run synthetic tests.\n"
+            + "=" * 76
+        )

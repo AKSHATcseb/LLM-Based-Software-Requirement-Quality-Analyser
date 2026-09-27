@@ -24,6 +24,7 @@ from sqam_analyzer.llm_provider import (
     LangChainLLMClient,
     MockLLMClient,
     OpenAILLMClient,
+    resolve_llm_client,
 )
 from sqam_analyzer.models import (
     DefectStatus,
@@ -78,4 +79,5 @@ __all__ = [
     "GeminiLLMClient",
     "LangChainLLMClient",
     "MockLLMClient",
+    "resolve_llm_client",
 ]

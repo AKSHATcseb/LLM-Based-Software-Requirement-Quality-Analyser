@@ -24,6 +24,7 @@ from sqam_analyzer import (
     Requirement,
     RequirementQualityPipeline,
     SRSContext,
+    resolve_llm_client,
 )
 from sqam_analyzer.cli import display_comparison_dossier, run_interactive_review
 
@@ -77,21 +78,13 @@ def get_default_srs_dataset():
     return srs_context, requirements
 
 
-def build_llm_client(provider: str, model: str):
-    """Instantiates the chosen LLM provider."""
-    provider = provider.lower()
-    if provider == "mock":
-        console.print("[dim]Using deterministic MockLLMClient (offline mode)...[/dim]")
-        return MockLLMClient()
-    elif provider == "openai":
-        api_key = os.getenv("OPENAI_API_KEY")
-        if not api_key:
-            console.print("[bold yellow]Warning: OPENAI_API_KEY not set in environment. Falling back or using client default.[/bold yellow]")
-        return OpenAILLMClient(model_name=model)
-    elif provider == "gemini":
-        return GeminiLLMClient(model_name=model)
-    else:
-        raise ValueError(f"Unknown provider '{provider}'. Choose 'mock', 'openai', or 'gemini'.")
+def build_llm_client(provider: str | None, model: str | None):
+    """Instantiates the chosen LLM provider, enforcing live LLM setup."""
+    return resolve_llm_client(
+        provider=provider,
+        model=model,
+        allow_mock=(provider == "mock"),
+    )
 
 
 def main():
@@ -100,14 +93,14 @@ def main():
     )
     parser.add_argument(
         "--provider",
-        choices=["mock", "openai", "gemini"],
-        default="mock",
-        help="LLM provider backend (default: mock)",
+        choices=["gemini", "openai", "mock"],
+        default=None,
+        help="LLM provider backend (default: auto-detects configured GEMINI_API_KEY or OPENAI_API_KEY)",
     )
     parser.add_argument(
         "--model",
-        default="gpt-4o",
-        help="Model name (e.g. gpt-4o, gpt-4o-mini, gemini-2.5-flash)",
+        default=None,
+        help="Model name (defaults to gemini-2.5-flash or gpt-4o)",
     )
     parser.add_argument(
         "--interactive",
@@ -130,7 +123,12 @@ def main():
 
     # Default to demo if no specific mode selected
     interactive_mode = args.interactive
-    llm_client = build_llm_client(args.provider, args.model)
+    try:
+        llm_client = build_llm_client(args.provider, args.model)
+    except ValueError as e:
+        console.print(f"[bold red]{e}[/bold red]")
+        sys.exit(1)
+
     pipeline = RequirementQualityPipeline(default_llm=llm_client)
 
     srs_context, requirements = get_default_srs_dataset()

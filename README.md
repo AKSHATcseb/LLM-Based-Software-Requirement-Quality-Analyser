@@ -117,13 +117,23 @@ cd sqam-requirement-analyzer
 pip install -r requirements.txt
 ```
 
-### 2. Environment Setup (Optional)
-If you wish to use live LLMs (OpenAI or Gemini), set up your API keys:
+### 2. Environment Setup (Mandatory)
+Because this system is an **LLM-Based** software quality analyzer, a live LLM backend (Google Gemini or OpenAI) is **mandatory** to evaluate requirements, reason through defects, and validate targeted refinements.
+
+Configure at least one API key:
 ```bash
 cp .env.example .env
-# Edit .env and enter your OPENAI_API_KEY or GEMINI_API_KEY
+# Edit .env and enter your GEMINI_API_KEY (recommended) or OPENAI_API_KEY
 ```
-*(By default, the pipeline runs with a deterministic offline Mock client that requires no API keys or internet connection).*
+Or export it directly in your terminal:
+```powershell
+# Windows PowerShell
+$env:GEMINI_API_KEY = "your-gemini-key"
+
+# Linux / macOS
+export GEMINI_API_KEY="your-gemini-key"
+```
+*(The deterministic offline Mock client is strictly reserved for automated CI/CD unit testing via `--provider mock`).*
 
 ### 3. Run Unit Tests (100% Passing)
 ```bash
