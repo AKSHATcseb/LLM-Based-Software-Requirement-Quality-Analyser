@@ -305,16 +305,47 @@ def execute_compliance_audit_on_requirement(
     return report
 
 
-def get_first_srs_file_in_project(project_folder: Path) -> Path:
-    """Finds earliest PDF or Markdown file."""
-    files = [f for f in sorted(project_folder.iterdir()) if f.is_file() and f.suffix.lower() in [".pdf", ".md"]]
+def extract_requirements_from_project_folder(project_folder: Path) -> tuple[Path, List[str]]:
+    """
+    Finds the best SRS file in a project folder and extracts candidate requirements.
+    Tries earlier version files first; if a file is an empty scaffold, inspects companion files.
+    Also supports user-story ('should' / 'needs to') modal patterns when 'shall' is absent.
+    """
+    files = [f for f in sorted(project_folder.iterdir()) if f.is_file() and f.suffix.lower() in [".pdf", ".md", ".txt"]]
     if not files:
-        raise FileNotFoundError(f"No PDF or Markdown files in {project_folder}")
-    for f in files:
+        raise FileNotFoundError(f"No valid SRS files in {project_folder}")
+
+    def sort_key(f: Path):
         nl = f.name.lower()
         if "v1" in nl or "v0" in nl or "(1)" in nl or "1.pdf" in nl:
-            return f
-    return files[0]
+            return (0, f.name)
+        if "(2)" in nl or "v2" in nl or "2.pdf" in nl:
+            return (1, f.name)
+        return (2, f.name)
+
+    candidate_files = sorted(files, key=sort_key)
+
+    for f in candidate_files:
+        text = extract_text_from_file(f)
+        reqs = extract_candidate_requirements(text)
+        if reqs:
+            return f, reqs
+
+    # Fallback: Check for 'should' or 'needs to' or 'is required to'
+    for f in candidate_files:
+        text = extract_text_from_file(f)
+        clean_text = re.sub(r"\r\n", "\n", text)
+        sentences = re.split(r"(?<=[.!?])\s+(?=[A-Z0-9])", clean_text)
+        broader_reqs = []
+        for s in sentences:
+            s_clean = re.sub(r"\s+", " ", s.strip().replace("\n", " "))
+            if re.search(r"\b(shall|must|should|needs to|is required to)\b", s_clean, re.I):
+                if 25 < len(s_clean) < 450:
+                    broader_reqs.append(s_clean)
+        if broader_reqs:
+            return f, broader_reqs
+
+    return candidate_files[0], []
 
 
 # ==============================================================================
@@ -327,9 +358,7 @@ def run_project_format_audit(project_name: str, limit: int = 3, provider: str = 
     if not project_dir.exists():
         return {"error": f"Project '{project_name}' not found in {SRS_BASE_DIR}"}
 
-    file_path = get_first_srs_file_in_project(project_dir)
-    text = extract_text_from_file(file_path)
-    req_texts = extract_candidate_requirements(text)
+    file_path, req_texts = extract_requirements_from_project_folder(project_dir)
 
     if not req_texts:
         return {"error": f"No requirements extracted from {file_path.name}"}
