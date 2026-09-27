@@ -90,3 +90,8 @@ evaluation_report.md
 report_15_projects.md
 *_audit.md
 *_report.md
+*_evolution.md
+*_metrics.csv
+*_trace.json
+reports/
+
