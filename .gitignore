@@ -94,4 +94,6 @@ report_15_projects.md
 *_metrics.csv
 *_trace.json
 reports/
+*.zip
+
 
