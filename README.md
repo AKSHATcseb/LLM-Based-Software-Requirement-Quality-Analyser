@@ -203,6 +203,22 @@ python run_evolution_pipeline.py --project 1_FROG --output-markdown frog_evoluti
 python run_evolution_pipeline.py --project 2_SMIRK --provider gemini --model gemini-2.5-flash
 ```
 
+### 5. SQAM Debugging & Format-Compliance MCP Server
+Audit format adherence, schema validity, and pipeline sequence integrity across documents:
+```bash
+# Sweep all 15 SRS projects for format escapes and sequence adherence
+python sqam_mcp_server.py --cli --scan-all --limit 2
+
+# Run adversarial fuzzing battery (prompt injection, run-ons, unclosed syntax)
+python sqam_mcp_server.py --cli --fuzz
+
+# Audit a specific project
+python sqam_mcp_server.py --cli --project 1_FROG --limit 3
+
+# Run as an MCP Server over stdio (for Antigravity / Claude Desktop):
+python sqam_mcp_server.py
+```
+
 ---
 
 ## 🔌 Swapping LLM Models
@@ -254,6 +270,7 @@ sqam-requirement-analyzer/
 ├── build_dataset.py              # Dataset builder and parser for 15 SRS projects
 ├── evaluate_srs.py               # Research metrics & historical benchmark evaluator
 ├── run_evolution_pipeline.py     # Pipeline 2 runner: Version N vs N+1 evolution benchmark
+├── sqam_mcp_server.py            # Custom Local MCP Server & format-compliance debugger
 ├── sample_benchmark.json         # Version N vs N+1 benchmark dataset
 ├── sqam_analyzer/                # Pipeline 1: 5-Layer Quality Analyzer
 │   ├── __init__.py               # Exports
