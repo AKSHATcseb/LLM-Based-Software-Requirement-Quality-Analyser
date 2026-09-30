@@ -90,6 +90,12 @@
 ┌─────────────────────────────────────────────────────▼─────────────────────────────────────────────────────┐
 │ PIPELINE 2: HISTORICAL VERSION EVOLUTION & GROUND-TRUTH BENCHMARK                                         │
 │                                                                                                           │
+│  [Later Working Draft vs Final Release Benchmarking Strategy]                                             │
+│   ├── Target of AI Analysis: Penultimate Mature Working Draft (vDraft / vN-1)                            │
+│   ├── Ground Truth Release: Final Production Release (vFinal / vN)                                        │
+│   └── Scientific Rationale: Isolates ISO 29148 specification quality hardening from early architectural   │
+│       scope turbulence, evaluating AI predictions against the real human polish before release.           │
+│                                                     │                                                     │
 │  [Multi-Stage Requirement Alignment Engine]                                                               │
 │   ├── Stage 1: Exact Identifier Match (REQ-101 <-> REQ-101)                                               │
 │   ├── Stage 2: TF-IDF n-gram Cosine Similarity Fallback (similarity >= 0.45 for renumbered/split reqs)   │
@@ -102,7 +108,7 @@
 │   └── Non-Functional / Editorial: Editorial Non-Semantic, Unchanged (Zero-token short-circuit)            │
 │                                                     │                                                     │
 │  [Semantic Correspondence Evaluation (Strictly Non-Lexical)]                                              │
-│   ├── Evaluates Pipeline 1 AI Proposal against actual Human Version N+1 Ground Truth                     │
+│   ├── Evaluates Pipeline 1 AI Proposal against actual Human Final Release Ground Truth                    │
 │   └── Qualitative Tiers: MATCHED | PARTIALLY_MATCHED | NOT_MATCHED (with chain-of-thought rationale)      │
 └───────────────────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -138,24 +144,24 @@ $$\text{Quality Prediction Precision} = \frac{|\mathcal{R}_{\text{MATCHED propos
 
 ## 5. EXPERIMENTAL CORPUS & EMPIRICAL RESULTS
 
-### Table 1: The 15 SRS Projects Benchmark Corpus
-| ID | Project Name | Domain / Application Area | Version N Doc | Version N+1 Doc | Reqs Identified |
+### Table 1: The 15 SRS Projects Benchmark Corpus (Later Draft vs Final Release Pairing)
+| ID | Project Name | Domain / Application Area | Later Working Draft ($V_{\text{draft}}$) | Final SRS Release ($V_{\text{final}}$) | Reqs Identified |
 | :---: | :--- | :--- | :--- | :--- | :---: |
 | 1 | **1_FROG** | Gesture Recognition / Vision | `SRS_v1.1.pdf` | `Software_Requirements...v30.pdf` | 108 |
 | 2 | **2_SMIRK** | Autonomous Driving / ML Safety | `System Requirements... (2).md` | `System Requirements... (3).md` | 12 |
-| 3 | **3_ONEM** | IoT & Machine-to-Machine Service | `TS-0002-Requirements-V1_0_1.pdf` | `TS-0002-Requirements-V2_0_0.pdf` | 74 |
-| 4 | **4_UIC** | Railway Telecom (EIRENE Radio) | `eirene_srs_15.1.pdf` | `eirene_srs_16.0.pdf` | 142 |
-| 5 | **5_EVLA** | Radio Astronomy Correlator Backend | `be_srs_2.1.pdf` | `be_srs_2.3.pdf` | 65 |
-| 6 | **6** | Telecommunication Infrastructure | `gs_mec002v010101p.pdf` | `gs_mec002v020101p.pdf` | 89 |
-| 7 | **7** | Industrial Embedded Control | `Attachment_0 (1).pdf` | `Attachment_0 (2).pdf` | 44 |
+| 3 | **3_ONEM** | IoT & Machine-to-Machine Service | `TS-0002-Requirements-V4_1_0(cl).pdf` | `TS-0002-Requirements-V5_1_0_CL.pdf` | 74 |
+| 4 | **4_UIC** | Railway Telecom (EIRENE Radio) | `srs-16.0.0_uic_951-0.0.2_final.pdf` | `eirene_-_system_requirements...16.1_0.pdf` | 142 |
+| 5 | **5_EVLA** | Radio Astronomy Correlator Backend | `be_srs.pdf` | `be_srs_2.1.pdf` | 65 |
+| 6 | **6** | Telecommunication Infrastructure | `gs_mec002v040101p.pdf` | `gs_mec002v040201p.pdf` | 89 |
+| 7 | **7** | Industrial Embedded Control | `Attachment_0.pdf` | `Attachment_0 (1).pdf` | 44 |
 | 8 | **8** | Embedded Robotic Actuation | `Attachment_0 (1).pdf` | `Attachment_0 (2).pdf` | 51 |
-| 9 | **9** | Critical Real-time Monitoring | `Attachment_0 (1).pdf` | `Attachment_0 (2).pdf` | 38 |
-| 10 | **10** | Spacecraft Avionics Subsystem | `Attachment_0 (1).pdf` | `Attachment_0 (2).pdf` | 58 |
+| 9 | **9** | Critical Real-time Monitoring | `Attachment_0.pdf` | `Attachment_0 (1).pdf` | 38 |
+| 10 | **10** | Spacecraft Avionics Subsystem | `Attachment_0.pdf` | `Attachment_0 (1).pdf` | 58 |
 | 11 | **11** | Medical Device Firmware | `Attachment_0 (2).pdf` | `Attachment_0 (3).pdf` | 62 |
-| 12 | **12** | Distributed Cyber-Physical System | `Attachment_0 (1).pdf` | `Attachment_0 (2).pdf` | 49 |
+| 12 | **12** | Distributed Cyber-Physical System | `Attachment_0.pdf` | `Attachment_0 (1).pdf` | 49 |
 | 13 | **13** | EU Circular Economy (Onto-DESIDE) | `Attachment_0 (2).pdf` | `Attachment_0 (3).pdf` | 33 |
-| 14 | **14** | Secure Network Boundary Gateway | `1.pdf` | `2.pdf` | 41 |
-| 15 | **15** | Cloud Enterprise Data Platform | `SRS_v1.pdf` | `SRS_v2.pdf` | 76 |
+| 14 | **14** | Secure Network Boundary Gateway | `2.pdf` | `3.pdf` | 41 |
+| 15 | **15** | Cloud Enterprise Data Platform | `SRS_v2.pdf` | `SRS_v3.pdf` | 76 |
 | **Total** | **15 Projects** | **Multi-Domain Empirical Corpus** | — | — | **942 Requirements** |
 
 ---

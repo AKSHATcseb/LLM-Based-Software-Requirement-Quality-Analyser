@@ -188,13 +188,19 @@ This automatically computes:
 * **IPR** (Intent Preservation Rate)
 * **APL** (Average Pipeline Latency)
 ### 4. Historical SRS Version Evolution Pipeline (Pipeline 2)
-Extract, align, and classify human modifications across document versions and evaluate Pipeline 1's refinements against actual stakeholder edits:
-```bash
-# Compare Version N and Version N+1 for any project
-python run_evolution_pipeline.py --project 1_FROG --limit 10
+Extract, align, and classify human modifications across document versions and evaluate Pipeline 1's refinements against actual stakeholder edits.
+> [!NOTE]
+> **Benchmarking Strategy**: By default (`--mode later_vs_final`), the pipeline analyzes the **Later Working Draft** ($V_{\text{later}}$ / penultimate version, e.g. $V_2$ or $V_{N-1}$) and benchmarks directly against the **Final Version** ($V_{\text{final}}$) of that SRS document. This isolates true ISO 29148 specification quality hardening (ambiguity reduction, non-functional constraint tightening) from early functional scope volatility.
 
-# Compare arbitrary PDF or Markdown files
-python run_evolution_pipeline.py --v1 "path/to/SRS_v1.0.pdf" --v2 "path/to/SRS_v2.0.pdf"
+```bash
+# Compare Later Working Draft vs Final Release (default mode)
+python run_evolution_pipeline.py --project 14 --limit 10
+
+# Compare Initial Skeleton vs Final Release
+python run_evolution_pipeline.py --project 14 --mode earliest_vs_final --limit 10
+
+# Compare arbitrary PDF or Markdown files directly
+python run_evolution_pipeline.py --v1 "path/to/SRS_v2.0.pdf" --v2 "path/to/SRS_v3.0.pdf"
 
 # Export Markdown report, CSV summary, and full JSON trace
 python run_evolution_pipeline.py --project 1_FROG --output-markdown frog_evolution.md --output-csv frog_evolution.csv --output-json frog_trace.json

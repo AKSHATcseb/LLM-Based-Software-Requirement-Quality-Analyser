@@ -283,6 +283,22 @@ REQ-03: The system shall support multi-factor authentication.
         self.assertIn("# Historical SRS Evolution & Benchmark Report: Test Evolution", md_report)
         self.assertIn("Pipeline-1 Semantic Correspondence", md_report)
 
+    def test_version_file_discovery_modes(self):
+        from run_evolution_pipeline import get_version_files_for_project
+        # Project 14 has 1.pdf, 2.pdf, 3.pdf -> later draft is 2.pdf, final is 3.pdf
+        draft_later, final_later = get_version_files_for_project("14", mode="later_vs_final")
+        self.assertEqual(draft_later.name, "2.pdf")
+        self.assertEqual(final_later.name, "3.pdf")
+
+        draft_early, final_early = get_version_files_for_project("14", mode="earliest_vs_final")
+        self.assertEqual(draft_early.name, "1.pdf")
+        self.assertEqual(final_early.name, "3.pdf")
+
+        # Project 1_FROG has 2 files: SRS_v1.1.pdf and Software_Requirements_Specification_v30.pdf
+        draft_frog, final_frog = get_version_files_for_project("1_FROG", mode="later_vs_final")
+        self.assertEqual(draft_frog.name, "SRS_v1.1.pdf")
+        self.assertEqual(final_frog.name, "Software_Requirements_Specification_v30.pdf")
+
 
 if __name__ == "__main__":
     unittest.main()
