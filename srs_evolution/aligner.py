@@ -219,6 +219,7 @@ class SRSParser:
                         version=version_label,
                         line_number=line_num,
                         raw_header=raw_header,
+                        is_synthetic=(tag_match is None),
                     )
                 )
 
@@ -253,22 +254,26 @@ class RequirementAligner:
         unmatched_v2 = list(v2_reqs)
 
         # -------------------------------------------------------------------
-        # Stage 1: Exact ID Matching
+        # Stage 1: Exact ID Matching (Restricted to Genuine Document-Assigned Tags)
         # -------------------------------------------------------------------
-        # Build lookup table for v2 requirements by normalized ID
+        # Build lookup table for genuine v2 requirements by normalized ID
         v2_by_id = {}
         for r2 in unmatched_v2:
-            norm_id = self._normalize_id(r2.req_id)
-            if norm_id:
-                v2_by_id.setdefault(norm_id, []).append(r2)
+            if not r2.is_synthetic:
+                norm_id = self._normalize_id(r2.req_id)
+                if norm_id:
+                    v2_by_id.setdefault(norm_id, []).append(r2)
 
         matched_v1_ids = set()
         matched_v2_ids = set()
 
         for r1 in unmatched_v1:
+            # Synthetic IDs must strictly bypass Stage 1 to prevent spurious matches
+            if r1.is_synthetic:
+                continue
+
             norm_id = self._normalize_id(r1.req_id)
-            # Only match if it's a real explicit tag (not a generic synthetic ID)
-            if norm_id and norm_id in v2_by_id and not norm_id.startswith("REQ-N-"):
+            if norm_id and norm_id in v2_by_id:
                 candidate_v2 = v2_by_id[norm_id][0]
                 matched_v1_ids.add(r1.req_id)
                 matched_v2_ids.add(candidate_v2.req_id)
@@ -388,10 +393,10 @@ class RequirementAligner:
         return aligned_pairs
 
     def _normalize_id(self, req_id: Optional[str]) -> str:
-        """Normalizes ID by stripping version indicators and punctuation."""
+        """Normalizes ID by stripping trailing version indicators and whitespace."""
         if not req_id:
             return ""
-        # Strip common version prefixes like "-V1", "-V2", "_v1.1"
-        cleaned = re.sub(r"[-_]V[0-9]+.*$", "", req_id, flags=re.IGNORECASE)
+        # Strip trailing version suffixes (e.g. -V1, _v2.0, -final)
+        cleaned = re.sub(r"[-_]v\d+(?:\.\d+)*$", "", req_id.strip(), flags=re.IGNORECASE)
         cleaned = re.sub(r"[^A-Za-z0-9]", "", cleaned).upper()
         return cleaned

@@ -46,6 +46,10 @@ def compute_word_diff(original: str, refined: str) -> TextDiff:
             changed_words += (i2 - i1) + (j2 - j1)
 
     diff_markup = " ".join(diff_parts)
+    # Fix detached punctuation (e.g. "word ." -> "word.", "500 ms ." -> "500 ms.")
+    diff_markup = re.sub(r"\s+([.,;:!?])", r"\1", diff_markup)
+    diff_markup = re.sub(r"\(\s+", "(", diff_markup)
+    diff_markup = re.sub(r"\s+\)", ")", diff_markup)
     # Clean up double spaces
     diff_markup = re.sub(r"\s+", " ", diff_markup).strip()
 

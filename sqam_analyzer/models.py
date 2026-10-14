@@ -31,6 +31,17 @@ class QualityAttribute(str, Enum):
     VERIFIABILITY_FEASIBILITY = "Verifiability/Feasibility"
 
 
+DEFAULT_QUALITY_WEIGHTS: Dict[QualityAttribute, float] = {
+    QualityAttribute.UNAMBIGUITY: 0.20,
+    QualityAttribute.COMPLETENESS: 0.20,
+    QualityAttribute.CONSISTENCY: 0.15,
+    QualityAttribute.CONFORMANCE: 0.10,
+    QualityAttribute.CORRECTNESS: 0.15,
+    QualityAttribute.SINGULARITY: 0.10,
+    QualityAttribute.VERIFIABILITY_FEASIBILITY: 0.10,
+}
+
+
 class SeverityLevel(str, Enum):
     """Severity classification for requirement shortcomings."""
     LOW = "low"

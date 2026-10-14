@@ -63,6 +63,10 @@ class RequirementUnit(BaseModel):
     version: str = Field(default="N", description="Document version identifier (e.g. 'v1.1', 'v3.0')")
     line_number: Optional[int] = Field(default=None, description="Line offset in source document")
     raw_header: Optional[str] = Field(default=None, description="Raw heading or bullet prefix if present")
+    is_synthetic: bool = Field(
+        default=False,
+        description="True if requirement ID was synthetically generated (untagged requirement); False if explicit in document"
+    )
 
 
 class AlignedRequirementPair(BaseModel):
@@ -139,15 +143,22 @@ class BenchmarkSummaryReport(BaseModel):
     added_count: int = 0
     deleted_count: int = 0
     
-    # Correspondence Metrics
-    total_pipeline_proposals_evaluated: int = 0
-    matched_count: int = 0
-    partially_matched_count: int = 0
-    not_matched_count: int = 0
-    
-    match_rate: float = Field(0.0, description="Proportion of proposals that were Matched or Partially Matched")
-    strict_match_rate: float = Field(0.0, description="Proportion of proposals that were strictly Matched")
+    # Active Proposal Correspondence Metrics (comparing Pipeline-1 proposed refinements vs Final SRS Release)
+    total_active_proposals: int = Field(0, description="Total requirements where Pipeline-1 proposed a refinement")
+    proposals_matched: int = 0
+    proposals_partial: int = 0
+    proposals_not_matched: int = 0
+
+    proposal_strict_match_rate: float = Field(0.0, description="Strict match rate over active proposals only (matched / proposals)")
+    proposal_combined_match_rate: float = Field(0.0, description="Combined match rate over active proposals only ((matched + partial) / proposals)")
+    quality_refinement_recall: float = Field(0.0, description="Recall: proportion of Final SRS quality refinements anticipated by Pipeline-1")
+    quality_refinement_precision: float = Field(0.0, description="Precision: proportion of Pipeline-1 proposals matching Final SRS quality refinements")
+    overall_evolutionary_agreement: float = Field(0.0, description="Specification-wide agreement across all pairs including true-negative unchanged requirements")
+
+    # Backward compatibility fields
+    match_rate: float = Field(0.0, description="Combined match rate over active proposals")
+    strict_match_rate: float = Field(0.0, description="Strict match rate over active proposals")
     quality_prediction_precision: float = Field(
         0.0,
-        description="Proportion of Pipeline-1 refinements that corresponded to genuine historical quality fixes"
+        description="Proportion of Pipeline-1 refinements corresponding to genuine quality refinements in Final SRS"
     )

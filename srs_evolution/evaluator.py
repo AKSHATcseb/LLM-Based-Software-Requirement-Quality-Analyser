@@ -39,49 +39,49 @@ logger = logging.getLogger(__name__)
 CORRESPONDENCE_SYSTEM_PROMPT = """You are an Academic Peer Reviewer and Requirements Engineering Auditor evaluating an AI-Assisted Requirements Editor.
 
 You are comparing:
-1. PIPELINE-1 PROPOSAL: What an automated 5-layer quality analyzer independently diagnosed and refined in an earlier specification (Version N).
-2. HISTORICAL GROUND TRUTH: What human stakeholders actually changed in the real-world later version (Version N+1).
+1. PIPELINE-1 PROPOSAL: What an automated 5-layer quality analyzer independently diagnosed and refined in an earlier draft specification (Version N).
+2. FINAL SRS RELEASE (GROUND TRUTH DOCUMENT): The finalized text and specifications in the official Final Version of the SRS (Version N+1).
 
 Your task is to assign a THREE-WAY QUALITATIVE CORRESPONDENCE RATING:
 
 1. MATCHED:
-   The analyzer independently flagged the same quality shortcoming and proposed a refinement that is semantically equivalent or closely anticipates the actual change made by human stakeholders in Version N+1.
-   (Exact wording is NOT required: if the pipeline parameterized "quickly" to a numeric time limit and human stakeholders also added a numeric time limit, this is a strong MATCH).
+   The analyzer independently flagged the same quality shortcoming and proposed a refinement that is semantically equivalent or closely anticipates the specification in the Final Version of the SRS.
+   (Exact wording is NOT required: if the pipeline parameterized "quickly" to a numeric time limit and the Final Version of the SRS also established a numeric time limit, this is a strong MATCH).
 
 2. PARTIALLY_MATCHED:
-   The analyzer correctly targeted the problematic clause or quality defect, but proposed a different remediation strategy than what human stakeholders adopted.
-   (e.g., The pipeline parameterized a compound clause, while human stakeholders resolved it by splitting it into companion requirements).
+   The analyzer correctly targeted the problematic clause or quality defect, but proposed an alternative remediation compared to what was codified in the Final Version of the SRS.
+   (e.g., The pipeline parameterized a compound clause, while the Final Version of the SRS resolved it by decomposing into companion requirements).
 
 3. NOT_MATCHED:
-   The analyzer's proposed change has no counterpart in the historical evolution of Version N+1 (e.g. human stakeholders left the text untouched, made a completely unrelated functional change, or the analyzer's flag was irrelevant to real evolution).
+   The analyzer's proposed change has no counterpart in the Final Version of the SRS (e.g. the Final SRS left the text untouched, made a completely unrelated functional scope change, or the analyzer's flag was extraneous).
 
 DO NOT use surface-level word matching. Focus entirely on semantic intent and requirements engineering defect relevance.
 Return ONLY a valid JSON object matching the requested schema.
 """
 
-CORRESPONDENCE_USER_TEMPLATE = """Evaluate the semantic correspondence between Pipeline-1's proposed refinement and Version N+1's actual historical evolution.
+CORRESPONDENCE_USER_TEMPLATE = """Evaluate the semantic correspondence between Pipeline-1's proposed refinement and the official Final Version of the SRS.
 
 Requirement ID: {req_id}
 
-### 1. VERSION N (ORIGINAL TEXT FED BLIND TO PIPELINE-1):
+### 1. DRAFT SPECIFICATION (VERSION N, FED BLIND TO PIPELINE-1):
 "{original_v_n_text}"
 
 ### 2. PIPELINE-1 INDEPENDENT DIAGNOSIS & REFINEMENT:
 - Flagged Shortcomings (Layer 1 & 2): {layer1_defects}
 - Proposed Refinement (Layer 3): "{layer3_refinement}"
 
-### 3. HISTORICAL GROUND TRUTH IN VERSION N+1:
-- Actual Later Text: "{v_next_actual_text}"
+### 3. GROUND TRUTH IN FINAL VERSION OF SRS (VERSION N+1):
+- Text in Final Version of SRS: "{v_next_actual_text}"
 - Empirical Change Category: {historical_change_category}
-- Summary of Actual Change: {summary_of_actual_change}
+- Summary of Evolution in Final SRS: {summary_of_actual_change}
 
 ### OUTPUT FORMAT
 Provide your response as a strict JSON object:
 {{
   "req_id": "{req_id}",
   "correspondence_rating": "<One of: MATCHED, PARTIALLY_MATCHED, NOT_MATCHED>",
-  "explanation": "<Detailed chain-of-thought rationale explaining whether the pipeline's proposal semantically corresponds to the human change in Version N+1>",
-  "is_true_positive_prediction": true // or false: True if the pipeline correctly anticipated a genuine historical quality refinement
+  "explanation": "<Detailed chain-of-thought rationale explaining whether the pipeline's proposal semantically corresponds to the specification in the Final Version of the SRS>",
+  "is_true_positive_prediction": true // or false: True if the pipeline correctly anticipated a genuine quality refinement in the Final SRS
 }}
 """
 
@@ -131,7 +131,21 @@ class EvolutionEvaluator:
 
         v_next_actual = change_record.text_v_n1 or original_text
 
-        # Fast Short-Circuit 1: Both Pipeline and Historical stakeholders made no change
+        # Fast Short-Circuit 0: Pipeline execution failure
+        if pipeline_result.status == "error":
+            return EvolutionBenchmarkResult(
+                req_id=req_id,
+                original_v_n_text=original_text,
+                layer1_defects_flagged=[],
+                layer3_refinement_text=original_text,
+                v_next_actual_text=v_next_actual,
+                historical_change_category=change_record.change_category,
+                correspondence_rating=CorrespondenceRating.NOT_MATCHED,
+                explanation=f"Pipeline-1 analysis failed with error: {pipeline_result.error_message}",
+                is_true_positive_prediction=False,
+            )
+
+        # Fast Short-Circuit 1: Both Pipeline-1 and the Final Version of SRS left the text unchanged
         pipeline_changed = (l3_refinement.strip() != original_text.strip())
         historical_changed = (v_next_actual.strip() != original_text.strip())
 
@@ -144,11 +158,11 @@ class EvolutionEvaluator:
                 v_next_actual_text=v_next_actual,
                 historical_change_category=change_record.change_category,
                 correspondence_rating=CorrespondenceRating.MATCHED,
-                explanation="Both Pipeline-1 and historical stakeholders judged the requirement compliant and made no modifications.",
+                explanation="Both Pipeline-1 and the official Final Version of the SRS maintained the original text without modification (compliant specification).",
                 is_true_positive_prediction=True,
             )
 
-        # Fast Short-Circuit 2: Pipeline changed nothing, but historical stakeholders made a quality refinement
+        # Fast Short-Circuit 2: Pipeline-1 proposed no change, but the Final Version of SRS introduced a quality refinement
         if not pipeline_changed and historical_changed and change_record.is_quality_refinement:
             return EvolutionBenchmarkResult(
                 req_id=req_id,
@@ -158,11 +172,11 @@ class EvolutionEvaluator:
                 v_next_actual_text=v_next_actual,
                 historical_change_category=change_record.change_category,
                 correspondence_rating=CorrespondenceRating.NOT_MATCHED,
-                explanation="Historical stakeholders performed a quality repair in Version N+1, but Pipeline-1 failed to identify or refine the defect.",
+                explanation="The official Final Version of the SRS codified a quality refinement, but Pipeline-1 left the requirement unrefined.",
                 is_true_positive_prediction=False,
             )
 
-        # Fast Short-Circuit 3: Pipeline proposed a refinement, but historical stakeholders made no change
+        # Fast Short-Circuit 3: Pipeline-1 proposed a refinement, but the Final Version of SRS kept the original text
         if pipeline_changed and not historical_changed:
             return EvolutionBenchmarkResult(
                 req_id=req_id,
@@ -172,7 +186,7 @@ class EvolutionEvaluator:
                 v_next_actual_text=v_next_actual,
                 historical_change_category=ChangeCategory.UNCHANGED,
                 correspondence_rating=CorrespondenceRating.NOT_MATCHED,
-                explanation="Pipeline-1 proposed a refinement, but historical stakeholders kept the requirement unchanged in Version N+1.",
+                explanation="Pipeline-1 proposed a refinement, but the official Final Version of the SRS maintained the requirement unchanged.",
                 is_true_positive_prediction=False,
             )
 
@@ -264,24 +278,43 @@ class EvolutionEvaluator:
             b_res = self.evaluate_correspondence(p_res, rec, temperature=temperature)
             benchmark_results.append(b_res)
 
-        # Compute summary metrics
-        total = len(benchmark_results)
-        matched = sum(1 for b in benchmark_results if b.correspondence_rating == CorrespondenceRating.MATCHED)
-        partial = sum(1 for b in benchmark_results if b.correspondence_rating == CorrespondenceRating.PARTIALLY_MATCHED)
-        not_matched = sum(1 for b in benchmark_results if b.correspondence_rating == CorrespondenceRating.NOT_MATCHED)
-
-        proposals = sum(
-            1 for b in benchmark_results
+        # Compute summary metrics strictly separating active proposals from unchanged requirements
+        active_proposal_results = [
+            b for b in benchmark_results
             if b.layer3_refinement_text and b.layer3_refinement_text.strip() != b.original_v_n_text.strip()
+        ]
+
+        num_proposals = len(active_proposal_results)
+        matched_proposals = sum(1 for b in active_proposal_results if b.correspondence_rating == CorrespondenceRating.MATCHED)
+        partial_proposals = sum(1 for b in active_proposal_results if b.correspondence_rating == CorrespondenceRating.PARTIALLY_MATCHED)
+        not_matched_proposals = sum(1 for b in active_proposal_results if b.correspondence_rating == CorrespondenceRating.NOT_MATCHED)
+
+        # True Negatives: both Pipeline-1 and the Final Version of the SRS kept the text unchanged
+        true_negatives = sum(
+            1 for b in benchmark_results
+            if (not b.layer3_refinement_text or b.layer3_refinement_text.strip() == b.original_v_n_text.strip()) and
+               (not b.v_next_actual_text or b.v_next_actual_text.strip() == b.original_v_n_text.strip())
         )
+
         quality_historical = sum(
             1 for b in benchmark_results
             if b.historical_change_category in QUALITY_REFINEMENT_CATEGORIES
         )
 
-        match_rate = round(((matched + partial) / proposals * 100) if proposals else 0.0, 1)
-        strict_match_rate = round((matched / proposals * 100) if proposals else 0.0, 1)
-        precision = round((matched / quality_historical * 100) if quality_historical else 0.0, 1)
+        matched_quality_proposals = sum(
+            1 for b in active_proposal_results
+            if b.correspondence_rating == CorrespondenceRating.MATCHED
+            and b.historical_change_category in QUALITY_REFINEMENT_CATEGORIES
+        )
+
+        # Correct proposal-based rates (strictly over active proposals)
+        strict_pmr = round((matched_proposals / num_proposals * 100) if num_proposals else 0.0, 1)
+        combined_pmr = round(((matched_proposals + partial_proposals) / num_proposals * 100) if num_proposals else 0.0, 1)
+        qrr = round((matched_quality_proposals / quality_historical * 100) if quality_historical else 0.0, 1)
+        qrp = round((matched_quality_proposals / num_proposals * 100) if num_proposals else 0.0, 1)
+
+        total_eval = len(benchmark_results)
+        oea = round(((matched_proposals + true_negatives) / total_eval * 100) if total_eval else 0.0, 1)
 
         summary = BenchmarkSummaryReport(
             total_aligned_pairs=len(change_records),
@@ -291,13 +324,22 @@ class EvolutionEvaluator:
             scope_changes_count=sum(1 for c in change_records if c.change_category == ChangeCategory.FUNCTIONAL_SCOPE_CHANGE),
             added_count=sum(1 for c in change_records if c.change_category == ChangeCategory.REQUIREMENT_ADDED),
             deleted_count=sum(1 for c in change_records if c.change_category == ChangeCategory.REQUIREMENT_DELETED),
-            total_pipeline_proposals_evaluated=proposals,
-            matched_count=matched,
-            partially_matched_count=partial,
-            not_matched_count=not_matched,
-            match_rate=match_rate,
-            strict_match_rate=strict_match_rate,
-            quality_prediction_precision=precision,
+            total_active_proposals=num_proposals,
+            proposals_matched=matched_proposals,
+            proposals_partial=partial_proposals,
+            proposals_not_matched=not_matched_proposals,
+            proposal_strict_match_rate=strict_pmr,
+            proposal_combined_match_rate=combined_pmr,
+            quality_refinement_recall=qrr,
+            quality_refinement_precision=qrp,
+            overall_evolutionary_agreement=oea,
+            total_pipeline_proposals_evaluated=num_proposals,
+            matched_count=matched_proposals,
+            partially_matched_count=partial_proposals,
+            not_matched_count=not_matched_proposals,
+            match_rate=combined_pmr,
+            strict_match_rate=strict_pmr,
+            quality_prediction_precision=qrp,
         )
 
         return benchmark_results, summary
@@ -336,7 +378,7 @@ class EvolutionEvaluator:
                 v_next_actual_text=v_next,
                 historical_change_category=change_record.change_category,
                 correspondence_rating=CorrespondenceRating.MATCHED,
-                explanation=f"Pipeline-1 proposal semantically anticipated the historical quality repair (Shared concept: {overlap or 'quantitative constraint/standard'}).",
+                explanation=f"Pipeline-1 proposal semantically anticipated the specification in the Final Version of the SRS (Shared concept: {overlap or 'quantitative constraint/standard'}).",
                 is_true_positive_prediction=True,
             )
 
@@ -349,7 +391,7 @@ class EvolutionEvaluator:
                 v_next_actual_text=v_next,
                 historical_change_category=change_record.change_category,
                 correspondence_rating=CorrespondenceRating.PARTIALLY_MATCHED,
-                explanation="Pipeline-1 correctly flagged the quality flaw, but historical stakeholders applied an alternative formulation.",
+                explanation="Pipeline-1 correctly flagged the quality flaw, but the Final Version of the SRS adopted an alternative formulation.",
                 is_true_positive_prediction=True,
             )
 
@@ -361,6 +403,6 @@ class EvolutionEvaluator:
             v_next_actual_text=v_next,
             historical_change_category=change_record.change_category,
             correspondence_rating=CorrespondenceRating.NOT_MATCHED,
-            explanation="Pipeline-1 proposed a refinement, but the historical change was unrelated or unaligned.",
+            explanation="Pipeline-1 proposed a refinement, but the modification in the Final Version of the SRS was unrelated or unaligned.",
             is_true_positive_prediction=False,
         )

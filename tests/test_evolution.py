@@ -299,6 +299,71 @@ REQ-03: The system shall support multi-factor authentication.
         self.assertEqual(draft_frog.name, "SRS_v1.1.pdf")
         self.assertEqual(final_frog.name, "Software_Requirements_Specification_v30.pdf")
 
+    def test_synthetic_id_not_matched_in_stage1(self):
+        """Verifies that synthetic IDs are never spuriously matched in Stage 1 exact ID matching."""
+        v1 = [
+            RequirementUnit(
+                req_id="REQ-V1-001",
+                text="The flight surface shall respond within 100 milliseconds.",
+                is_synthetic=True,
+            )
+        ]
+        v2 = [
+            RequirementUnit(
+                req_id="REQ-V2-001",
+                text="The radar transceiver shall transmit at 10 GHz.",
+                is_synthetic=True,
+            )
+        ]
+        pairs = self.aligner.align(v1, v2)
+        # Should not match via IDENTICAL_ID because both are synthetic
+        identical_matches = [p for p in pairs if p.alignment_type == AlignmentType.IDENTICAL_ID]
+        self.assertEqual(len(identical_matches), 0)
+
+    def test_evaluator_guards_against_pipeline_error(self):
+        """Verifies that a pipeline execution error is not falsely counted as a MATCHED true negative."""
+        p_res = PipelineExecutionResult(
+            requirement=Requirement(req_id="REQ-ERR-01", text="The system shall log errors."),
+            status="error",
+            error_message="API connection timeout",
+        )
+        change_rec = HistoricalChangeRecord(
+            req_id="REQ-ERR-01",
+            text_v_n="The system shall log errors.",
+            text_v_n1="The system shall log errors.",
+            change_category=ChangeCategory.UNCHANGED,
+            summary_of_change="Unchanged",
+            is_quality_refinement=False,
+        )
+        res = self.evaluator.evaluate_correspondence(p_res, change_rec)
+        self.assertEqual(res.correspondence_rating, CorrespondenceRating.NOT_MATCHED)
+        self.assertIn("error", res.explanation.lower())
+
+    def test_active_proposal_metrics_bounded(self):
+        """Verifies that match rates over active proposals remain mathematically bounded between 0 and 100%."""
+        p_res1 = PipelineExecutionResult(requirement=Requirement(req_id="R1", text="Clean requirement 1."))
+        p_res2 = PipelineExecutionResult(requirement=Requirement(req_id="R2", text="The system shall quickly alert."))
+        from sqam_analyzer.models import Layer3Output
+        p_res2.layer3_result = Layer3Output(
+            req_id="R2",
+            original_text="The system shall quickly alert.",
+            refined_text="The system shall alert within 200 ms.",
+            changes_made=["Added 200ms"],
+            functional_intent_preservation_rationale="Alerting intent preserved.",
+        )
+
+        rec1 = HistoricalChangeRecord(req_id="R1", text_v_n="Clean requirement 1.", text_v_n1="Clean requirement 1.", change_category=ChangeCategory.UNCHANGED, summary_of_change="Unchanged")
+        rec2 = HistoricalChangeRecord(req_id="R2", text_v_n="The system shall quickly alert.", text_v_n1="The system shall alert within 200 ms.", change_category=ChangeCategory.AMBIGUITY_REDUCTION, summary_of_change="Added 200ms in Final SRS", is_quality_refinement=True)
+
+        benchmark_results, summary = self.evaluator.evaluate_batch([p_res1, p_res2], [rec1, rec2])
+
+        # R1 is unchanged (true negative), R2 is an active proposal that matched
+        self.assertEqual(summary.total_active_proposals, 1)
+        self.assertEqual(summary.proposals_matched, 1)
+        self.assertEqual(summary.proposal_strict_match_rate, 100.0)
+        self.assertEqual(summary.strict_match_rate, 100.0)
+        self.assertEqual(summary.overall_evolutionary_agreement, 100.0)
+
 
 if __name__ == "__main__":
     unittest.main()

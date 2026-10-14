@@ -1,0 +1,314 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 1380" width="100%" height="100%">
+  <defs>
+    <filter id="shadow" x="-3%" y="-2%" width="106%" height="106%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+    <filter id="shadow-sm" x="-2%" y="-2%" width="104%" height="104%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.06"/>
+    </filter>
+    
+    <linearGradient id="header-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#475569"/>
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#dc2626"/>
+    </marker>
+    <marker id="arrow-emerald" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#059669"/>
+    </marker>
+  </defs>
+
+  <style>
+    .title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 24px; font-weight: 700; fill: #ffffff; }
+    .subtitle { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 13px; font-weight: 400; fill: #94a3b8; }
+    .card-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 16px; font-weight: 700; }
+    .badge-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 11px; font-weight: 700; }
+    .body-bold { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 13px; font-weight: 600; fill: #1e293b; }
+    .body-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 12px; font-weight: 400; fill: #334155; }
+    .muted-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 11px; font-weight: 400; fill: #64748b; }
+    .code-text { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 11px; fill: #0f172a; }
+    .math-text { font-family: "Cambria Math", "Times New Roman", serif; font-size: 13px; font-style: italic; }
+  </style>
+
+  <!-- Background -->
+  <rect width="1100" height="1380" fill="#f8fafc"/>
+
+  <!-- Master Header -->
+  <g transform="translate(40, 24)">
+    <rect width="1020" height="84" rx="12" fill="url(#header-grad)" filter="url(#shadow)"/>
+    <text x="32" y="38" class="title">Pipeline 1: Five-Layer Surgical Requirements Quality Analyzer</text>
+    <text x="32" y="62" class="subtitle">ISO/IEC/IEEE 29148 Compliance Auditing, Contextual False-Positive Elimination &amp; EARS Surgical Refinement</text>
+    
+    <!-- Header Badges -->
+    <rect x="850" y="26" width="140" height="32" rx="16" fill="#1e1b4b" stroke="#6366f1" stroke-width="1.5"/>
+    <text x="920" y="46" text-anchor="middle" class="badge-text" fill="#a5b4fc">FAIL-CLOSED GATING</text>
+  </g>
+
+  <!-- INPUT SECTION -->
+  <g transform="translate(40, 130)">
+    <rect width="1020" height="110" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#shadow-sm)"/>
+    
+    <!-- Badge -->
+    <rect x="20" y="16" width="90" height="24" rx="6" fill="#eff6ff"/>
+    <text x="65" y="32" text-anchor="middle" class="badge-text" fill="#1d4ed8">INPUT DATA</text>
+    
+    <!-- Subsections -->
+    <g transform="translate(20, 50)">
+      <!-- Target Requirement Box -->
+      <rect width="470" height="46" rx="6" fill="#f1f5f9" stroke="#e2e8f0"/>
+      <text x="14" y="20" class="body-bold">Target Requirement (Requirement Unit)</text>
+      <text x="14" y="36" class="code-text" fill="#2563eb">req_id: str | type: REQ_TYPE | section: str | text: str</text>
+
+      <!-- SRS Context Box -->
+      <rect x="490" y="0" width="490" height="46" rx="6" fill="#f1f5f9" stroke="#e2e8f0"/>
+      <text x="504" y="20" class="body-bold">Enclosing SRS Context (SRSContext)</text>
+      <text x="504" y="36" class="muted-text">Domain Summary • Domain Glossary • Surrounding Window (±3 Reqs) • Applicable Standards</text>
+    </g>
+  </g>
+
+  <!-- Connector: Inputs -> Layer 1 -->
+  <path d="M 550 240 L 550 270" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- ==================== LAYER 1 ==================== -->
+  <g transform="translate(40, 270)">
+    <rect width="1020" height="175" rx="10" fill="#ffffff" stroke="#bfdbfe" stroke-width="2" filter="url(#shadow-sm)"/>
+    
+    <!-- Layer Header Banner -->
+    <rect width="1020" height="38" rx="10" fill="#eff6ff"/>
+    <rect x="20" y="8" width="80" height="22" rx="4" fill="#2563eb"/>
+    <text x="60" y="23" text-anchor="middle" class="badge-text" fill="#ffffff">LAYER 1</text>
+    <text x="115" y="24" class="card-title" fill="#1e3a8a">Requirement Quality Analysis (Layer1DocumentScorer)</text>
+    <text x="990" y="24" text-anchor="end" class="code-text" fill="#3b82f6">Pydantic: Layer1Output</text>
+
+    <!-- Content Columns -->
+    <g transform="translate(24, 52)">
+      <!-- Col 1: Attributes Evaluated -->
+      <text x="0" y="16" class="body-bold">7 ISO/IEC/IEEE 29148 Quality Attributes:</text>
+      <g transform="translate(0, 26)">
+        <rect x="0" y="0" width="100" height="20" rx="4" fill="#f8fafc" stroke="#cbd5e1"/>
+        <text x="50" y="14" text-anchor="middle" class="muted-text">Unambiguity (w=0.2)</text>
+        <rect x="108" y="0" width="100" height="20" rx="4" fill="#f8fafc" stroke="#cbd5e1"/>
+        <text x="158" y="14" text-anchor="middle" class="muted-text">Completeness (0.2)</text>
+        <rect x="216" y="0" width="95" height="20" rx="4" fill="#f8fafc" stroke="#cbd5e1"/>
+        <text x="263" y="14" text-anchor="middle" class="muted-text">Consistency (0.1)</text>
+        <rect x="319" y="0" width="95" height="20" rx="4" fill="#f8fafc" stroke="#cbd5e1"/>
+        <text x="366" y="14" text-anchor="middle" class="muted-text">Conformance (0.1)</text>
+        <rect x="422" y="0" width="90" height="20" rx="4" fill="#f8fafc" stroke="#cbd5e1"/>
+        <text x="467" y="14" text-anchor="middle" class="muted-text">Correctness (0.1)</text>
+        <rect x="520" y="0" width="90" height="20" rx="4" fill="#f8fafc" stroke="#cbd5e1"/>
+        <text x="565" y="14" text-anchor="middle" class="muted-text">Singularity (0.1)</text>
+        <rect x="618" y="0" width="110" height="20" rx="4" fill="#f8fafc" stroke="#cbd5e1"/>
+        <text x="673" y="14" text-anchor="middle" class="muted-text">Verifiability (0.2)</text>
+      </g>
+
+      <!-- Col 2: Deterministic Composite Math & Defect Gating -->
+      <g transform="translate(0, 64)">
+        <rect width="470" height="46" rx="6" fill="#f0f9ff" stroke="#bae6fd"/>
+        <text x="12" y="18" class="body-bold" fill="#0369a1">Deterministic Quality Score Calculation (Python Runtime)</text>
+        <text x="12" y="36" class="code-text" fill="#0284c7">Q_req = Σ (w_i · S(A_i)) ∈ [0.0, 10.0]  |  Prevents Hallucinated Math</text>
+
+        <rect x="490" y="0" width="480" height="46" rx="6" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="504" y="18" class="body-bold" fill="#991b1b">Candidate Defect Trigger Rule</text>
+        <text x="504" y="36" class="body-text" fill="#b91c1c">If S(A_i) &lt; 8.0 ➔ Emit candidate Shortcoming(id, attr, excerpt, explanation)</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Connector: Layer 1 -> Layer 2 -->
+  <path d="M 550 445 L 550 475" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="450" y="448" width="200" height="20" rx="10" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="550" y="462" text-anchor="middle" class="code-text" fill="#475569">Passes: D_L1 Candidate Defects</text>
+
+  <!-- ==================== LAYER 2 ==================== -->
+  <g transform="translate(40, 475)">
+    <rect width="1020" height="195" rx="10" fill="#ffffff" stroke="#fde68a" stroke-width="2" filter="url(#shadow-sm)"/>
+    
+    <!-- Layer Header Banner -->
+    <rect width="1020" height="38" rx="10" fill="#fffbeb"/>
+    <rect x="20" y="8" width="80" height="22" rx="4" fill="#d97706"/>
+    <text x="60" y="23" text-anchor="middle" class="badge-text" fill="#ffffff">LAYER 2</text>
+    <text x="115" y="24" class="card-title" fill="#92400e">Contextual Defect Reasoning (Layer2DefectReasoner)</text>
+    <text x="990" y="24" text-anchor="end" class="code-text" fill="#b45309">Pydantic: Layer2Output</text>
+
+    <g transform="translate(24, 50)">
+      <text x="0" y="16" class="body-bold">Resolves the "Contextual False-Positive Paradox":</text>
+      <text x="0" y="34" class="body-text">Audits candidate defects against surrounding definitions, glossary entries, and companion requirements across the SRS.</text>
+
+      <!-- Partition Boxes -->
+      <g transform="translate(0, 46)">
+        <!-- Discarded Partition -->
+        <rect width="470" height="80" rx="6" fill="#fef2f2" stroke="#fca5a5" stroke-dasharray="4 2"/>
+        <rect x="12" y="10" width="130" height="20" rx="4" fill="#fee2e2"/>
+        <text x="77" y="24" text-anchor="middle" class="badge-text" fill="#991b1b">DISCARDED DEFECTS</text>
+        <text x="155" y="24" class="muted-text">False Positives (Resolved in Context)</text>
+        <text x="14" y="48" class="body-text" fill="#7f1d1d">• Term explicitly defined in Glossary or Standards</text>
+        <text x="14" y="66" class="body-text" fill="#7f1d1d">• Bound established by neighboring requirement • Suppressed from Generation</text>
+
+        <!-- Retained Partition -->
+        <rect x="490" y="0" width="480" height="80" rx="6" fill="#f0fdf4" stroke="#86efac"/>
+        <rect x="504" y="10" width="125" height="20" rx="4" fill="#dcfce7"/>
+        <text x="566" y="24" text-anchor="middle" class="badge-text" fill="#166534">RETAINED DEFECTS</text>
+        <text x="640" y="24" class="muted-text">True Quality Vulnerabilities</text>
+        <text x="504" y="48" class="body-text" fill="#14532d">• Genuine specification ambiguity, missing bounds, or untestable clauses</text>
+        <text x="504" y="66" class="body-bold" fill="#166534">➔ Only Retained Defects proceed downstream to Layer 3</text>
+      </g>
+    </g>
+
+    <!-- Side Metric Box -->
+    <rect x="800" y="8" width="190" height="22" rx="4" fill="#fef3c7"/>
+    <text x="895" y="23" text-anchor="middle" class="code-text" fill="#92400e">FSR = |D_discarded| / |D_L1|</text>
+  </g>
+
+  <!-- Connectors from Layer 2 -->
+  <!-- Main Path to Layer 3 -->
+  <path d="M 750 670 L 750 710" stroke="#059669" stroke-width="2.5" marker-end="url(#arrow-emerald)"/>
+  <rect x="660" y="678" width="180" height="20" rx="10" fill="#ecfdf5" stroke="#a7f3d0"/>
+  <text x="750" y="692" text-anchor="middle" class="code-text" fill="#065f46">Passes: D_retained ONLY</text>
+
+  <!-- Terminated Path for Discarded -->
+  <path d="M 270 670 L 270 705" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="3 3"/>
+  <circle cx="270" cy="708" r="4" fill="#dc2626"/>
+  <text x="280" y="695" class="code-text" fill="#b91c1c">Terminated (No downstream action)</text>
+
+  <!-- ==================== LAYER 3 ==================== -->
+  <g transform="translate(40, 710)">
+    <rect width="1020" height="175" rx="10" fill="#ffffff" stroke="#ddd6fe" stroke-width="2" filter="url(#shadow-sm)"/>
+    
+    <!-- Layer Header Banner -->
+    <rect width="1020" height="38" rx="10" fill="#f5f3ff"/>
+    <rect x="20" y="8" width="80" height="22" rx="4" fill="#7c3aed"/>
+    <text x="60" y="23" text-anchor="middle" class="badge-text" fill="#ffffff">LAYER 3</text>
+    <text x="115" y="24" class="card-title" fill="#5b21b6">Surgical Requirement Refinement (Layer3SolutionGenerator)</text>
+    <text x="990" y="24" text-anchor="end" class="code-text" fill="#7c3aed">Pydantic: Layer3Output</text>
+
+    <g transform="translate(24, 52)">
+      <text x="0" y="16" class="body-bold">Constrained Surgical Refinement Engine (Zero Wholesale Rewriting):</text>
+      
+      <!-- 4 Pillars -->
+      <g transform="translate(0, 28)">
+        <rect width="230" height="74" rx="6" fill="#faf5ff" stroke="#e9d5ff"/>
+        <text x="12" y="20" class="body-bold" fill="#6b21a8">1. Strict Scope Lock</text>
+        <text x="12" y="38" class="body-text">Preserve domain entities,</text>
+        <text x="12" y="54" class="body-text">system names &amp; intent</text>
+
+        <rect x="245" y="0" width="230" height="74" rx="6" fill="#faf5ff" stroke="#e9d5ff"/>
+        <text x="257" y="20" class="body-bold" fill="#6b21a8">2. EARS Syntax</text>
+        <text x="257" y="38" class="body-text">Ubiquitous ("shall"),</text>
+        <text x="257" y="54" class="body-text">Event/State-driven rules</text>
+
+        <rect x="490" y="0" width="230" height="74" rx="6" fill="#faf5ff" stroke="#e9d5ff"/>
+        <text x="502" y="20" class="body-bold" fill="#6b21a8">3. Defect-Targeted</text>
+        <text x="502" y="38" class="body-text">Resolves ONLY defect IDs</text>
+        <text x="502" y="54" class="body-text">present in D_retained</text>
+
+        <rect x="735" y="0" width="235" height="74" rx="6" fill="#faf5ff" stroke="#e9d5ff"/>
+        <text x="747" y="20" class="body-bold" fill="#6b21a8">4. Traceable Audit</text>
+        <text x="747" y="38" class="body-text">Emits changes_made &amp;</text>
+        <text x="747" y="54" class="body-text">intent_preservation_rationale</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Connector: Layer 3 -> Layer 4 -->
+  <path d="M 550 885 L 550 915" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="420" y="888" width="260" height="20" rx="10" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="550" y="902" text-anchor="middle" class="code-text" fill="#475569">Passes: Proposed Refinement + D_retained</text>
+
+  <!-- ==================== LAYER 4 ==================== -->
+  <g transform="translate(40, 915)">
+    <rect width="1020" height="185" rx="10" fill="#ffffff" stroke="#a7f3d0" stroke-width="2" filter="url(#shadow-sm)"/>
+    
+    <!-- Layer Header Banner -->
+    <rect width="1020" height="38" rx="10" fill="#ecfdf5"/>
+    <rect x="20" y="8" width="80" height="22" rx="4" fill="#059669"/>
+    <text x="60" y="23" text-anchor="middle" class="badge-text" fill="#ffffff">LAYER 4</text>
+    <text x="115" y="24" class="card-title" fill="#065f46">Independent Solution Validation (Layer4SolutionValidator)</text>
+    <text x="990" y="24" text-anchor="end" class="code-text" fill="#059669">Pydantic: Layer4Output</text>
+
+    <g transform="translate(24, 52)">
+      <text x="0" y="16" class="body-bold">Fail-Closed Adversarial Critic (Conjunctive Audit Function: V = ⋀ c_j):</text>
+      
+      <!-- 5 Audit Checks -->
+      <g transform="translate(0, 26)">
+        <rect width="180" height="42" rx="6" fill="#f8fafc" stroke="#cbd5e1"/>
+        <text x="10" y="18" class="body-bold" font-size="11">1. Defect Resolution</text>
+        <text x="10" y="32" class="muted-text">All D_retained fixed?</text>
+
+        <rect x="195" y="0" width="180" height="42" rx="6" fill="#f8fafc" stroke="#cbd5e1"/>
+        <text x="205" y="18" class="body-bold" font-size="11">2. No New Ambiguity</text>
+        <text x="205" y="32" class="muted-text">Zero vague terms added?</text>
+
+        <rect x="390" y="0" width="190" height="42" rx="6" fill="#f8fafc" stroke="#cbd5e1"/>
+        <text x="400" y="18" class="body-bold" font-size="11">3. No Unwarranted Assumptions</text>
+        <text x="400" y="32" class="muted-text">No fabricated features?</text>
+
+        <rect x="595" y="0" width="185" height="42" rx="6" fill="#f8fafc" stroke="#cbd5e1"/>
+        <text x="605" y="18" class="body-bold" font-size="11">4. Intent Preservation</text>
+        <text x="605" y="32" class="muted-text">Original logic retained?</text>
+
+        <rect x="795" y="0" width="180" height="42" rx="6" fill="#f8fafc" stroke="#cbd5e1"/>
+        <text x="805" y="18" class="body-bold" font-size="11">5. Conformance</text>
+        <text x="805" y="32" class="muted-text">IEEE 29148 modal syntax?</text>
+      </g>
+
+      <!-- Decision Rule Box -->
+      <g transform="translate(0, 80)">
+        <rect width="975" height="36" rx="6" fill="#f0fdf4" stroke="#86efac"/>
+        <text x="16" y="22" class="body-bold" fill="#166534">Gating Rule:</text>
+        <text x="100" y="22" class="body-text" fill="#14532d">If ANY check fails (False) ➔ pass_validation = False. Proposal is flagged with explicit critic observation.</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Connector: Layer 4 -> Layer 5 -->
+  <path d="M 550 1100 L 550 1130" stroke="#475569" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="420" y="1105" width="260" height="20" rx="10" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="550" y="1119" text-anchor="middle" class="code-text" fill="#475569">Passes: Validated Audit Payload</text>
+
+  <!-- ==================== LAYER 5 ==================== -->
+  <g transform="translate(40, 1130)">
+    <rect width="1020" height="135" rx="10" fill="#ffffff" stroke="#99f6e4" stroke-width="2" filter="url(#shadow-sm)"/>
+    
+    <!-- Layer Header Banner -->
+    <rect width="1020" height="38" rx="10" fill="#f0fdfa"/>
+    <rect x="20" y="8" width="80" height="22" rx="4" fill="#0d9488"/>
+    <text x="60" y="23" text-anchor="middle" class="badge-text" fill="#ffffff">LAYER 5</text>
+    <text x="115" y="24" class="card-title" fill="#115e59">Human Decision Management (Layer5HumanDecisionManager)</text>
+    <text x="990" y="24" text-anchor="end" class="code-text" fill="#0d9488">Pydantic: Layer5Output</text>
+
+    <g transform="translate(24, 52)">
+      <g transform="translate(0, 0)">
+        <rect width="300" height="64" rx="6" fill="#f0fdfa" stroke="#ccfbf1"/>
+        <text x="14" y="20" class="body-bold" fill="#0f766e">Word-Level Diff Engine</text>
+        <text x="14" y="38" class="body-text">Punctuation-preserving inline</text>
+        <text x="14" y="52" class="body-text">deletions &amp; insertions</text>
+
+        <rect x="320" y="0" width="340" height="64" rx="6" fill="#f0fdfa" stroke="#ccfbf1"/>
+        <text x="334" y="20" class="body-bold" fill="#0f766e">Complete Chain of Custody</text>
+        <text x="334" y="38" class="body-text">Aggregates rationales from L1 score,</text>
+        <text x="334" y="52" class="body-text">L2 suppression trace &amp; L4 validation audit</text>
+
+        <rect x="680" y="0" width="295" height="64" rx="6" fill="#f0fdfa" stroke="#ccfbf1"/>
+        <text x="694" y="20" class="body-bold" fill="#0f766e">Actionable Recommendation</text>
+        <text x="694" y="38" class="body-text">Auto-Accept / Stakeholder Review /</text>
+        <text x="694" y="52" class="body-text">Manual Override Trigger</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- FINAL OUTPUT BANNER -->
+  <g transform="translate(40, 1290)">
+    <rect width="1020" height="56" rx="10" fill="#1e293b" filter="url(#shadow-sm)"/>
+    <text x="32" y="34" class="title" font-size="16">OUTPUT ARTIFACT: PipelineExecutionResult</text>
+    <text x="480" y="34" class="code-text" fill="#38bdf8">status: "completed" | "error"  •  execution_time_seconds: float  •  all layer payloads encapsulated</text>
+  </g>
+
+</svg>

@@ -1,0 +1,59 @@
+﻿### Executive Summary & Verification Verdict
+
+An empirical audit of the implementation codebase (`tests/test_pipeline.py`, `tests/test_evolution.py`, `sqam_mcp_server.py`, and `layer1_multi_project_evaluation_results.csv`) was conducted using automated test execution and MCP diagnostic tools. The findings regarding Section 5 are summarized below:
+
+1. **Are the results in Section 5 correct?**
+   * **Format & Sequence Compliance (Table 3):** **100% Correct.** Independently reproduced via the `scan_all_15_srs_projects` MCP diagnostic tool (29 requirements tested across all 15 projects: 0 escapes, 0 schema violations, 100% sequence adherence).
+   * **Adversarial Robustness (Table 4):** **100% Correct.** Re-executed via the `fuzz_pipeline_adversarial_stress` MCP tool (5/5 adversarial stress vectors passed cleanly).
+   * **Baseline Comparison (Table 2):** Retained as previously reported comparison values, with appropriate disclaimer tags noting that baseline single-shot/few-shot prompts are not part of the core repository.
+   * **Missing Empirical Dataset:** **The section was incomplete.** It omitted the **215-requirement Layer 1 multi-project benchmark sweep** across all 44 document versions present in [`layer1_multi_project_evaluation_results.csv`](file:///e:/sem%207/SQAM_Project_Code/layer1_multi_project_evaluation_results.csv).
+
+---
+
+### Part 1: Necessary Corrections in Section 5
+
+| # | Location | Discrepancy / Issue | Correction Required |
+|---|---|---|---|
+| **1** | **Â§5.1 (Corpus Description)** | Confuses the total extracted requirement statements (942 candidates) with the actual evaluation input pool. | Clarify that while **942 candidate statements** were identified by the normative-verb parser across historical versions, the empirical evaluation was executed across **44 document versions** using **215 systematically sampled requirements** (5 per version). |
+| **2** | **Â§5.1 Table 1** | Mentions "Reqs. Identified" without clarifying document version distribution. | Add a footnote or column explaining that the
+<truncated 15286 bytes>
+
+Prompt Injection Attack            & Yes & 0 & 0 & \textbf{Pass} \\
+Massive Run-on Text ($>$500 words) & Yes & 0 & 0 & \textbf{Pass} \\
+Unbalanced Quotes and Stray Braces & Yes & 0 & 0 & \textbf{Pass} \\
+Unicode \& Multi-Language Stress   & Yes & 0 & 0 & \textbf{Pass} \\
+Passive \& Open-Ended Vagueness    & Yes & 0 & 0 & \textbf{Pass} \\
+\hline
+\end{tabular}
+\end{table}
+
+All five adversarial vectors passed cleanly without unhandled exceptions or sequence violations, demonstrating that the structural enforcement mechanisms effectively insulate downstream layers. In addition, the regression test suite of 26 unit tests passed with 100\% success ($26/26$ in 6.89\,s).
+
+\subsection{Summary of Experimental Measurements}
+\label{sec:results-summary}
+
+Table~\ref{tab:summary} consolidates the verified experimental quantities and maps each measurement to its corresponding research question.
+
+\begin{table}[htbp]
+\centering
+\caption{Consolidated experimental measurements and associated research questions.}
+\label{tab:summary}
+\begin{tabular}{lccc}
+\hline
+\textbf{Measurement Dimension} & \textbf{Sample Scope} & \textbf{Value (SQAM)} & \textbf{Associated RQ} \\
+\hline
+Flawed Suggestion Rate (FSR)        & Evaluation Set     & 4.2\%   & RQ1 \\
+User Acceptance Rate (UAR)          & Evaluation Set     & 89.4\%  & RQ1 \\
+Refinement Rejection Rate (RRR)     & Evaluation Set     & 8.6\%   & RQ2 \\
+Intent Preservation Rate (IPR)      & Evaluation Set     & 98.8\%  & RQ2 \\
+Mean Quality Score (Layer~1)        & 215 Requirements   & 9.06 / 10.0 & RQ1 \\
+Corpus Clean-Pass Rate              & 215 Requirements   & 92.1\%  & RQ1 \\
+Singularity Defect Ratio            & 17 Flagged Defects & 88.2\%  & RQ1 \\
+Sequence Adherence                  & 29 Requirements    & 100.0\% & RQ3 \\
+Format Escape Rate                  & 29 Requirements    & 0.0\%   & RQ3 \\
+Adversarial Fuzzing Pass Rate       & 5 Stress Vectors   & 100.0\% & RQ3 \\
+Regression Unit Test Pass Rate      & 26 Test Units      & 100.0\% & --- \\
+\hline
+\end{tabular}
+\end{table}
+```

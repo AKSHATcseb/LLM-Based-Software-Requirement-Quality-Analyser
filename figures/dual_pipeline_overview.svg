@@ -1,0 +1,248 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 840" width="100%" height="100%">
+  <defs>
+    <filter id="m-shadow" x="-3%" y="-2%" width="106%" height="106%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+    <filter id="m-shadow-sm" x="-2%" y="-2%" width="104%" height="104%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.06"/>
+    </filter>
+
+    <linearGradient id="m-header-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="50%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+
+    <marker id="m-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#475569"/>
+    </marker>
+    <marker id="m-arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb"/>
+    </marker>
+    <marker id="m-arrow-indigo" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#4f46e5"/>
+    </marker>
+    <marker id="m-arrow-emerald" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#059669"/>
+    </marker>
+  </defs>
+
+  <style>
+    .m-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 22px; font-weight: 700; fill: #ffffff; }
+    .m-subtitle { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 13px; font-weight: 400; fill: #94a3b8; }
+    .m-card-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 15px; font-weight: 700; }
+    .m-badge-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 10.5px; font-weight: 700; }
+    .m-body-bold { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 12px; font-weight: 600; fill: #1e293b; }
+    .m-body-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 11px; font-weight: 400; fill: #334155; }
+    .m-muted-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 10px; font-weight: 400; fill: #64748b; }
+    .m-code-text { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 10.5px; fill: #0f172a; }
+  </style>
+
+  <!-- Canvas Background -->
+  <rect width="1440" height="840" fill="#f8fafc"/>
+
+  <!-- Master Header -->
+  <g transform="translate(40, 20)">
+    <rect width="1360" height="74" rx="10" fill="url(#m-header-grad)" filter="url(#m-shadow)"/>
+    <text x="28" y="34" class="m-title">Dual-Pipeline Architecture: Surgical Quality Analyzer &amp; Final SRS Ground Truth Benchmark</text>
+    <text x="28" y="56" class="m-subtitle">System-Wide Separation of Concerns: In-Situ 5-Layer Staged Quality Analysis (Pipeline 1) &amp; Empirical Specification Evolution (Pipeline 2)</text>
+    
+    <rect x="1140" y="22" width="190" height="30" rx="15" fill="#1e1b4b" stroke="#6366f1" stroke-width="1.5"/>
+    <text x="1235" y="41" text-anchor="middle" class="m-badge-text" fill="#c7d2fe">ISO 29148 • EARS • IEEE</text>
+  </g>
+
+  <!-- ==================== LEFT COLUMN: PIPELINE 1 (SURGICAL ANALYZER) ==================== -->
+  <g transform="translate(40, 110)">
+    <rect width="660" height="695" rx="10" fill="#ffffff" stroke="#bfdbfe" stroke-width="2" filter="url(#m-shadow-sm)"/>
+    
+    <!-- Header -->
+    <rect width="660" height="40" rx="10" fill="#eff6ff"/>
+    <rect x="16" y="8" width="95" height="24" rx="4" fill="#2563eb"/>
+    <text x="63" y="24" text-anchor="middle" class="m-badge-text" fill="#ffffff">PIPELINE 1</text>
+    <text x="125" y="25" class="m-card-title" fill="#1e3a8a">Surgical Requirements Quality Analyzer (5 Staged Layers)</text>
+
+    <!-- Content: Inputs -->
+    <g transform="translate(16, 52)">
+      <rect width="628" height="54" rx="6" fill="#f8fafc" stroke="#cbd5e1"/>
+      <text x="12" y="20" class="m-body-bold">Input Contract:</text>
+      <text x="120" y="20" class="m-code-text" fill="#2563eb">Requirement(id, type, section, text) + SRSContext(domain, glossary, window±3, standards)</text>
+      <text x="12" y="40" class="m-muted-text">Audits individual requirement in context without leaking future specification data.</text>
+    </g>
+
+    <!-- Layer 1 -->
+    <g transform="translate(16, 118)">
+      <rect width="628" height="88" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+      <rect x="10" y="8" width="60" height="20" rx="3" fill="#dbeafe"/>
+      <text x="40" y="22" text-anchor="middle" class="m-badge-text" fill="#1e40af">LAYER 1</text>
+      <text x="80" y="23" class="m-body-bold" fill="#1e3a8a">Document Scorer (ISO 29148 7-Attribute Continuous Scoring)</text>
+      <text x="10" y="46" class="m-body-text">• Unambiguity, Completeness, Consistency, Conformance, Correctness, Singularity, Verifiability</text>
+      <text x="10" y="64" class="m-code-text" fill="#0369a1">Deterministic Q_req = Σ w_i · S(A_i) ∈ [0,10]  |  Shortcoming emitted if S(A_i) &lt; 8.0</text>
+      <text x="10" y="80" class="m-muted-text">Emits D_L1 candidate defects (Zero filtering at this stage)</text>
+    </g>
+
+    <!-- Connector L1 -> L2 -->
+    <path d="M 330 206 L 330 220" stroke="#475569" stroke-width="1.5" marker-end="url(#m-arrow)"/>
+
+    <!-- Layer 2 -->
+    <g transform="translate(16, 220)">
+      <rect width="628" height="92" rx="6" fill="#ffffff" stroke="#fde68a"/>
+      <rect x="10" y="8" width="60" height="20" rx="3" fill="#fef3c7"/>
+      <text x="40" y="22" text-anchor="middle" class="m-badge-text" fill="#92400e">LAYER 2</text>
+      <text x="80" y="23" class="m-body-bold" fill="#92400e">Defect Reasoner (Contextual False-Positive Suppression)</text>
+      <text x="10" y="46" class="m-body-text">• Resolves the Contextual False-Positive Paradox via glossary, boundary &amp; neighbor cross-check.</text>
+      <text x="10" y="66" class="m-body-text" fill="#7f1d1d">✕ Discarded: Resolved in surrounding context (FSR = |D_discarded| / |D_L1|) ➔ Terminated</text>
+      <text x="10" y="84" class="m-body-bold" fill="#166534">✓ Retained: Genuine defects (D_retained) ➔ ONLY these proceed downstream</text>
+    </g>
+
+    <!-- Connector L2 -> L3 -->
+    <path d="M 330 312 L 330 326" stroke="#475569" stroke-width="1.5" marker-end="url(#m-arrow)"/>
+
+    <!-- Layer 3 -->
+    <g transform="translate(16, 326)">
+      <rect width="628" height="84" rx="6" fill="#ffffff" stroke="#ddd6fe"/>
+      <rect x="10" y="8" width="60" height="20" rx="3" fill="#f5f3ff"/>
+      <text x="40" y="22" text-anchor="middle" class="m-badge-text" fill="#6d28d9">LAYER 3</text>
+      <text x="80" y="23" class="m-body-bold" fill="#5b21b6">Solution Generator (EARS-Compliant Surgical Refinement)</text>
+      <text x="10" y="46" class="m-body-text">• Synthesizes minimal surgical edits: preserves system names, domain entities &amp; business intent.</text>
+      <text x="10" y="64" class="m-body-text">• Applies EARS patterns (Ubiquitous, Event, State) to address ONLY retained defect IDs.</text>
+      <text x="10" y="78" class="m-muted-text">Emits refined text, itemized changes, and intent preservation rationale.</text>
+    </g>
+
+    <!-- Connector L3 -> L4 -->
+    <path d="M 330 410 L 330 424" stroke="#475569" stroke-width="1.5" marker-end="url(#m-arrow)"/>
+
+    <!-- Layer 4 -->
+    <g transform="translate(16, 424)">
+      <rect width="628" height="88" rx="6" fill="#ffffff" stroke="#a7f3d0"/>
+      <rect x="10" y="8" width="60" height="20" rx="3" fill="#ecfdf5"/>
+      <text x="40" y="22" text-anchor="middle" class="m-badge-text" fill="#047857">LAYER 4</text>
+      <text x="80" y="23" class="m-body-bold" fill="#065f46">Solution Validator (Fail-Closed Adversarial Critic)</text>
+      <text x="10" y="46" class="m-body-text">• 5 Fail-Closed Checks: Defect Resolution • No Ambiguities • No Unwarranted Assumptions</text>
+      <text x="10" y="62" class="m-body-text">  • Functional Intent Preservation • Syntactic Conformance</text>
+      <text x="10" y="80" class="m-code-text" fill="#047857">Conjunctive Gating: V = ⋀ c_j  ➔ Fail-closed rejection if any check fails</text>
+    </g>
+
+    <!-- Connector L4 -> L5 -->
+    <path d="M 330 512 L 330 526" stroke="#475569" stroke-width="1.5" marker-end="url(#m-arrow)"/>
+
+    <!-- Layer 5 -->
+    <g transform="translate(16, 526)">
+      <rect width="628" height="84" rx="6" fill="#ffffff" stroke="#99f6e4"/>
+      <rect x="10" y="8" width="60" height="20" rx="3" fill="#f0fdfa"/>
+      <text x="40" y="22" text-anchor="middle" class="m-badge-text" fill="#0d9488">LAYER 5</text>
+      <text x="80" y="23" class="m-body-bold" fill="#115e59">Decision Manager (Word Diff &amp; Review Governance)</text>
+      <text x="10" y="46" class="m-body-text">• Generates punctuation-preserving word diff highlighting exact surgical replacements.</text>
+      <text x="10" y="64" class="m-body-text">• Packages full chain-of-custody audit record for stakeholder sign-off.</text>
+      <text x="10" y="78" class="m-code-text" fill="#0d9488">Emits PipelineExecutionResult(status="completed"|"error", proposal, time)</text>
+    </g>
+
+    <!-- Pipeline 1 Output Pill -->
+    <g transform="translate(16, 624)">
+      <rect width="628" height="54" rx="6" fill="#1e293b"/>
+      <text x="14" y="22" class="m-body-bold" fill="#38bdf8">Pipeline 1 Resulting Proposal:</text>
+      <text x="14" y="42" class="m-code-text" fill="#ffffff">R_prop = { u ∈ U | Refined(u) ≠ Original(u) ∧ Status = "completed" }</text>
+    </g>
+  </g>
+
+  <!-- Master Connector: Pipeline 1 -> Pipeline 2 -->
+  <path d="M 700 765 L 750 765 L 750 490 L 780 490" stroke="#4f46e5" stroke-width="2.5" fill="none" marker-end="url(#m-arrow-indigo)"/>
+  <rect x="670" y="610" width="130" height="34" rx="6" fill="#e0e7ff" stroke="#818cf8"/>
+  <text x="735" y="625" text-anchor="middle" class="m-badge-text" fill="#312e81">INDEPENDENT</text>
+  <text x="735" y="638" text-anchor="middle" class="m-badge-text" fill="#312e81">PROPOSALS</text>
+
+  <!-- ==================== RIGHT COLUMN: PIPELINE 2 (EMPIRICAL BENCHMARK) ==================== -->
+  <g transform="translate(780, 110)">
+    <rect width="620" height="695" rx="10" fill="#ffffff" stroke="#86efac" stroke-width="2" filter="url(#m-shadow-sm)"/>
+    
+    <!-- Header -->
+    <rect width="620" height="40" rx="10" fill="#f0fdf4"/>
+    <rect x="16" y="8" width="95" height="24" rx="4" fill="#16a34a"/>
+    <text x="63" y="24" text-anchor="middle" class="m-badge-text" fill="#ffffff">PIPELINE 2</text>
+    <text x="125" y="25" class="m-card-title" fill="#14532d">Empirical Evolution Benchmark vs Final SRS Release</text>
+
+    <!-- Input Ground Truth -->
+    <g transform="translate(16, 52)">
+      <rect width="588" height="64" rx="6" fill="#f8fafc" stroke="#cbd5e1"/>
+      <text x="12" y="20" class="m-body-bold">Document Ground Truth Inputs:</text>
+      <text x="12" y="38" class="m-body-text">• <tspan font-weight="600">Draft SRS (V_N):</tspan> Early specification evaluated blindly by Pipeline 1</text>
+      <text x="12" y="54" class="m-body-bold" fill="#15803d">• Final Version of SRS (V_final / V_N+1): Official release ground truth</text>
+    </g>
+
+    <!-- Stage 1 & 2 Box -->
+    <g transform="translate(16, 128)">
+      <rect width="588" height="130" rx="6" fill="#ffffff" stroke="#e2e8f0"/>
+      <text x="12" y="20" class="m-body-bold" fill="#0f172a">1. Structural Document Aligner (aligner.py)</text>
+      <text x="12" y="38" class="m-body-text">• Two-Stage Alignment: Stage 1 Exact ID + Stage 2 Normalized Levenshtein</text>
+      <text x="12" y="54" class="m-code-text" fill="#b91c1c">• Synthetic ID Isolation: Prevents unnumbered items collapsing into "REQ"</text>
+      
+      <line x1="12" y1="64" x2="576" y2="64" stroke="#e2e8f0"/>
+      
+      <text x="12" y="82" class="m-body-bold" fill="#0f172a">2. Evolutionary Change Classifier (change_classifier.py)</text>
+      <text x="12" y="100" class="m-body-text">• 6 Exclusive Classes: Unchanged • Editorial • Scope Change • Added • Deleted</text>
+      <text x="12" y="118" class="m-body-bold" fill="#15803d">• Quality Refinement: Ambiguity, Parameterization, Scope Clarification, Consistency</text>
+    </g>
+
+    <!-- Connector to Evaluator -->
+    <path d="M 310 258 L 310 274" stroke="#475569" stroke-width="1.5" marker-end="url(#m-arrow)"/>
+
+    <!-- Correspondence Evaluator -->
+    <g transform="translate(16, 274)">
+      <rect width="588" height="185" rx="6" fill="#f8fafc" stroke="#94a3b8"/>
+      <text x="12" y="22" class="m-body-bold" fill="#0f172a">3. Semantic Correspondence Evaluator (evaluator.py)</text>
+      <text x="12" y="40" class="m-muted-text">Chain-of-thought qualitative audit comparing Pipeline-1 proposal vs Final SRS text</text>
+
+      <g transform="translate(12, 52)">
+        <rect width="564" height="34" rx="4" fill="#f0fdf4" stroke="#86efac"/>
+        <text x="10" y="21" class="m-body-bold" fill="#166534">MATCHED:</text>
+        <text x="85" y="21" class="m-body-text">Independently anticipated semantically equivalent fix in Final SRS.</text>
+
+        <rect y="40" width="564" height="34" rx="4" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="10" y="61" class="m-body-bold" fill="#92400e">PARTIALLY_MATCHED:</text>
+        <text x="155" y="61" class="m-body-text">Targeted correct defect clause; alternative resolution.</text>
+
+        <rect y="80" width="564" height="34" rx="4" fill="#fef2f2" stroke="#fca5a5"/>
+        <text x="10" y="101" class="m-body-bold" fill="#991b1b">NOT_MATCHED:</text>
+        <text x="110" y="101" class="m-body-text">Uncorrelated change, extraneous edit, or pipeline crash.</text>
+      </g>
+      
+      <text x="12" y="174" class="m-code-text" fill="#475569">Fast Short-Circuits: Pipeline error ➔ NOT_MATCHED | Both unchanged ➔ MATCHED</text>
+    </g>
+
+    <!-- Connector to Metrics -->
+    <path d="M 310 459 L 310 475" stroke="#475569" stroke-width="1.5" marker-end="url(#m-arrow)"/>
+
+    <!-- Benchmark Summary Metrics -->
+    <g transform="translate(16, 475)">
+      <rect width="588" height="203" rx="6" fill="#0f172a"/>
+      <text x="16" y="24" class="m-title" font-size="14">4. Bounded Benchmark Evaluation Metrics:</text>
+
+      <g transform="translate(16, 38)">
+        <!-- Strict Match -->
+        <rect width="270" height="46" rx="4" fill="#1e293b"/>
+        <text x="10" y="18" class="m-body-bold" fill="#38bdf8">Strict Match Rate (PMR_strict):</text>
+        <text x="10" y="36" class="m-code-text" fill="#e2e8f0">|R_prop ∩ R_MATCHED| / |R_prop|</text>
+
+        <!-- Combined Match -->
+        <rect x="286" width="270" height="46" rx="4" fill="#1e293b"/>
+        <text x="296" y="18" class="m-body-bold" fill="#38bdf8">Combined Match (PMR_comb):</text>
+        <text x="296" y="36" class="m-code-text" fill="#e2e8f0">|R_prop ∩ (R_M ∪ R_PART)| / |R_prop|</text>
+
+        <!-- Quality Recall -->
+        <rect y="54" width="270" height="46" rx="4" fill="#1e293b"/>
+        <text x="10" y="72" class="m-body-bold" fill="#4ade80">Quality Refinement Recall (QRR):</text>
+        <text x="10" y="90" class="m-code-text" fill="#e2e8f0">|R_prop ∩ H_qual ∩ R_M| / |H_qual|</text>
+
+        <!-- Quality Precision -->
+        <rect x="286" y="54" width="270" height="46" rx="4" fill="#1e293b"/>
+        <text x="296" y="72" class="m-body-bold" fill="#4ade80">Quality Precision (QRP):</text>
+        <text x="296" y="90" class="m-code-text" fill="#e2e8f0">|R_prop ∩ H_qual ∩ R_M| / |R_prop|</text>
+
+        <!-- Overall Agreement -->
+        <rect y="108" width="556" height="46" rx="4" fill="#1e293b"/>
+        <text x="10" y="126" class="m-body-bold" fill="#fbbf24">Overall Evolutionary Agreement (OEA):</text>
+        <text x="10" y="144" class="m-code-text" fill="#e2e8f0">(|R_prop ∩ R_MATCHED| + |U_TN|) / |U|  [True Negatives strictly separated]</text>
+      </g>
+    </g>
+  </g>
+
+</svg>

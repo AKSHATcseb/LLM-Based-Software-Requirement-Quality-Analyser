@@ -62,14 +62,15 @@ class HistoricalEvolutionPipeline:
         run_analyzer: bool = True,
         existing_analyzer_results: Optional[List[PipelineExecutionResult]] = None,
         temperature: float = 0.0,
+        limit: Optional[int] = None,
     ) -> Dict[str, Any]:
         """
         Executes complete evolution extraction and benchmark evaluation:
-        1. Parses Version N and Version N+1.
-        2. Aligns requirement units across versions.
+        1. Parses Version N (Draft) and Version N+1 (Final Release).
+        2. Aligns requirement units across versions in their entirety.
         3. Classifies all changes into the SQAM taxonomy.
         4. (Optional) Analyzes Version N requirements using the 5-layer pipeline.
-        5. Evaluates semantic correspondence (Matched / Partially Matched / Not Matched).
+        5. Evaluates semantic correspondence against the Final Version of the SRS.
         """
         logger.info("Starting Historical Evolution Pipeline...")
 
@@ -86,10 +87,10 @@ class HistoricalEvolutionPipeline:
         else:
             v2_reqs = self.parser.parse_document(v_n1_source, version_label="N+1")
 
-        logger.info("Parsed %d requirements from vN, %d from vN+1", len(v1_reqs), len(v2_reqs))
+        logger.info("Parsed %d requirements from vN (Draft), %d from vN+1 (Final Release)", len(v1_reqs), len(v2_reqs))
 
         # -------------------------------------------------------------------
-        # Step 2: Alignment
+        # Step 2: Alignment across complete documents
         # -------------------------------------------------------------------
         aligned_pairs = self.aligner.align(v1_reqs, v2_reqs)
 
@@ -99,7 +100,7 @@ class HistoricalEvolutionPipeline:
         change_records = self.classifier.classify_all(aligned_pairs, temperature=temperature)
 
         # -------------------------------------------------------------------
-        # Step 4: Pipeline-1 Quality Analysis on Version N
+        # Step 4: Pipeline-1 Quality Analysis on Version N (Draft)
         # -------------------------------------------------------------------
         analyzer_results: List[PipelineExecutionResult] = []
 
@@ -111,6 +112,9 @@ class HistoricalEvolutionPipeline:
 
             # Analyze only requirements present in Version N
             v1_pairs_with_text = [p for p in aligned_pairs if p.text_v1]
+            if limit and limit < len(v1_pairs_with_text):
+                logger.info("Applying limit: analyzing first %d of %d aligned Version N requirements", limit, len(v1_pairs_with_text))
+                v1_pairs_with_text = v1_pairs_with_text[:limit]
 
             if existing_analyzer_results:
                 analyzer_results = existing_analyzer_results
@@ -233,13 +237,15 @@ class HistoricalEvolutionPipeline:
             "",
             "| Evaluation Metric | Observed Value | Description |",
             "| :--- | :---: | :--- |",
-            f"| **Total Pipeline Proposals** | **{summary.total_pipeline_proposals_evaluated}** | Requirements where Pipeline-1 proposed edits |",
-            f"| **MATCHED** | **{summary.matched_count}** | Independent discovery matching actual historical fix in Final Release |",
-            f"| **PARTIALLY_MATCHED** | **{summary.partially_matched_count}** | Flagged correct defect with alternative fix |",
-            f"| **NOT_MATCHED** | **{summary.not_matched_count}** | Proposal had no counterpart in Final Release |",
-            f"| **Match Rate (Strict + Partial)** | **{summary.match_rate:.1f}%** | Overall correspondence rate |",
-            f"| **Strict Match Rate** | **{summary.strict_match_rate:.1f}%** | Close semantic correspondence |",
-            f"| **Quality Prediction Precision** | **{summary.quality_prediction_precision:.1f}%** | Precision against human quality fixes |",
+            f"| **Active Proposals Evaluated** | **{summary.total_active_proposals}** | Requirements where Pipeline-1 proposed refinements |",
+            f"| **MATCHED Proposals** | **{summary.proposals_matched}** | Independent proposals anticipating the Final SRS specification |",
+            f"| **PARTIALLY_MATCHED Proposals** | **{summary.proposals_partial}** | Flagged correct defect with alternative formulation in Final SRS |",
+            f"| **NOT_MATCHED Proposals** | **{summary.proposals_not_matched}** | Proposals with no counterpart in Final SRS |",
+            f"| **Proposal Match Rate (Combined)** | **{summary.proposal_combined_match_rate:.1f}%** | Proportion of active proposals matched or partially matched |",
+            f"| **Proposal Match Rate (Strict)** | **{summary.proposal_strict_match_rate:.1f}%** | Proportion of active proposals strictly matched |",
+            f"| **Quality Refinement Recall** | **{summary.quality_refinement_recall:.1f}%** | Proportion of Final SRS quality fixes anticipated by Pipeline-1 |",
+            f"| **Quality Refinement Precision** | **{summary.quality_refinement_precision:.1f}%** | Proportion of active proposals corresponding to Final SRS quality fixes |",
+            f"| **Overall Evolutionary Agreement** | **{summary.overall_evolutionary_agreement:.1f}%** | Specification-wide agreement across all pairs (incl. true negatives) |",
             "",
             "## 3. Itemized Evolution & Evaluation Findings",
             "",

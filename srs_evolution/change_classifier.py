@@ -279,8 +279,27 @@ class ChangeClassifier:
                 confidence=0.92,
             )
 
-        # Heuristic 4: Minor Editorial
-        if len(v1_lower.split()) == len(v2_lower.split()):
+        # Heuristic 4: Consistency Correction (Terminology harmonization)
+        term_pairs = [("user", "operator"), ("client", "subscriber"), ("device", "sensor")]
+        if any(t1 in v1_lower and t2 in v2_lower for t1, t2 in term_pairs):
+            return HistoricalChangeRecord(
+                req_id=req_id,
+                req_id_v_n=pair.req_id_v1,
+                req_id_v_n1=pair.req_id_v2,
+                text_v_n=pair.text_v1,
+                text_v_n1=pair.text_v2,
+                change_category=ChangeCategory.CONSISTENCY_CORRECTION,
+                summary_of_change="Harmonized terminology across specification documents.",
+                detailed_diff=diff_markup,
+                is_quality_refinement=True,
+                confidence=0.90,
+            )
+
+        # Heuristic 5: Minor Editorial (High textual similarity without normative or numerical changes)
+        import difflib
+        sim_ratio = difflib.SequenceMatcher(None, v1_lower, v2_lower).ratio()
+        has_critical_token_diff = any(tok in diff_markup.lower() for tok in ["shall", "must", "not", "ms", "hz", "second"])
+        if (sim_ratio >= 0.85 or len(v1_lower.split()) == len(v2_lower.split())) and not has_critical_token_diff:
             return HistoricalChangeRecord(
                 req_id=req_id,
                 req_id_v_n=pair.req_id_v1,
@@ -288,7 +307,7 @@ class ChangeClassifier:
                 text_v_n=pair.text_v1,
                 text_v_n1=pair.text_v2,
                 change_category=ChangeCategory.EDITORIAL_TEXTUAL,
-                summary_of_change="Minor stylistic or grammatical rephrasing.",
+                summary_of_change="Minor stylistic or grammatical rephrasing without semantic impact.",
                 detailed_diff=diff_markup,
                 is_quality_refinement=False,
                 confidence=0.88,

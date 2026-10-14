@@ -1,0 +1,230 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 960" width="100%" height="100%">
+  <defs>
+    <filter id="p2-shadow" x="-3%" y="-2%" width="106%" height="106%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+    <filter id="p2-shadow-sm" x="-2%" y="-2%" width="104%" height="104%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#0f172a" flood-opacity="0.06"/>
+    </filter>
+
+    <linearGradient id="p2-header-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e1b4b"/>
+    </linearGradient>
+
+    <marker id="p2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#475569"/>
+    </marker>
+    <marker id="p2-arrow-indigo" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#4f46e5"/>
+    </marker>
+    <marker id="p2-arrow-emerald" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#059669"/>
+    </marker>
+  </defs>
+
+  <style>
+    .p2-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 22px; font-weight: 700; fill: #ffffff; }
+    .p2-subtitle { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 13px; font-weight: 400; fill: #c7d2fe; }
+    .p2-card-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 15px; font-weight: 700; }
+    .p2-badge-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 10px; font-weight: 700; }
+    .p2-body-bold { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 12px; font-weight: 600; fill: #1e293b; }
+    .p2-body-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 11px; font-weight: 400; fill: #334155; }
+    .p2-muted-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 10.5px; font-weight: 400; fill: #64748b; }
+    .p2-code-text { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 11px; fill: #0f172a; }
+  </style>
+
+  <!-- Background -->
+  <rect width="1200" height="960" fill="#f8fafc"/>
+
+  <!-- Master Header -->
+  <g transform="translate(40, 24)">
+    <rect width="1120" height="84" rx="12" fill="url(#p2-header-grad)" filter="url(#p2-shadow)"/>
+    <text x="32" y="38" class="p2-title">Pipeline 2: Empirical SRS Version Evolution Benchmark</text>
+    <text x="32" y="62" class="p2-subtitle">Benchmarking Automated Refinements Directly Against the Official Final Version of the SRS (V_final / V_N+1)</text>
+    
+    <rect x="910" y="26" width="180" height="32" rx="16" fill="#312e81" stroke="#818cf8" stroke-width="1.5"/>
+    <text x="1000" y="46" text-anchor="middle" class="p2-badge-text" fill="#e0e7ff">DOCUMENT GROUND TRUTH</text>
+  </g>
+
+  <!-- TOP INPUT DOCUMENTS -->
+  <g transform="translate(40, 130)">
+    <!-- Draft SRS Document V_N -->
+    <g transform="translate(0, 0)">
+      <rect width="530" height="80" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" filter="url(#p2-shadow-sm)"/>
+      <rect x="16" y="12" width="160" height="22" rx="4" fill="#eff6ff"/>
+      <text x="96" y="27" text-anchor="middle" class="p2-badge-text" fill="#1d4ed8">DRAFT SPECIFICATION (V_N)</text>
+      <text x="190" y="28" class="p2-body-bold">Preliminary SRS Document</text>
+      <text x="16" y="58" class="p2-body-text">Contains raw draft requirements prior to engineering review and safety revisions.</text>
+    </g>
+
+    <!-- Final SRS Document V_final -->
+    <g transform="translate(590, 0)">
+      <rect width="530" height="80" rx="8" fill="#ffffff" stroke="#86efac" stroke-width="1.5" filter="url(#p2-shadow-sm)"/>
+      <rect x="16" y="12" width="200" height="22" rx="4" fill="#dcfce7"/>
+      <text x="116" y="27" text-anchor="middle" class="p2-badge-text" fill="#166534">FINAL SRS RELEASE (V_final / V_N+1)</text>
+      <text x="230" y="28" class="p2-body-bold">Empirical Ground Truth Document</text>
+      <text x="16" y="58" class="p2-body-text">Official approved specification incorporating real-world engineering refinements.</text>
+    </g>
+  </g>
+
+  <!-- Connectors from Inputs -->
+  <!-- V_N to Pipeline 1 -->
+  <path d="M 200 210 L 200 270" stroke="#4f46e5" stroke-width="2" marker-end="url(#p2-arrow-indigo)"/>
+  <rect x="120" y="225" width="160" height="20" rx="10" fill="#e0e7ff"/>
+  <text x="200" y="239" text-anchor="middle" class="p2-code-text" fill="#3730a3">Blind Evaluation (No V_final)</text>
+
+  <!-- V_N and V_final to Document Aligner -->
+  <path d="M 400 210 L 400 240 L 700 240 L 700 270" stroke="#475569" stroke-width="1.5" fill="none" marker-end="url(#p2-arrow)"/>
+  <path d="M 850 210 L 850 270" stroke="#475569" stroke-width="1.5" marker-end="url(#p2-arrow)"/>
+
+  <!-- ==================== MIDDLE ROW: TWO COOPERATING ENGINES ==================== -->
+  
+  <!-- LEFT: Pipeline 1 Execution Harness -->
+  <g transform="translate(40, 270)">
+    <rect width="480" height="240" rx="10" fill="#ffffff" stroke="#c7d2fe" stroke-width="2" filter="url(#p2-shadow-sm)"/>
+    
+    <rect width="480" height="36" rx="10" fill="#eef2ff"/>
+    <rect x="14" y="7" width="90" height="22" rx="4" fill="#4f46e5"/>
+    <text x="59" y="22" text-anchor="middle" class="p2-badge-text" fill="#ffffff">SYSTEM TEST</text>
+    <text x="115" y="23" class="p2-card-title" fill="#312e81">Pipeline 1 Execution Harness</text>
+
+    <g transform="translate(16, 50)">
+      <text x="0" y="16" class="p2-body-bold">Operates strictly on Draft V_N Requirements:</text>
+      
+      <!-- Mini 5 layer flow -->
+      <g transform="translate(0, 26)">
+        <rect width="448" height="30" rx="4" fill="#f8fafc" stroke="#e2e8f0"/>
+        <text x="10" y="20" class="p2-code-text" font-size="10">L1: Score ➔ L2: Suppress ➔ L3: Refine ➔ L4: Audit ➔ L5: Diff</text>
+      </g>
+
+      <g transform="translate(0, 70)">
+        <rect width="448" height="74" rx="6" fill="#faf5ff" stroke="#e9d5ff"/>
+        <text x="12" y="20" class="p2-body-bold" fill="#6b21a8">Output: Independent Quality Proposal</text>
+        <text x="12" y="38" class="p2-body-text">• Flagged Defect Attributes (Layer 1 &amp; 2)</text>
+        <text x="12" y="54" class="p2-body-text">• Proposed Surgical Refinement (Layer 3 &amp; 4)</text>
+        <text x="12" y="70" class="p2-code-text" fill="#7c3aed">Active Proposals: R_prop = { u ∈ U | Refined(u) ≠ Original(u) }</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- RIGHT: Empirical Ground Truth Extraction -->
+  <g transform="translate(560, 270)">
+    <rect width="600" height="240" rx="10" fill="#ffffff" stroke="#bbf7d0" stroke-width="2" filter="url(#p2-shadow-sm)"/>
+    
+    <rect width="600" height="36" rx="10" fill="#f0fdf4"/>
+    <rect x="14" y="7" width="130" height="22" rx="4" fill="#16a34a"/>
+    <text x="79" y="22" text-anchor="middle" class="p2-badge-text" fill="#ffffff">GROUND TRUTH ENGINE</text>
+    <text x="155" y="23" class="p2-card-title" fill="#14532d">Document Alignment &amp; Evolution Classification</text>
+
+    <g transform="translate(16, 50)">
+      <!-- Step 1: Structural Aligner -->
+      <rect width="568" height="66" rx="6" fill="#f8fafc" stroke="#cbd5e1"/>
+      <text x="12" y="18" class="p2-body-bold">1. Structural Document Aligner (aligner.py)</text>
+      <text x="12" y="34" class="p2-body-text">• Stage 1: Exact ID matching over genuine specification keys (synthetic IDs isolated)</text>
+      <text x="12" y="50" class="p2-body-text">• Stage 2: Normalized Levenshtein edit similarity alignment for unnumbered requirements</text>
+
+      <!-- Step 2: Change Classifier -->
+      <g transform="translate(0, 76)">
+        <rect width="568" height="74" rx="6" fill="#f8fafc" stroke="#cbd5e1"/>
+        <text x="12" y="18" class="p2-body-bold">2. Evolutionary Change Classifier (6 Mutually Exclusive Classes):</text>
+        <text x="12" y="36" class="p2-muted-text">UNCHANGED • EDITORIAL_TEXTUAL • FUNCTIONAL_SCOPE_CHANGE • ADDED • DELETED</text>
+        <text x="12" y="54" class="p2-body-bold" fill="#047857">QUALITY_REFINEMENT:</text>
+        <text x="148" y="54" class="p2-muted-text">Ambiguity • Quantification • Parameterization • Scope Clarification • Consistency</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Connectors to Evaluator -->
+  <path d="M 280 510 L 280 550 L 520 550 L 520 580" stroke="#4f46e5" stroke-width="2" fill="none" marker-end="url(#p2-arrow-indigo)"/>
+  <path d="M 860 510 L 860 550 L 680 550 L 680 580" stroke="#16a34a" stroke-width="2" fill="none" marker-end="url(#p2-arrow-emerald)"/>
+
+  <!-- ==================== CONVERGENCE: SEMANTIC CORRESPONDENCE EVALUATOR ==================== -->
+  <g transform="translate(40, 580)">
+    <rect width="1120" height="185" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="2" filter="url(#p2-shadow)"/>
+    
+    <rect width="1120" height="38" rx="10" fill="#f1f5f9"/>
+    <rect x="14" y="8" width="130" height="22" rx="4" fill="#334155"/>
+    <text x="79" y="23" text-anchor="middle" class="p2-badge-text" fill="#ffffff">SEMANTIC AUDIT</text>
+    <text x="155" y="24" class="p2-card-title" fill="#0f172a">Semantic Correspondence Evaluator (evaluator.py)</text>
+    <text x="1090" y="24" text-anchor="end" class="p2-code-text" fill="#475569">Qualitative Chain-of-Thought Comparison vs Final SRS</text>
+
+    <!-- 3-Way Rating Badges -->
+    <g transform="translate(20, 50)">
+      <!-- MATCHED -->
+      <rect width="345" height="110" rx="8" fill="#f0fdf4" stroke="#86efac"/>
+      <rect x="14" y="12" width="90" height="22" rx="4" fill="#16a34a"/>
+      <text x="59" y="27" text-anchor="middle" class="p2-badge-text" fill="#ffffff">MATCHED</text>
+      <text x="115" y="28" class="p2-body-bold" fill="#14532d">Independent Discovery</text>
+      <text x="14" y="56" class="p2-body-text">Pipeline-1 independently flagged the defect</text>
+      <text x="14" y="72" class="p2-body-text">and generated a refinement semantically</text>
+      <text x="14" y="88" class="p2-body-bold" fill="#166534">equivalent to the Final Version of the SRS.</text>
+
+      <!-- PARTIALLY_MATCHED -->
+      <rect x="365" y="0" width="345" height="110" rx="8" fill="#fffbeb" stroke="#fde68a"/>
+      <rect x="379" y="12" width="150" height="22" rx="4" fill="#d97706"/>
+      <text x="454" y="27" text-anchor="middle" class="p2-badge-text" fill="#ffffff">PARTIALLY_MATCHED</text>
+      <text x="540" y="28" class="p2-body-bold" fill="#92400e">Correct Defect Clause</text>
+      <text x="379" y="56" class="p2-body-text">Pipeline-1 targeted the exact defect clause,</text>
+      <text x="379" y="72" class="p2-body-text">but proposed an alternative remediation</text>
+      <text x="379" y="88" class="p2-body-bold" fill="#b45309">compared to the Final SRS resolution.</text>
+
+      <!-- NOT_MATCHED -->
+      <rect x="730" y="0" width="350" height="110" rx="8" fill="#fef2f2" stroke="#fca5a5"/>
+      <rect x="744" y="12" width="115" height="22" rx="4" fill="#dc2626"/>
+      <text x="801" y="27" text-anchor="middle" class="p2-badge-text" fill="#ffffff">NOT_MATCHED</text>
+      <text x="870" y="28" class="p2-body-bold" fill="#991b1b">Uncorrelated / Error</text>
+      <text x="744" y="56" class="p2-body-text">Proposal has no counterpart in the Final SRS,</text>
+      <text x="744" y="72" class="p2-body-text">represented an extraneous modification, or</text>
+      <text x="744" y="88" class="p2-body-bold" fill="#991b1b">Pipeline-1 execution encountered an error.</text>
+    </g>
+  </g>
+
+  <!-- Connector: Evaluator -> Metrics Summary -->
+  <path d="M 600 765 L 600 795" stroke="#475569" stroke-width="2" marker-end="url(#p2-arrow)"/>
+
+  <!-- ==================== FORMAL EVALUATION METRICS BANNER ==================== -->
+  <g transform="translate(40, 795)">
+    <rect width="1120" height="135" rx="10" fill="#0f172a" filter="url(#p2-shadow)"/>
+    
+    <text x="24" y="30" class="p2-title" font-size="16">Benchmark Summary Analytics (Mathematically Bounded &amp; True-Negative Separated):</text>
+    
+    <g transform="translate(24, 46)">
+      <!-- Metric 1: PMR_strict -->
+      <rect width="205" height="66" rx="6" fill="#1e293b" stroke="#334155"/>
+      <text x="12" y="20" class="p2-body-bold" fill="#38bdf8">Strict Match Rate (PMR_strict)</text>
+      <text x="12" y="40" class="p2-code-text" fill="#e2e8f0">|R_prop ∩ R_MATCHED|</text>
+      <line x1="12" y1="45" x2="150" y2="45" stroke="#64748b"/>
+      <text x="12" y="58" class="p2-code-text" fill="#94a3b8">|R_prop|  (Active Proposals)</text>
+
+      <!-- Metric 2: PMR_comb -->
+      <rect x="220" y="0" width="215" height="66" rx="6" fill="#1e293b" stroke="#334155"/>
+      <text x="232" y="20" class="p2-body-bold" fill="#38bdf8">Combined Match (PMR_comb)</text>
+      <text x="232" y="40" class="p2-code-text" fill="#e2e8f0">|R_prop ∩ (R_M ∪ R_PART)|</text>
+      <line x1="232" y1="45" x2="385" y2="45" stroke="#64748b"/>
+      <text x="232" y="58" class="p2-code-text" fill="#94a3b8">|R_prop|  (Full + Partial)</text>
+
+      <!-- Metric 3: QRR -->
+      <rect x="450" y="0" width="205" height="66" rx="6" fill="#1e293b" stroke="#334155"/>
+      <text x="462" y="20" class="p2-body-bold" fill="#4ade80">Quality Recall (QRR)</text>
+      <text x="462" y="40" class="p2-code-text" fill="#e2e8f0">|R_prop ∩ H_qual ∩ R_M|</text>
+      <line x1="462" y1="45" x2="600" y2="45" stroke="#64748b"/>
+      <text x="462" y="58" class="p2-code-text" fill="#94a3b8">|H_qual|  (Final SRS Changes)</text>
+
+      <!-- Metric 4: QRP -->
+      <rect x="670" y="0" width="205" height="66" rx="6" fill="#1e293b" stroke="#334155"/>
+      <text x="682" y="20" class="p2-body-bold" fill="#4ade80">Quality Precision (QRP)</text>
+      <text x="682" y="40" class="p2-code-text" fill="#e2e8f0">|R_prop ∩ H_qual ∩ R_M|</text>
+      <line x1="682" y1="45" x2="820" y2="45" stroke="#64748b"/>
+      <text x="682" y="58" class="p2-code-text" fill="#94a3b8">|R_prop|  (Pipeline Output)</text>
+
+      <!-- Metric 5: OEA -->
+      <rect x="890" y="0" width="180" height="66" rx="6" fill="#1e293b" stroke="#334155"/>
+      <text x="902" y="20" class="p2-body-bold" fill="#fbbf24">Overall Agreement (OEA)</text>
+      <text x="902" y="40" class="p2-code-text" fill="#e2e8f0">|Matched| + |True_Negatives|</text>
+      <line x1="902" y1="45" x2="1050" y2="45" stroke="#64748b"/>
+      <text x="902" y="58" class="p2-code-text" fill="#94a3b8">|Total Requirements U|</text>
+    </g>
+  </g>
+
+</svg>

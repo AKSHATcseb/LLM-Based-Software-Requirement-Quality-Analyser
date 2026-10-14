@@ -227,28 +227,30 @@ def display_correspondence_benchmark_summary(benchmark_results: list, summary):
 
     table.add_row(
         "[bold green]MATCHED[/bold green]",
-        str(summary.matched_count),
-        "Pipeline-1 independently surfaced and resolved what stakeholders actually fixed in Final Release.",
+        str(summary.proposals_matched),
+        "Pipeline-1 proposal independently anticipated the specification in the Final Version of the SRS.",
     )
     table.add_row(
         "[bold yellow]PARTIALLY_MATCHED[/bold yellow]",
-        str(summary.partially_matched_count),
-        "Pipeline-1 correctly targeted the flawed area, but applied an alternative fix strategy.",
+        str(summary.proposals_partial),
+        "Pipeline-1 flagged the correct flaw, but the Final Version of the SRS adopted an alternate remediation.",
     )
     table.add_row(
         "[bold red]NOT_MATCHED[/bold red]",
-        str(summary.not_matched_count),
-        "Pipeline-1 proposal had no historical counterpart in the Final Release evolution.",
+        str(summary.proposals_not_matched),
+        "Pipeline-1 proposal had no counterpart in the Final Version of the SRS.",
     )
 
     console.print(table)
 
     metrics_panel = Panel(
-        f"[bold white]Total Evaluated Proposals:[/bold white] {summary.total_pipeline_proposals_evaluated}\n"
-        f"[bold white]Overall Match Rate (Strict + Partial):[/bold white] [bold green]{summary.match_rate:.1f}%[/bold green]\n"
-        f"[bold white]Strict Match Rate:[/bold white] [bold yellow]{summary.strict_match_rate:.1f}%[/bold yellow]\n"
-        f"[bold white]Quality Prediction Precision:[/bold white] [bold cyan]{summary.quality_prediction_precision:.1f}%[/bold cyan]",
-        title="[bold green]Benchmark Performance Metrics (Later Draft vs Final Release)[/bold green]",
+        f"[bold white]Total Active Proposals Evaluated:[/bold white] {summary.total_active_proposals}\n"
+        f"[bold white]Proposal Match Rate (Combined):[/bold white] [bold green]{summary.proposal_combined_match_rate:.1f}%[/bold green]\n"
+        f"[bold white]Proposal Match Rate (Strict):[/bold white] [bold yellow]{summary.proposal_strict_match_rate:.1f}%[/bold yellow]\n"
+        f"[bold white]Quality Refinement Recall (vs Final SRS):[/bold white] [bold cyan]{summary.quality_refinement_recall:.1f}%[/bold cyan]\n"
+        f"[bold white]Quality Refinement Precision:[/bold white] [bold magenta]{summary.quality_refinement_precision:.1f}%[/bold magenta]\n"
+        f"[bold white]Overall Evolutionary Agreement (incl. True Negatives):[/bold white] [bold green]{summary.overall_evolutionary_agreement:.1f}%[/bold green]",
+        title="[bold green]Benchmark Performance Metrics: Pipeline-1 (Draft) vs Final Version of SRS[/bold green]",
         border_style="green",
     )
     console.print(metrics_panel)
@@ -321,23 +323,23 @@ def main():
     v1_all = parser_inst.parse_document(v1_path, version_label="Draft")
     v2_all = parser_inst.parse_document(v2_path, version_label="Final")
 
-    v1_subset = v1_all[: args.limit] if args.limit else v1_all
-    v2_subset = v2_all[: args.limit] if args.limit else v2_all
+    console.print(f"Extracted [cyan]{len(v1_all)}[/cyan] reqs from {draft_label}")
+    console.print(f"Extracted [cyan]{len(v2_all)}[/cyan] reqs from {final_label}")
+    if args.limit:
+        console.print(f"[dim]Note: Will benchmark first {args.limit} aligned requirements after document-wide alignment.[/dim]")
 
-    console.print(f"Extracted [cyan]{len(v1_all)}[/cyan] reqs from {draft_label} (analyzing first {len(v1_subset)})")
-    console.print(f"Extracted [cyan]{len(v2_all)}[/cyan] reqs from {final_label} (analyzing first {len(v2_subset)})")
-
-    # Run Pipeline Comparison
+    # Run Pipeline Comparison (Full alignment first, then limit applied)
     srs_ctx = SRSContext(
         document_title=f"{project_name} SRS Evolution Specification",
-        domain_summary=f"Automated evolution benchmark for {project_name} requirements.",
+        domain_summary=f"Automated evolution benchmark for {project_name} requirements comparing against Final Version of SRS.",
     )
 
     results = pipeline.run_comparison(
-        v_n_source=v1_subset,
-        v_n1_source=v2_subset,
+        v_n_source=v1_all,
+        v_n1_source=v2_all,
         srs_context=srs_ctx,
         run_analyzer=True,
+        limit=args.limit,
     )
 
     # Display Summaries
