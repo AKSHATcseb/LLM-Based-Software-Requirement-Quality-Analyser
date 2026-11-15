@@ -156,7 +156,7 @@ def extract_942_requirements(srs_dir: Path, orig_csv: Path) -> List[Dict[str, An
 def run_evaluation():
     print(f"\n{'='*95}")
     print(f"  SQAM 942-REQUIREMENT FULL CORPUS EVALUATION & TEST RE-RUN")
-    print(f"  Evaluation Scope: {TOTAL_TARGET} requirements across 15 projects & 44 document versions")
+    print(f"  Evaluation Scope: {TOTAL_TARGET} requirements across 15 projects & 43 primary specifications (46 total files)")
     print(f"  Backend: MockLLMClient (Deterministic ISO 29148 Rule Engine) | Temp=0.0")
     print(f"{'='*95}\n")
 

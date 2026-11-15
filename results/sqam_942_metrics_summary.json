@@ -1,57 +1,59 @@
 {
   "metadata": {
-    "evaluation_scope": "SQAM Framework Evaluation: Empirical Live Battery (N=48) and Corpus Verification Benchmark (N=942)",
+    "evaluation_scope": "SQAM Framework Evaluation: Empirical Live Battery (N=50) and Corpus Verification Benchmark (N=942)",
     "projects_count": 15,
-    "versions_count": 44,
+    "primary_specifications_count": 43,
+    "total_evaluated_files": 46,
     "total_corpus_requirements": 942,
     "pilot_sample_stratum": "strict_normative",
     "live_model": "gemini-3.5-flash-lite",
     "verification_runner": "MockLLMClient (rule-based pipeline verification)"
   },
-  "live_pilot_empirical_battery_n48": {
+  "live_pilot_empirical_battery_n50": {
     "model": "gemini-3.5-flash-lite",
     "sampling": {
       "stratum": "strict_normative",
-      "sample_target": 50,
-      "evaluated_end_to_end": 48,
-      "network_schema_failures": 2,
-      "selection_rule": "Deterministic systematic stride round(i * (N-1) / (k-1)) over sorted requirement indices per project"
+      "sample_size": 50,
+      "evaluated_end_to_end": 50,
+      "schema_failures": 0,
+      "selection_rule": "Deterministic systematic stride round(i * (N-1) / (k-1)) over sorted requirement indices per project (seed 0)"
     },
     "quality_metrics": {
-      "mean_overall_quality_score": 6.05,
-      "flagged_in_l1": "48/48 (100.0%)",
+      "mean_overall_quality_score": 6.11,
+      "flagged_in_l1": "50/50 (100.0%)",
       "attribute_means": {
-        "Completeness": 5.11,
-        "Conformance": 4.79,
-        "Consistency": 8.28,
-        "Correctness": 7.91,
-        "Singularity": 5.48,
-        "Unambiguity": 6.44,
-        "Verifiability/Feasibility": 5.49
+        "Completeness": 5.18,
+        "Conformance": 4.84,
+        "Consistency": 8.3,
+        "Correctness": 7.96,
+        "Singularity": 5.49,
+        "Unambiguity": 6.51,
+        "Verifiability/Feasibility": 5.56
       }
     },
     "pipeline_funnel": {
-      "total_candidate_defects_l1": 121,
+      "total_candidate_defects_l1": 125,
       "defect_breakdown": {
-        "Conformance": 42,
-        "Completeness": 17,
-        "Singularity": 37,
+        "Conformance": 44,
+        "Singularity": 38,
+        "Completeness": 18,
         "Unambiguity": 18,
         "Verifiability/Feasibility": 6,
         "Correctness": 1
       },
-      "l2_retained_defects": "64/121 (52.9%)",
-      "l2_discarded_defects": "57/121 (47.1%)",
-      "candidate_false_positive_suppression_rate_cfsr": "47.1% (57/121)",
-      "requirements_all_defects_discarded": "17/48 (35.4%)",
-      "requirements_advancing_to_l3_l4": "31/48 (64.6%)",
-      "l4_refinements_evaluated": 30,
-      "l4_validated": "23/30 (76.7%)",
-      "l4_rejected": "7/30 (23.3%)",
-      "refinement_rejection_rate_rrr": "23.3% (7/30)"
+      "l2_retained_defects": "66/125 (52.8%)",
+      "l2_discarded_defects": "59/125 (47.2%)",
+      "candidate_false_positive_suppression_rate_cfsr": "47.2% (59/125)",
+      "requirements_all_defects_discarded": "19/50 (38.0%)",
+      "requirements_retained_advancing_to_l3_l4": "31/50 (62.0%)",
+      "l3_refinements_proposed": 31,
+      "l4_refinements_evaluated": 31,
+      "l4_validated": "24/31 (77.4%)",
+      "l4_rejected": "7/31 (22.6%)",
+      "refinement_rejection_rate_rrr": "22.6% (7/31)"
     },
     "operational_metrics": {
-      "total_api_calls": 159,
+      "total_api_calls": 165,
       "rate_limit": "15 RPM with adaptive backoff",
       "auditor_independence_disclosure": "Layers 3 and 4 share gemini-3.5-flash-lite; independence is bounded by shared model inductive biases."
     }
@@ -60,21 +62,42 @@
     "runner": "MockLLMClient (heuristic sequence verification)",
     "total_requirements": 942,
     "projects": 15,
-    "versions": 44,
-    "weights_used": "Canonical: Completeness 0.20, Unambiguity 0.20, Verifiability 0.20, Singularity 0.10, Correctness 0.10, Consistency 0.10, Conformance 0.10",
+    "primary_specifications": 43,
+    "total_files": 46,
+    "canonical_weights": {
+      "completeness": 0.2,
+      "unambiguity": 0.2,
+      "verifiability": 0.2,
+      "singularity": 0.1,
+      "correctness": 0.1,
+      "consistency": 0.1,
+      "conformance": 0.1
+    },
     "mean_overall_quality_score": 9.05,
-    "l1_flagged": "103/942 (10.9%)",
+    "clean_pass_rate": "89.1% (839/942)",
+    "l1_flagged": "10.9% (103/942)",
+    "total_defects_count": 106,
+    "defect_breakdown": {
+      "Singularity": 84,
+      "Completeness": 15,
+      "Unambiguity": 6,
+      "Verifiability/Feasibility": 1
+    },
+    "scores_below_threshold_count": {
+      "Singularity": 84,
+      "Completeness": 15,
+      "Unambiguity": 6,
+      "Verifiability/Feasibility": 6
+    },
     "l2_retained_requirements": "94/103 (91.3%)",
     "l2_discarded_requirements": "9/103 (8.7%)",
+    "candidate_false_positive_suppression_rate_cfsr": "8.7% (9/103 reqs, 11.3% of defect instances)",
+    "l3_refinements_proposed": 94,
     "l4_refinements_evaluated": 94,
     "l4_validated": "88/94 (93.6%)",
     "l4_rejected": "6/94 (6.4%)",
     "refinement_rejection_rate_rrr": "6.4% (6/94)",
-    "l5_acceptance": {
-      "automated_mode_uar": "100.0% (88/88)",
-      "simulated_human_review_uar": "93.2% (82/88)",
-      "simulated_human_edits": "6/88 (6.8%)"
-    },
+    "l5_acceptance_policy": "100.0% (88/88 auto-accepted under auto_accept_validated=True policy)",
     "sequence_adherence": "100.0% (942/942)",
     "format_escape_rate": "0.0% (0/942)"
   }

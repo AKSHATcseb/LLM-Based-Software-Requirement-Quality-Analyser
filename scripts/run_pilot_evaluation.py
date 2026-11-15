@@ -557,8 +557,20 @@ def run_evaluation(
 
     attr_means = {k: round(attr_sums[k] / attr_counts[k], 2) for k in sorted(attr_sums.keys())}
     cfsr = round(total_l2_discarded / total_l1_defects * 100, 1) if total_l1_defects > 0 else 0.0
-    l4_total = validated_in_l4 + rejected_in_l4
-    rrr = round(rejected_in_l4 / l4_total * 100, 1) if l4_total > 0 else 0.0
+    retained_in_l2_count = sum(
+        1 for r in eval_results
+        if r.get("layer2") and len(r["layer2"].get("retained_defects", [])) > 0
+    )
+    validated_in_l4_count = sum(
+        1 for r in eval_results
+        if r.get("layer4") and r["layer4"].get("is_valid") is True
+    )
+    rejected_in_l4_count = sum(
+        1 for r in eval_results
+        if r.get("layer4") and r["layer4"].get("is_valid") is False
+    )
+    l4_total = validated_in_l4_count + rejected_in_l4_count
+    rrr = round(rejected_in_l4_count / l4_total * 100, 1) if l4_total > 0 else 0.0
 
     summary = {
         "model": model_name,
@@ -566,9 +578,9 @@ def run_evaluation(
         "schema_failures": schema_failures,
         "flagged_in_l1": flagged_in_l1_count,
         "clean_pass_in_l1": len(eval_results) - flagged_in_l1_count,
-        "retained_in_l2": retained_in_l2,
-        "validated_in_l4": validated_in_l4,
-        "rejected_in_l4": rejected_in_l4,
+        "retained_in_l2": retained_in_l2_count,
+        "validated_in_l4": validated_in_l4_count,
+        "rejected_in_l4": rejected_in_l4_count,
         "flag_rate_pct": round(flagged_in_l1_count / len(eval_results) * 100, 1) if eval_results else 0.0,
         "mean_overall_quality_score": round(mean_q, 2),
         "attribute_means": attr_means,

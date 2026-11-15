@@ -3,14 +3,14 @@
 **Generated:** 2026-11-15 18:21:44  
 **Evaluation Engine:** Layer 1 Document Understanding & 7-Attribute ISO 29148 Scorer  
 **LLM Backend:** `MockLLMClient`  
-**Total Scope:** 942 requirements across 44 versions in all 15 industrial/academic SRS projects.  
+**Total Scope:** 942 requirements across 43 primary specifications (46 total files evaluated in dataset) in all 15 industrial/academic SRS projects.  
 
 ---
 
 ## 1. Executive Summary & Aggregate Metrics
 
 - **Total Requirements Tested:** 942 (100.0% of Benchmark Corpus)
-- **Total Document Versions:** 44 across 15 projects
+- **Total Primary Specifications:** 43 across 15 projects (46 total files evaluated in dataset)
 - **Overall Mean Quality Score:** **9.05 / 10.0**
 - **Fully Compliant Clean Requirements:** 839 (89.1%)
 - **Requirements with Flagged ISO Flaws:** 103 (10.9%)

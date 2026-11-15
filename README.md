@@ -160,7 +160,7 @@ python main.py --srs-file sample_new_srs.json
 python main.py --srs-file sample_new_srs.json --interactive
 
 # 3. Specify LLM provider (Gemini or OpenAI) and export Markdown audit report
-python main.py --srs-file sample_new_srs.json --provider gemini --model gemini-2.5-flash --output-report report.md
+python main.py --srs-file sample_new_srs.json --provider gemini --model gemini-3.5-flash-lite --output-report report.md
 
 # 4. Limit the number of requirements analyzed (e.g. first 3)
 python main.py --srs-file sample_new_srs.json --limit 3
@@ -201,7 +201,7 @@ python test_srs_doc.py --project 1_FROG --limit 3
 python test_srs_doc.py --project 1_FROG --limit 5 --interactive
 
 # Test using Google Gemini or OpenAI
-python test_srs_doc.py --project 1_FROG --provider gemini --model gemini-2.5-flash --limit 3
+python test_srs_doc.py --project 1_FROG --provider gemini --model gemini-3.5-flash-lite --limit 3
 python test_srs_doc.py --project 1_FROG --provider openai --model gpt-4o --limit 3
 ```
 
@@ -248,7 +248,7 @@ python run_evolution_pipeline.py --v1 "path/to/SRS_v2.0.pdf" --v2 "path/to/SRS_v
 python run_evolution_pipeline.py --project 1_FROG --output-markdown frog_evolution.md --output-csv frog_evolution.csv --output-json frog_trace.json
 
 # Run with Gemini or OpenAI live LLMs
-python run_evolution_pipeline.py --project 2_SMIRK --provider gemini --model gemini-2.5-flash
+python run_evolution_pipeline.py --project 2_SMIRK --provider gemini --model gemini-3.5-flash-lite
 ```
 
 ### 5. SQAM Debugging & Format-Compliance MCP Server
@@ -286,7 +286,7 @@ from sqam_analyzer import (
 client = OpenAILLMClient(model_name="gpt-4o")
 
 # Option B: Google Gemini
-client = GeminiLLMClient(model_name="gemini-2.5-flash")
+client = GeminiLLMClient(model_name="gemini-3.5-flash-lite")
 
 # Option C: Any LangChain BaseChatModel
 from langchain_openai import ChatOpenAI
