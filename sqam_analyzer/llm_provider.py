@@ -126,6 +126,9 @@ class OpenAILLMClient(BaseLLMClient):
             )
         self.model_name = model_name
         self.client = OpenAI(api_key=resolved_key or "EMPTY", base_url=base_url, timeout=timeout)
+        self.total_prompt_tokens: int = 0
+        self.total_completion_tokens: int = 0
+        self.last_usage: Dict[str, int] = {}
 
     def generate_text(
         self,
@@ -144,6 +147,14 @@ class OpenAILLMClient(BaseLLMClient):
             max_tokens=max_tokens,
             response_format={"type": "json_object"},
         )
+        if hasattr(response, "usage") and response.usage:
+            self.last_usage = {
+                "prompt_tokens": response.usage.prompt_tokens,
+                "completion_tokens": response.usage.completion_tokens,
+                "total_tokens": response.usage.total_tokens,
+            }
+            self.total_prompt_tokens += response.usage.prompt_tokens
+            self.total_completion_tokens += response.usage.completion_tokens
         return response.choices[0].message.content or ""
 
 
@@ -158,7 +169,7 @@ class GeminiLLMClient(BaseLLMClient):
 
     def __init__(
         self,
-        model_name: str = "gemini-2.5-flash",
+        model_name: str = "gemini-3.5-flash",
         api_key: Optional[str] = None,
     ):
         try:
@@ -190,12 +201,31 @@ class GeminiLLMClient(BaseLLMClient):
             max_output_tokens=max_tokens,
             response_mime_type="application/json",
         )
-        response = self.client.models.generate_content(
-            model=self.model_name,
-            contents=user_prompt,
-            config=config,
-        )
-        return response.text or ""
+        models_to_try = [self.model_name]
+        for fallback in ["gemini-3.5-flash", "gemini-3.5-flash-lite"]:
+            if fallback not in models_to_try:
+                models_to_try.append(fallback)
+
+        last_error = None
+        for candidate_model in models_to_try:
+            try:
+                response = self.client.models.generate_content(
+                    model=candidate_model,
+                    contents=user_prompt,
+                    config=config,
+                )
+                return response.text or ""
+            except Exception as e:
+                err_msg = str(e)
+                if "503" in err_msg or "404" in err_msg or "UNAVAILABLE" in err_msg:
+                    logger.warning("Model %s failed with %s; trying fallback...", candidate_model, err_msg[:60])
+                    last_error = e
+                    continue
+                raise e
+
+        if last_error:
+            raise last_error
+        return ""
 
 
 # ---------------------------------------------------------------------------
@@ -498,7 +528,8 @@ class MockLLMClient(BaseLLMClient):
                     "severity": "low",
                 })
 
-            overall_score = round(sum(scores.values()) / len(scores), 1)
+            from sqam_analyzer.models import compute_overall_quality_score
+            overall_score = compute_overall_quality_score(scores)
 
             attribute_scores_list = [
                 {"attribute": attr, "score": score, "rationale": f"Evaluated under ISO/IEC/IEEE 29148 {attr} criteria."}
@@ -538,7 +569,7 @@ def resolve_llm_client(
         return MockLLMClient()
 
     if p == "gemini":
-        return GeminiLLMClient(model_name=model or "gemini-2.5-flash")
+        return GeminiLLMClient(model_name=model or "gemini-3.5-flash")
 
     if p == "openai":
         return OpenAILLMClient(model_name=model or "gpt-4o")
@@ -548,7 +579,7 @@ def resolve_llm_client(
     openai_key = os.getenv("OPENAI_API_KEY")
 
     if gemini_key:
-        return GeminiLLMClient(model_name=model or "gemini-2.5-flash")
+        return GeminiLLMClient(model_name=model or "gemini-3.5-flash")
     elif openai_key:
         return OpenAILLMClient(model_name=model or "gpt-4o")
     else:

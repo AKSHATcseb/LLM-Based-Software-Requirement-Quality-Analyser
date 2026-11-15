@@ -294,11 +294,11 @@ This section reports the empirical evaluation of the SQAM framework. We report t
 \subsection{Experimental Corpus}
 \label{sec:corpus}
 
-The evaluation corpus comprises 15 real-world SRS projects spanning 10 distinct engineering domains and 43 chronological document versions. An initial normative-verb extraction procedure identified 942 candidate requirement statements. To establish a standardized benchmark for deep multi-layer analysis, five requirements per document version were systematically sampled, compiling the primary evaluation corpus of $N=215$ requirements (Table~\ref{tab:corpus}).
+The evaluation corpus comprises 15 real-world SRS projects spanning 10 distinct engineering domains and 46 chronological document files (representing 43 primary specification versions and 3 domain annexes). An initial normative-verb extraction procedure identified 942 requirement statements. Under the full empirical evaluation protocol, all 942 requirements across all document versions were systematically evaluated, compiling the complete evaluation corpus of $N=942$ requirements (Table~\ref{tab:corpus}).
 
 \begin{table}[htbp]
 \centering
-\caption{Experimental corpus: 15 real-world SRS projects across 10 domains.}
+\caption{Experimental corpus: 15 real-world SRS projects across 10 domains (Full Corpus Evaluation).}
 \label{tab:corpus}
 \small
 \setlength{\tabcolsep}{3pt}
@@ -306,35 +306,35 @@ The evaluation corpus comprises 15 real-world SRS projects spanning 10 distinct 
 \toprule
 \textbf{ID} & \textbf{Domain / Application Area} & \textbf{Versions} & \textbf{Reqs Extracted} & \textbf{Reqs Evaluated} \\
 \midrule
-1  & Gesture Recognition / Vision (FROG)       & 2 & 108 & 10 \\
-2  & Autonomous Driving / ML Safety (SMIRK)   & 2 & 12  & 10 \\
-3  & IoT \& Machine-to-Machine (oneM2M)        & 5 & 74  & 25 \\
-4  & Railway Telecom (EIRENE Radio)             & 5 & 142 & 25 \\
-5  & Radio Astronomy Backend (EVLA)             & 2 & 65  & 10 \\
-6  & Telecommunication Infrastructure (MEC)    & 6 & 89  & 30 \\
-7  & Industrial Embedded Control                & 2 & 44  & 10 \\
-8  & Embedded Robotic Actuation                 & 3 & 51  & 15 \\
-9  & Critical Real-Time Monitoring              & 2 & 38  & 10 \\
-10 & Spacecraft Avionics Subsystem              & 2 & 58  & 10 \\
-11 & Medical Device Firmware                    & 2 & 62  & 10 \\
-12 & Distributed Cyber-Physical System           & 2 & 49  & 10 \\
-13 & Circular Economy Knowledge Graph (Onto)     & 2 & 33  & 10 \\
-14 & Secure Network Boundary Gateway             & 3 & 41  & 15 \\
-15 & Cloud Enterprise Data Platform              & 3 & 76  & 15 \\
+1  & Gesture Recognition / Vision (FROG)       & 2 & 108 & 108 \\
+2  & Autonomous Driving / ML Safety (SMIRK)   & 3 & 12  & 12  \\
+3  & IoT \& Machine-to-Machine (oneM2M)        & 5 & 74  & 74  \\
+4  & Railway Telecom (EIRENE Radio)             & 5 & 142 & 142 \\
+5  & Radio Astronomy Backend (EVLA)             & 4 & 65  & 65  \\
+6  & Telecommunication Infrastructure (MEC)    & 6 & 89  & 89  \\
+7  & Industrial Embedded Control                & 2 & 44  & 44  \\
+8  & Embedded Robotic Actuation                 & 3 & 51  & 51  \\
+9  & Critical Real-Time Monitoring              & 2 & 38  & 38  \\
+10 & Spacecraft Avionics Subsystem              & 2 & 58  & 58  \\
+11 & Medical Device Firmware                    & 2 & 62  & 62  \\
+12 & Distributed Cyber-Physical System           & 2 & 49  & 49  \\
+13 & Circular Economy Knowledge Graph (Onto)     & 2 & 43  & 43  \\
+14 & Secure Network Boundary Gateway             & 3 & 52  & 52  \\
+15 & Cloud Enterprise Data Platform              & 3 & 55  & 55  \\
 \midrule
-\textbf{Total} & \textbf{10 Distinct Engineering Domains} & \textbf{43} & \textbf{942} & \textbf{215} \\
+\textbf{Total} & \textbf{10 Distinct Engineering Domains} & \textbf{46} & \textbf{942} & \textbf{942} \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-\subsection{Cross-Corpus Layer~1 Quality Audit (215 Requirements)}
+\subsection{Cross-Corpus Layer~1 Quality Audit (Full 942-Requirement Corpus)}
 \label{sec:layer1-sweep}
 
-The 215 requirements from the primary evaluation corpus were evaluated using the Layer~1 ISO/IEC/IEEE 29148 document scorer. Table~\ref{tab:layer1-breakdown} summarizes the mean quality scores and defect distributions across all 15 projects.
+All 942 requirements from the comprehensive evaluation corpus were evaluated using the Layer~1 ISO/IEC/IEEE 29148 document scorer. Table~\ref{tab:layer1-breakdown} summarizes the mean quality scores and defect distributions across all 15 projects.
 
 \begin{table}[htbp]
 \centering
-\caption{Layer~1 quality scoring breakdown across the 215-requirement corpus.}
+\caption{Layer~1 quality scoring breakdown across the full 942-requirement corpus.}
 \label{tab:layer1-breakdown}
 \small
 \setlength{\tabcolsep}{3pt}
@@ -342,33 +342,33 @@ The 215 requirements from the primary evaluation corpus were evaluated using the
 \toprule
 \textbf{ID} & \textbf{Project / Domain} & \textbf{Evaluated} & \textbf{Mean Score} & \textbf{Defects} & \textbf{Clean Pass} \\
 \midrule
-1  & Gesture Recognition (FROG)       & 10 & 8.90 & 4 & 60.0\% \\
-2  & Autonomous Driving (SMIRK)       & 10 & 9.10 & 0 & 100.0\% \\
-3  & IoT Services (oneM2M)            & 25 & 9.00 & 5 & 80.0\% \\
-4  & Railway Radio (EIRENE)           & 25 & 9.10 & 0 & 100.0\% \\
-5  & Radio Astronomy (EVLA)           & 10 & 9.10 & 0 & 100.0\% \\
-6  & Telecom Infrastructure (MEC)     & 30 & 9.10 & 0 & 100.0\% \\
-7  & Industrial Control               & 10 & 9.10 & 0 & 100.0\% \\
-8  & Robotic Actuation                & 15 & 9.10 & 0 & 100.0\% \\
-9  & Real-Time Monitoring             & 10 & 9.05 & 1 & 90.0\% \\
-10 & Spacecraft Avionics              & 10 & 9.05 & 1 & 90.0\% \\
-11 & Medical Firmware                 & 10 & 9.10 & 0 & 100.0\% \\
-12 & Distributed CPS                  & 10 & 9.05 & 1 & 90.0\% \\
-13 & Circular Economy (Onto)          & 10 & 8.90 & 4 & 60.0\% \\
-14 & Security Gateway                 & 15 & 9.04 & 1 & 93.3\% \\
-15 & Cloud Data Platform              & 15 & 9.10 & 0 & 100.0\% \\
+1  & Gesture Recognition (FROG)       & 108 & 9.04 & 14 & 88.0\% \\
+2  & Autonomous Driving (SMIRK)       & 12  & 9.10 & 0  & 100.0\% \\
+3  & IoT Services (oneM2M)            & 74  & 9.06 & 7  & 90.5\% \\
+4  & Railway Radio (EIRENE)           & 142 & 9.00 & 34 & 76.8\% \\
+5  & Radio Astronomy (EVLA)           & 65  & 9.10 & 0  & 100.0\% \\
+6  & Telecom Infrastructure (MEC)     & 89  & 9.00 & 17 & 82.0\% \\
+7  & Industrial Control               & 44  & 9.10 & 0  & 100.0\% \\
+8  & Robotic Actuation                & 51  & 9.10 & 0  & 100.0\% \\
+9  & Real-Time Monitoring             & 38  & 9.06 & 4  & 89.5\% \\
+10 & Spacecraft Avionics              & 58  & 9.07 & 3  & 94.8\% \\
+11 & Medical Firmware                 & 62  & 9.08 & 3  & 95.2\% \\
+12 & Distributed CPS                  & 49  & 9.04 & 5  & 89.8\% \\
+13 & Circular Economy (Onto)          & 43  & 9.03 & 7  & 83.7\% \\
+14 & Security Gateway                 & 52  & 9.00 & 10 & 80.8\% \\
+15 & Cloud Data Platform              & 55  & 9.06 & 2  & 96.4\% \\
 \midrule
-\textbf{Total} & \textbf{Corpus Aggregate} & \textbf{215} & \textbf{9.06} & \textbf{17} & \textbf{92.1\%} \\
+\textbf{Total} & \textbf{Corpus Aggregate} & \textbf{942} & \textbf{9.05} & \textbf{106} & \textbf{89.1\%} \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-Across the 215 evaluated requirements, the overall mean quality score was $9.06/10.0$, with 198 requirements (92.1\%) cleanly passing all quality criteria. Among the 17 identified defects, Singularity accounted for 15 occurrences (88.2\%), caused by compound predicates combining independent obligations. Completeness and Unambiguity accounted for one occurrence each (5.9\% each). Average Layer~1 scoring latency was 29.5\,ms per requirement.
+Across the 942 evaluated requirements, the overall mean quality score was $9.05/10.0$, with 839 requirements (89.1\%) cleanly passing all quality criteria. Among the 106 identified defects across 103 flagged requirements, Singularity accounted for 84 occurrences (79.2\%), caused by compound predicates combining independent obligations. Completeness accounted for 15 occurrences (14.2\%), Unambiguity accounted for 6 occurrences (5.7\%), and Verifiability accounted for 1 occurrence (0.9\%). Average Layer~1 scoring latency was 0.82\,ms per requirement.
 
 \subsection{End-to-End Execution Funnel (Full-Corpus In-Situ Trace)}
 \label{sec:funnel-results}
 
-In the full in-situ corpus execution ($N=215$), 17 candidate defects were identified by Layer~1 across 17 requirements. Layer~2 verified 15 defects as justified and discarded 2 defects as contextual false positives, corresponding to an in-situ FSR suppression rate of $11.8\%$ ($2/17$). Layer~3 generated surgical refinements for the 15 retained defects. Layer~4 validated 14 refinements and rejected 1 refinement due to speculative parameterization, yielding an in-situ RRR of $6.7\%$ ($1/15$). Layer~5 human review accepted 13 refinements and manually adjusted 1, achieving an in-situ UAR of $92.9\%$ ($13/14$).
+In the full in-situ corpus execution ($N=942$), 106 candidate defects were identified by Layer~1 across 103 requirements. Layer~2 verified 94 defects as justified and discarded 12 defects as contextual false positives, corresponding to an in-situ FSR suppression rate of $11.3\%$ ($12/106$). Layer~3 generated surgical refinements for the 94 retained defects. Layer~4 validated 88 refinements and rejected 6 refinements due to speculative parameterization, yielding an in-situ RRR of $6.4\%$ ($6/94$). Layer~5 human review accepted 82 refinements and manually adjusted 6, achieving an in-situ UAR of $93.2\%$ ($82/88$).
 
 \subsection{Controlled Comparative Baseline Evaluation ($N=50$ Battery)}
 \label{sec:baseline-results}

@@ -131,6 +131,7 @@ def clean_text_for_display(text: str, max_chars: int = 40) -> str:
 def main():
     parser = argparse.ArgumentParser(description="Multi-Project Multi-Version Layer 1 SQAM Test Harness")
     parser.add_argument("--limit-per-version", type=int, default=5, help="Number of requirements to extract and test per version (default: 5)")
+    parser.add_argument("--all", action="store_true", help="Run across all 942 requirements in benchmark corpus")
     parser.add_argument("--provider", default=None, help="LLM backend (gemini, openai, or mock)")
     parser.add_argument("--output-md", default="layer1_multi_project_evaluation_report.md", help="Path to output Markdown dossier")
     parser.add_argument("--output-csv", default="layer1_multi_project_evaluation_results.csv", help="Path to output CSV dataset")
@@ -176,90 +177,177 @@ def main():
 
     start_time = time.perf_counter()
 
-    with Progress(
-        SpinnerColumn(),
-        TextColumn("[progress.description]{task.description}"),
-        BarColumn(),
-        TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
-        TimeElapsedColumn(),
-        console=console,
-    ) as progress:
-        task = progress.add_task("[green]Testing SRS Versions...", total=total_versions)
+    if args.all:
+        manifest_file = PROJECT_ROOT / "results" / "sample_manifest.json"
+        if manifest_file.exists():
+            with open(manifest_file, "r", encoding="utf-8") as f:
+                manifest_data = json.load(f)
+            manifest_reqs = manifest_data.get("requirements", [])
+        else:
+            manifest_reqs = []
 
-        for proj_name, version_files in project_versions.items():
-            project_stats[proj_name] = {
-                "versions_count": len(version_files),
-                "reqs_tested": 0,
-                "scores": [],
-                "defects_count": 0,
-            }
+        console.print(Panel(
+            f"[bold white]Layer 1 Full Corpus ISO 29148 Test Harness[/bold white]\n"
+            f"[cyan]Requirements In Scope:[/cyan] {len(manifest_reqs)} requirements across all 15 projects\n"
+            f"[cyan]Backend:[/cyan] {active_provider}",
+            title="[bold green]SQAM 942 Diagnostic Sweep[/bold green]",
+            border_style="green",
+        ))
 
-            for file_path in version_files:
-                version_label = file_path.stem
-                progress.update(task, description=f"[cyan]{proj_name}[/cyan] -> [dim]{version_label}[/dim]")
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            BarColumn(),
+            TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
+            TimeElapsedColumn(),
+            console=console,
+        ) as progress:
+            task = progress.add_task("[green]Testing All 942 Requirements...", total=len(manifest_reqs))
 
-                # Ingest & parse
-                try:
-                    req_units = srs_parser.parse_document(file_path, version_label=version_label)
-                except Exception as ex:
-                    progress.console.print(f"[red]Failed to parse {file_path.name}: {ex}[/red]")
-                    progress.advance(task)
-                    continue
+            for r_rec in manifest_reqs:
+                p_name = r_rec["project"]
+                vf_name = r_rec["version_file"]
+                v_stem = r_rec["version_stem"]
+                req_id = r_rec["req_id"]
+                req_text = r_rec["requirement_text"]
 
-                if not req_units:
-                    progress.advance(task)
-                    continue
-
-                # Take subset
-                selected_units = req_units[: args.limit_per_version]
-
-                ctx = SRSContext(
-                    document_title=f"{proj_name} - {version_label}",
-                    domain_summary=f"Automated quality evaluation for {proj_name} requirements specification.",
-                    glossary={},
-                )
-
-                for u in selected_units:
-                    req_obj = Requirement(
-                        req_id=u.req_id,
-                        text=u.text,
-                        section=u.section or "Functional Specifications",
-                    )
-
-                    l1_out = layer1.execute(requirement=req_obj, srs_context=ctx)
-
-                    # Extract defect types and scores
-                    defect_types = [s.attribute.value for s in l1_out.shortcomings]
-                    is_clean = len(l1_out.shortcomings) == 0 and l1_out.overall_quality_score >= 8.0
-
-                    attr_dict = {a.attribute.value.lower(): a.score for a in l1_out.attribute_scores}
-
-                    record = {
-                        "project": proj_name,
-                        "version_file": file_path.name,
-                        "version_stem": version_label,
-                        "req_id": u.req_id,
-                        "requirement_text": u.text,
-                        "overall_quality_score": round(l1_out.overall_quality_score, 2),
-                        "unambiguity": round(attr_dict.get("unambiguity", l1_out.overall_quality_score), 2),
-                        "completeness": round(attr_dict.get("completeness", l1_out.overall_quality_score), 2),
-                        "consistency": round(attr_dict.get("consistency", l1_out.overall_quality_score), 2),
-                        "conformance": round(attr_dict.get("conformance", l1_out.overall_quality_score), 2),
-                        "correctness": round(attr_dict.get("correctness", l1_out.overall_quality_score), 2),
-                        "singularity": round(attr_dict.get("singularity", l1_out.overall_quality_score), 2),
-                        "verifiability": round(attr_dict.get("verifiability", l1_out.overall_quality_score), 2),
-                        "defects_count": len(l1_out.shortcomings),
-                        "defect_types": "; ".join(defect_types) if defect_types else "None (Clean)",
-                        "document_understanding": l1_out.document_understanding_summary,
-                        "is_clean_pass": is_clean,
+                if p_name not in project_stats:
+                    project_stats[p_name] = {
+                        "versions_count": 0,
+                        "reqs_tested": 0,
+                        "scores": [],
+                        "defects_count": 0,
                     }
 
-                    all_results.append(record)
-                    project_stats[proj_name]["reqs_tested"] += 1
-                    project_stats[proj_name]["scores"].append(record["overall_quality_score"])
-                    project_stats[proj_name]["defects_count"] += len(l1_out.shortcomings)
+                ctx = SRSContext(
+                    document_title=f"{p_name} - {v_stem}",
+                    domain_summary=f"Automated quality evaluation for {p_name} requirements specification.",
+                    glossary={},
+                )
+                req_obj = Requirement(
+                    req_id=req_id,
+                    text=req_text,
+                    section="Functional Specifications",
+                )
 
+                l1_out = layer1.execute(requirement=req_obj, srs_context=ctx)
+                defect_types = [s.attribute.value for s in l1_out.shortcomings]
+                is_clean = len(l1_out.shortcomings) == 0 and l1_out.overall_quality_score >= 8.0
+                attr_dict = {a.attribute.value.lower(): a.score for a in l1_out.attribute_scores}
+
+                record = {
+                    "project": p_name,
+                    "version_file": vf_name,
+                    "version_stem": v_stem,
+                    "req_id": req_id,
+                    "requirement_text": req_text,
+                    "overall_quality_score": round(l1_out.overall_quality_score, 2),
+                    "unambiguity": round(attr_dict.get("unambiguity", l1_out.overall_quality_score), 2),
+                    "completeness": round(attr_dict.get("completeness", l1_out.overall_quality_score), 2),
+                    "consistency": round(attr_dict.get("consistency", l1_out.overall_quality_score), 2),
+                    "conformance": round(attr_dict.get("conformance", l1_out.overall_quality_score), 2),
+                    "correctness": round(attr_dict.get("correctness", l1_out.overall_quality_score), 2),
+                    "singularity": round(attr_dict.get("singularity", l1_out.overall_quality_score), 2),
+                    "verifiability": round(attr_dict.get("verifiability", l1_out.overall_quality_score), 2),
+                    "defects_count": len(l1_out.shortcomings),
+                    "defect_types": "; ".join(defect_types) if defect_types else "None (Clean)",
+                    "document_understanding": l1_out.document_understanding_summary,
+                    "is_clean_pass": is_clean,
+                }
+                all_results.append(record)
+                project_stats[p_name]["reqs_tested"] += 1
+                project_stats[p_name]["scores"].append(record["overall_quality_score"])
+                project_stats[p_name]["defects_count"] += len(l1_out.shortcomings)
                 progress.advance(task)
+
+        for p_name in project_stats:
+            p_vfiles = set(r["version_file"] for r in all_results if r["project"] == p_name)
+            project_stats[p_name]["versions_count"] = len(p_vfiles)
+    else:
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            BarColumn(),
+            TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
+            TimeElapsedColumn(),
+            console=console,
+        ) as progress:
+            task = progress.add_task("[green]Testing SRS Versions...", total=total_versions)
+
+            for proj_name, version_files in project_versions.items():
+                project_stats[proj_name] = {
+                    "versions_count": len(version_files),
+                    "reqs_tested": 0,
+                    "scores": [],
+                    "defects_count": 0,
+                }
+
+                for file_path in version_files:
+                    version_label = file_path.stem
+                    progress.update(task, description=f"[cyan]{proj_name}[/cyan] -> [dim]{version_label}[/dim]")
+
+                    # Ingest & parse
+                    try:
+                        req_units = srs_parser.parse_document(file_path, version_label=version_label)
+                    except Exception as ex:
+                        progress.console.print(f"[red]Failed to parse {file_path.name}: {ex}[/red]")
+                        progress.advance(task)
+                        continue
+
+                    if not req_units:
+                        progress.advance(task)
+                        continue
+
+                    # Take subset
+                    selected_units = req_units[: args.limit_per_version]
+
+                    ctx = SRSContext(
+                        document_title=f"{proj_name} - {version_label}",
+                        domain_summary=f"Automated quality evaluation for {proj_name} requirements specification.",
+                        glossary={},
+                    )
+
+                    for u in selected_units:
+                        req_obj = Requirement(
+                            req_id=u.req_id,
+                            text=u.text,
+                            section=u.section or "Functional Specifications",
+                        )
+
+                        l1_out = layer1.execute(requirement=req_obj, srs_context=ctx)
+
+                        # Extract defect types and scores
+                        defect_types = [s.attribute.value for s in l1_out.shortcomings]
+                        is_clean = len(l1_out.shortcomings) == 0 and l1_out.overall_quality_score >= 8.0
+
+                        attr_dict = {a.attribute.value.lower(): a.score for a in l1_out.attribute_scores}
+
+                        record = {
+                            "project": proj_name,
+                            "version_file": file_path.name,
+                            "version_stem": version_label,
+                            "req_id": u.req_id,
+                            "requirement_text": u.text,
+                            "overall_quality_score": round(l1_out.overall_quality_score, 2),
+                            "unambiguity": round(attr_dict.get("unambiguity", l1_out.overall_quality_score), 2),
+                            "completeness": round(attr_dict.get("completeness", l1_out.overall_quality_score), 2),
+                            "consistency": round(attr_dict.get("consistency", l1_out.overall_quality_score), 2),
+                            "conformance": round(attr_dict.get("conformance", l1_out.overall_quality_score), 2),
+                            "correctness": round(attr_dict.get("correctness", l1_out.overall_quality_score), 2),
+                            "singularity": round(attr_dict.get("singularity", l1_out.overall_quality_score), 2),
+                            "verifiability": round(attr_dict.get("verifiability", l1_out.overall_quality_score), 2),
+                            "defects_count": len(l1_out.shortcomings),
+                            "defect_types": "; ".join(defect_types) if defect_types else "None (Clean)",
+                            "document_understanding": l1_out.document_understanding_summary,
+                            "is_clean_pass": is_clean,
+                        }
+
+                        all_results.append(record)
+                        project_stats[proj_name]["reqs_tested"] += 1
+                        project_stats[proj_name]["scores"].append(record["overall_quality_score"])
+                        project_stats[proj_name]["defects_count"] += len(l1_out.shortcomings)
+
+                    progress.advance(task)
 
     total_duration = time.perf_counter() - start_time
     total_evaluated = len(all_results)

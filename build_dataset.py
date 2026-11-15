@@ -19,8 +19,10 @@ import json
 import os
 import re
 from pathlib import Path
-from typing import Dict, List, Optional
-import fitz  # PyMuPDF
+try:
+    import fitz  # PyMuPDF
+except Exception:
+    fitz = None
 
 
 SRS_BASE_DIR = Path("srs doc versions")
@@ -81,8 +83,19 @@ def extract_text_from_file(file_path: Path) -> str:
     """Extracts raw text from a PDF or Markdown file."""
     ext = file_path.suffix.lower()
     if ext == ".pdf":
-        doc = fitz.open(file_path)
-        return "\n\n".join(page.get_text() for page in doc)
+        if fitz is not None:
+            try:
+                doc = fitz.open(file_path)
+                return "\n\n".join(page.get_text() for page in doc)
+            except Exception:
+                pass
+        # Robust fallback using pypdf
+        try:
+            from pypdf import PdfReader
+            reader = PdfReader(str(file_path))
+            return "\n\n".join(page.extract_text() or "" for page in reader.pages)
+        except Exception as e:
+            return ""
     elif ext == ".md":
         return file_path.read_text(encoding="utf-8", errors="ignore")
     return ""

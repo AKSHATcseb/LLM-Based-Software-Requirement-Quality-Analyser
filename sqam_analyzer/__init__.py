@@ -42,7 +42,9 @@ from sqam_analyzer.models import (
     Shortcoming,
     SRSContext,
     ValidationVerdict,
+    compute_overall_quality_score,
 )
+from sqam_analyzer.loader import load_srs_any, load_srs_from_document, load_srs_from_json
 from sqam_analyzer.pipeline import RequirementQualityPipeline
 
 __version__ = "1.0.0"
@@ -50,10 +52,14 @@ __version__ = "1.0.0"
 __all__ = [
     # Core Pipeline
     "RequirementQualityPipeline",
+    "load_srs_from_json",
+    "load_srs_from_document",
+    "load_srs_any",
     # Data Models
     "Requirement",
     "SRSContext",
     "QualityAttribute",
+    "compute_overall_quality_score",
     "SeverityLevel",
     "DefectStatus",
     "ValidationVerdict",

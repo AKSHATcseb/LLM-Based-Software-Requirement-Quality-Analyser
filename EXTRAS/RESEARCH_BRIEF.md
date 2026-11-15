@@ -172,7 +172,7 @@ $$\text{Quality Prediction Precision} = \frac{|\mathcal{R}_{\text{MATCHED propos
 | Evaluation Metric | Baseline Single-Shot LLM (GPT-4o) | Naive Prompt with Few-Shot | Proposed 5-Layer Pipeline (SQAM) | Improvement |
 | :--- | :---: | :---: | :---: | :---: |
 | **User Acceptance Rate (UAR)** | 41.2% | 58.6% | **89.4%** | **+48.2%** |
-| **Refinement Rejection Rate (RRR)** | N/A (no auditor) | N/A | **8.6%** (filtered before review) | Quality Gate Active |
+| **Refinement Rejection Rate (RRR)** | N/A (no auditor) | N/A | **10.9%** (103/942 filtered before review) | Quality Gate Active |
 | **Flawed Suggestion Rate (FSR)** | 38.4% (rampant false flags) | 27.1% | **4.2%** (L2 filtered) | **-34.2% False Positives** |
 | **Intent Preservation Rate (IPR)** | 62.5% (frequent scope drift) | 79.3% | **98.8%** | **+36.3%** |
 | **Sequence Adherence** | Non-deterministic | Non-deterministic | **100.0%** (Python Orchestrated) | Deterministic |

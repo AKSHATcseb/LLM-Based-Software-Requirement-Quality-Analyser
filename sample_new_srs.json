@@ -1,0 +1,467 @@
+[
+  {
+    "requirement": {
+      "req_id": "SAMPLE1-REQ-001",
+      "text": "Document Conventions This document follows these conventions: Term Description SHALL Refers to a mandatory requirement that must be fulfilled during Phase 1 of platform development.",
+      "req_type": "Functional",
+      "section": "Extracted from SRS Document"
+    },
+    "layer1_result": {
+      "req_id": "SAMPLE1-REQ-001",
+      "attribute_scores": [
+        {
+          "attribute": "Unambiguity",
+          "score": 6.0,
+          "rationale": "The text appears to be concatenated tabular content ('Term Description SHALL Refers to...'), making the formatting unclear, although the definition of 'SHALL' itself is conceptually unambiguous."
+        },
+        {
+          "attribute": "Completeness",
+          "score": 3.0,
+          "rationale": "As a functional requirement, it fails to specify any system trigger, inputs, operational conditions, expected outputs, or software behaviors."
+        },
+        {
+          "attribute": "Consistency",
+          "score": 6.5,
+          "rationale": "It conflicts with SRS terminology standards by categorizing structural document preamble/definitions as an active system functional requirement."
+        },
+        {
+          "attribute": "Conformance",
+          "score": 2.0,
+          "rationale": "It completely lacks mandatory ISO/IEC/IEEE 29148 requirement structure (<System> shall <Action>) and misuses modal verb conventions by placing them in meta-text."
+        },
+        {
+          "attribute": "Correctness",
+          "score": 4.0,
+          "rationale": "Factually incorrect as a functional requirement; it is a document convention section header and definition mislabeled as software capability requirements."
+        },
+        {
+          "attribute": "Singularity",
+          "score": 4.5,
+          "rationale": "It combines section introduction, table column headers ('Term Description'), and a specific term definition into a single text block."
+        },
+        {
+          "attribute": "Verifiability/Feasibility",
+          "score": 3.0,
+          "rationale": "Cannot be verified through software test methods (demonstration, test, analysis) as it does not define a software function or capability."
+        }
+      ],
+      "overall_quality_score": 4.1,
+      "shortcomings": [
+        {
+          "defect_id": "DEF-1",
+          "attribute": "Conformance",
+          "problematic_excerpt": "Document Conventions This document follows these conventions: Term Description SHALL Refers to a mandatory requirement that must be fulfilled during Phase 1 of platform development.",
+          "explanation": "The text fails to follow standard ISO/IEC/IEEE 29148 requirement syntactic structure ('The <System> shall <Action>'). It is a meta-document definition rather than a system requirement statement.",
+          "severity": "high"
+        },
+        {
+          "defect_id": "DEF-2",
+          "attribute": "Correctness",
+          "problematic_excerpt": "Requirement Type: Functional",
+          "explanation": "Document conventions and glossary definitions are meta-information for the SRS document, not functional software requirements.",
+          "severity": "high"
+        },
+        {
+          "defect_id": "DEF-3",
+          "attribute": "Singularity",
+          "problematic_excerpt": "Document Conventions This document follows these conventions: Term Description SHALL Refers to...",
+          "explanation": "The statement concatenates section narrative, table headers ('Term Description'), and definition entries into a single unstructured string.",
+          "severity": "medium"
+        },
+        {
+          "defect_id": "DEF-4",
+          "attribute": "Completeness",
+          "problematic_excerpt": "SHALL Refers to a mandatory requirement that must be fulfilled during Phase 1 of platform development.",
+          "explanation": "Lacks required system functional attributes including preconditions, inputs, active system responses, and output states.",
+          "severity": "critical"
+        }
+      ],
+      "document_understanding_summary": "The statement represents metadata and document conventions for the AI-Driven Job Matching Platform SRS (prepared for MoL, PEF, and Enabel), specifically defining the normative keyword 'SHALL'. However, it has been incorrectly tagged as an individual system 'Functional' requirement."
+    },
+    "layer2_result": {
+      "req_id": "SAMPLE1-REQ-001",
+      "evaluations": [
+        {
+          "defect_id": "DEF-1",
+          "attribute": "Conformance",
+          "original_problematic_excerpt": "Document Conventions This document follows these conventions: Term Description SHALL Refers to a mandatory requirement that must be fulfilled during Phase 1 of platform development.",
+          "status": "discarded",
+          "context_reasoning": "The requirement text is explicitly establishing document conventions and definitions, not specifying a system capability. Expecting standard ISO requirement syntax ('The <System> shall <Action>') for a metadata definition is an incorrect application of rules to document preamble sections.",
+          "confidence": 0.99
+        },
+        {
+          "defect_id": "DEF-2",
+          "attribute": "Correctness",
+          "original_problematic_excerpt": "Requirement Type: Functional",
+          "status": "discarded",
+          "context_reasoning": "While it may be classified as metadata rather than a strict functional software requirement, this is an artifact of the requirements template or parsing mechanism rather than a genuine defect that impairs system implementation or verification.",
+          "confidence": 0.98
+        },
+        {
+          "defect_id": "DEF-3",
+          "attribute": "Singularity",
+          "original_problematic_excerpt": "Document Conventions This document follows these conventions: Term Description SHALL Refers to...",
+          "status": "discarded",
+          "context_reasoning": "The text represents a standard tabular or structured definition of key terms extracted into a single text block. Humans and parsers easily understand the mapping of 'Term' to 'Description'.",
+          "confidence": 0.95
+        },
+        {
+          "defect_id": "DEF-4",
+          "attribute": "Completeness",
+          "original_problematic_excerpt": "SHALL Refers to a mandatory requirement that must be fulfilled during Phase 1 of platform development.",
+          "status": "discarded",
+          "context_reasoning": "Preconditions, inputs, active system responses, and output states are entirely inapplicable to a definition of the keyword 'SHALL' used within an SRS document.",
+          "confidence": 0.99
+        }
+      ],
+      "retained_defects": [],
+      "discarded_defects": [
+        {
+          "defect_id": "DEF-3",
+          "attribute": "Singularity",
+          "problematic_excerpt": "Document Conventions This document follows these conventions: Term Description SHALL Refers to...",
+          "explanation": "The statement concatenates section narrative, table headers ('Term Description'), and definition entries into a single unstructured string.",
+          "severity": "medium"
+        },
+        {
+          "defect_id": "DEF-1",
+          "attribute": "Conformance",
+          "problematic_excerpt": "Document Conventions This document follows these conventions: Term Description SHALL Refers to a mandatory requirement that must be fulfilled during Phase 1 of platform development.",
+          "explanation": "The text fails to follow standard ISO/IEC/IEEE 29148 requirement syntactic structure ('The <System> shall <Action>'). It is a meta-document definition rather than a system requirement statement.",
+          "severity": "high"
+        },
+        {
+          "defect_id": "DEF-4",
+          "attribute": "Completeness",
+          "problematic_excerpt": "SHALL Refers to a mandatory requirement that must be fulfilled during Phase 1 of platform development.",
+          "explanation": "Lacks required system functional attributes including preconditions, inputs, active system responses, and output states.",
+          "severity": "critical"
+        },
+        {
+          "defect_id": "DEF-2",
+          "attribute": "Correctness",
+          "problematic_excerpt": "Requirement Type: Functional",
+          "explanation": "Document conventions and glossary definitions are meta-information for the SRS document, not functional software requirements.",
+          "severity": "high"
+        }
+      ],
+      "reasoning_summary": "All flagged defects are discarded because SAMPLE1-REQ-001 is not a software functional requirement, but rather a standard introductory document convention section defining terminology (such as 'SHALL'). Applying syntactic rules, functional attributes, or correctness criteria intended for system features to a metadata document convention is an over-pedantic false positive."
+    },
+    "layer3_result": {
+      "req_id": "SAMPLE1-REQ-001",
+      "original_text": "Document Conventions This document follows these conventions: Term Description SHALL Refers to a mandatory requirement that must be fulfilled during Phase 1 of platform development.",
+      "refined_text": "Document Conventions This document follows these conventions: Term Description SHALL Refers to a mandatory requirement that must be fulfilled during Phase 1 of platform development.",
+      "changes_made": [],
+      "addressed_defect_ids": [],
+      "functional_intent_preservation_rationale": "Requirement passed contextual validation with zero justified defects. No refinement needed."
+    },
+    "layer4_result": {
+      "req_id": "SAMPLE1-REQ-001",
+      "is_valid": true,
+      "verdict": "validated",
+      "checks": [
+        {
+          "criterion": "Pre-existing Quality Baseline",
+          "passed": true,
+          "observations": "Original requirement had zero justified defects."
+        }
+      ],
+      "unwarranted_assumptions_detected": [],
+      "new_ambiguities_detected": [],
+      "critique_and_feedback": "Requirement was already compliant with SRS quality baseline."
+    },
+    "layer5_result": {
+      "req_id": "SAMPLE1-REQ-001",
+      "original_text": "Document Conventions This document follows these conventions: Term Description SHALL Refers to a mandatory requirement that must be fulfilled during Phase 1 of platform development.",
+      "refined_text": "Document Conventions This document follows these conventions: Term Description SHALL Refers to a mandatory requirement that must be fulfilled during Phase 1 of platform development.",
+      "diff": null,
+      "quality_summary": {
+        "Unambiguity": 6.0,
+        "Completeness": 3.0,
+        "Consistency": 6.5,
+        "Conformance": 2.0,
+        "Correctness": 4.0,
+        "Singularity": 4.5,
+        "Verifiability/Feasibility": 3.0,
+        "OVERALL": 4.1
+      },
+      "initial_defects_count": 4,
+      "justified_defects_count": 0,
+      "validation_verdict": "validated",
+      "validation_critique": "Requirement was already compliant with SRS quality baseline.",
+      "solution_summary": "",
+      "human_decision": {
+        "status": "pending_review",
+        "final_text": "Document Conventions This document follows these conventions: Term Description SHALL Refers to a mandatory requirement that must be fulfilled during Phase 1 of platform development.",
+        "reviewer_comments": null,
+        "decision_timestamp": null
+      }
+    },
+    "execution_time_seconds": 18.337,
+    "status": "completed",
+    "error_message": null
+  },
+  {
+    "requirement": {
+      "req_id": "SAMPLE1-REQ-002",
+      "text": "The system SHALL provide a self-registration process for job seekers.",
+      "req_type": "Functional",
+      "section": "Extracted from SRS Document"
+    },
+    "layer1_result": {
+      "req_id": "SAMPLE1-REQ-002",
+      "attribute_scores": [
+        {
+          "attribute": "Unambiguity",
+          "score": 7.0,
+          "rationale": "The term 'self-registration process' is high-level and subject to multiple interpretations regarding the actual workflow and required steps."
+        },
+        {
+          "attribute": "Completeness",
+          "score": 4.5,
+          "rationale": "The requirement lacks specification of inputs (e.g., email, password, personal details), success/error conditions, triggers, and post-conditions."
+        },
+        {
+          "attribute": "Consistency",
+          "score": 9.0,
+          "rationale": "Terminology aligns well with the domain context ('job seekers') and SRS structure."
+        },
+        {
+          "attribute": "Conformance",
+          "score": 8.5,
+          "rationale": "Uses the normative modal verb 'SHALL' and follows standard system action formatting."
+        },
+        {
+          "attribute": "Correctness",
+          "score": 9.5,
+          "rationale": "Self-registration is a legitimate, necessary functional requirement for a job matching system."
+        },
+        {
+          "attribute": "Singularity",
+          "score": 8.5,
+          "rationale": "States a single overall feature, though 'process' implies underlying sub-features that should ideally be decomposed."
+        },
+        {
+          "attribute": "Verifiability/Feasibility",
+          "score": 6.0,
+          "rationale": "Without explicit acceptance criteria or input/output definitions, it is difficult to design a definitive pass/fail verification test."
+        }
+      ],
+      "overall_quality_score": 7.05,
+      "shortcomings": [
+        {
+          "defect_id": "DEF-1",
+          "attribute": "Completeness",
+          "problematic_excerpt": "provide a self-registration process for job seekers",
+          "explanation": "The requirement omits essential details such as required profile/account fields, verification mechanisms (e.g., email/SMS verification), and error responses for invalid inputs or duplicate accounts.",
+          "severity": "high"
+        },
+        {
+          "defect_id": "DEF-2",
+          "attribute": "Unambiguity",
+          "problematic_excerpt": "self-registration process",
+          "explanation": "The term 'process' is abstract and does not explicitly define what steps or actions constitute a completed registration.",
+          "severity": "medium"
+        },
+        {
+          "defect_id": "DEF-3",
+          "attribute": "Verifiability/Feasibility",
+          "problematic_excerpt": "provide a self-registration process",
+          "explanation": "The statement lacks measurable criteria or expected end-states, making objective test generation impossible without further elaboration.",
+          "severity": "medium"
+        }
+      ],
+      "document_understanding_summary": "The requirement specifies a core user onboarding feature for job seekers within an AI-driven Job Matching Platform developed for the Ministry of Labor (MoL), Palestinian Employment Fund (PEF), and Enabel."
+    },
+    "layer2_result": {
+      "req_id": "SAMPLE1-REQ-002",
+      "evaluations": [
+        {
+          "defect_id": "DEF-1",
+          "attribute": "Completeness",
+          "original_problematic_excerpt": "provide a self-registration process for job seekers",
+          "status": "justified",
+          "context_reasoning": "The provided context does not contain supplementary specifications regarding required registration data fields (e.g., name, contact info, credentials), account verification protocols, or handling of duplicate registrations and validation errors.",
+          "confidence": 0.95
+        },
+        {
+          "defect_id": "DEF-2",
+          "attribute": "Unambiguity",
+          "original_problematic_excerpt": "self-registration process",
+          "status": "justified",
+          "context_reasoning": "The term 'process' remains open to interpretation. Without defining the workflow, required user inputs, or system state transitions, developers and stakeholders may implement divergent registration flows.",
+          "confidence": 0.9
+        },
+        {
+          "defect_id": "DEF-3",
+          "attribute": "Verifiability/Feasibility",
+          "original_problematic_excerpt": "provide a self-registration process",
+          "status": "justified",
+          "context_reasoning": "Without specified end-states, success criteria, or expected system responses upon completion of registration, QA engineers cannot write deterministic test cases to verify compliance.",
+          "confidence": 0.92
+        }
+      ],
+      "retained_defects": [
+        {
+          "defect_id": "DEF-3",
+          "attribute": "Verifiability/Feasibility",
+          "problematic_excerpt": "provide a self-registration process",
+          "explanation": "The statement lacks measurable criteria or expected end-states, making objective test generation impossible without further elaboration.",
+          "severity": "medium"
+        },
+        {
+          "defect_id": "DEF-1",
+          "attribute": "Completeness",
+          "problematic_excerpt": "provide a self-registration process for job seekers",
+          "explanation": "The requirement omits essential details such as required profile/account fields, verification mechanisms (e.g., email/SMS verification), and error responses for invalid inputs or duplicate accounts.",
+          "severity": "high"
+        },
+        {
+          "defect_id": "DEF-2",
+          "attribute": "Unambiguity",
+          "problematic_excerpt": "self-registration process",
+          "explanation": "The term 'process' is abstract and does not explicitly define what steps or actions constitute a completed registration.",
+          "severity": "medium"
+        }
+      ],
+      "discarded_defects": [],
+      "reasoning_summary": "All three candidate defects (DEF-1, DEF-2, DEF-3) are confirmed as justified. The requirement statement is extremely high-level and lacks essential operational details, verification steps, dynamic behaviors, and clear acceptance criteria necessary for test generation and implementation."
+    },
+    "layer3_result": {
+      "req_id": "SAMPLE1-REQ-002",
+      "original_text": "The system SHALL provide a self-registration process for job seekers.",
+      "refined_text": "When a job seeker submits valid registration details, the system shall verify the provided contact information and create a job seeker account.",
+      "changes_made": [
+        "Replaced the vague phrase 'provide a self-registration process' with an EARS event-driven trigger ('When a job seeker submits valid registration details')",
+        "Defined explicit system actions and measurable end-states ('verify the provided contact information and create a job seeker account') to resolve ambiguity and unverifiability"
+      ],
+      "addressed_defect_ids": [
+        "DEF-1",
+        "DEF-2",
+        "DEF-3"
+      ],
+      "functional_intent_preservation_rationale": "The functional intent remains strictly focused on enabling job seekers to register themselves on the platform. The refinement simply replaces abstract terminology with verifiable trigger and completion criteria without adding unrelated features or changing business domain rules."
+    },
+    "layer4_result": {
+      "req_id": "SAMPLE1-REQ-002",
+      "is_valid": false,
+      "verdict": "rejected",
+      "checks": [
+        {
+          "criterion": "Defect Resolution",
+          "passed": false,
+          "observations": "While the refinement introduces an event-driven structure and specifies an end-state ('create a job seeker account'), it fails to fully resolve DEF-1 as it omits error handling, duplicate registration handling, and clear validation/verification criteria."
+        },
+        {
+          "criterion": "No New Ambiguities",
+          "passed": false,
+          "observations": "The term 'valid registration details' introduces a vague modifier ('valid') without defining what constitutes valid inputs or validation rules."
+        },
+        {
+          "criterion": "No Unwarranted Assumptions",
+          "passed": true,
+          "observations": "The refinement refrains from inventing unstated fields, external APIs, or specific verification protocols (e.g., SMS vs. Email OTP), staying within reasonable bounds."
+        },
+        {
+          "criterion": "Functional Intent Preservation",
+          "passed": true,
+          "observations": "The original core intent of allowing job seekers to register on the platform is preserved."
+        },
+        {
+          "criterion": "Syntactic Conformance",
+          "passed": true,
+          "observations": "The requirement conforms to IEEE 29148 and EARS syntax using appropriate 'When... the system shall...' structure."
+        }
+      ],
+      "unwarranted_assumptions_detected": [],
+      "new_ambiguities_detected": [
+        "valid registration details (undefined validation criteria)",
+        "verify the provided contact information (unspecified verification mechanism or success criteria)"
+      ],
+      "critique_and_feedback": "The proposed refinement improves the structural syntax by adopting an EARS event-driven format ('When... the system shall...'). However, it introduces the vague descriptor 'valid registration details' without specifying what defines validity, leaving the requirement unverifiable. Additionally, it leaves 'verify the provided contact information' ambiguous without defining the mechanism or outcome of verification. To achieve validation, the requirement should either reference defined validation rules or break down the registration trigger and verification mechanism into concrete, testable conditions."
+    },
+    "layer5_result": {
+      "req_id": "SAMPLE1-REQ-002",
+      "original_text": "The system SHALL provide a self-registration process for job seekers.",
+      "refined_text": "When a job seeker submits valid registration details, the system shall verify the provided contact information and create a job seeker account.",
+      "diff": {
+        "original": "The system SHALL provide a self-registration process for job seekers.",
+        "refined": "When a job seeker submits valid registration details, the system shall verify the provided contact information and create a job seeker account.",
+        "diff_markup": "[-The-] [+When a job seeker submits valid registration details, the+] system [-SHALL provide-] [+shall verify the provided contact information and create+] a [-self - registration process for-] job [-seekers-] [+seeker account+].",
+        "changed_words_count": 29
+      },
+      "quality_summary": {
+        "Unambiguity": 7.0,
+        "Completeness": 4.5,
+        "Consistency": 9.0,
+        "Conformance": 8.5,
+        "Correctness": 9.5,
+        "Singularity": 8.5,
+        "Verifiability/Feasibility": 6.0,
+        "OVERALL": 7.05
+      },
+      "initial_defects_count": 3,
+      "justified_defects_count": 3,
+      "validation_verdict": "rejected",
+      "validation_critique": "The proposed refinement improves the structural syntax by adopting an EARS event-driven format ('When... the system shall...'). However, it introduces the vague descriptor 'valid registration details' without specifying what defines validity, leaving the requirement unverifiable. Additionally, it leaves 'verify the provided contact information' ambiguous without defining the mechanism or outcome of verification. To achieve validation, the requirement should either reference defined validation rules or break down the registration trigger and verification mechanism into concrete, testable conditions.",
+      "solution_summary": "Replaced the vague phrase 'provide a self-registration process' with an EARS event-driven trigger ('When a job seeker submits valid registration details'); Defined explicit system actions and measurable end-states ('verify the provided contact information and create a job seeker account') to resolve ambiguity and unverifiability",
+      "human_decision": {
+        "status": "pending_review",
+        "final_text": "The system SHALL provide a self-registration process for job seekers.",
+        "reviewer_comments": null,
+        "decision_timestamp": null
+      }
+    },
+    "execution_time_seconds": 38.037,
+    "status": "completed",
+    "error_message": null
+  },
+  {
+    "requirement": {
+      "req_id": "SAMPLE1-REQ-003",
+      "text": "The system SHALL support account activation by user mobile number FR-03.",
+      "req_type": "Functional",
+      "section": "Extracted from SRS Document"
+    },
+    "layer1_result": null,
+    "layer2_result": null,
+    "layer3_result": null,
+    "layer4_result": null,
+    "layer5_result": null,
+    "execution_time_seconds": 0.957,
+    "status": "error",
+    "error_message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.6-flash, description: Generate content requests per minute limit exceeded on Free Tier. See https://ai.google.dev/gemini-api/docs/rate-limits.\\nPlease retry in 37.150895651s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'description': 'Generate content requests per minute limit exceeded on Free Tier. See https://ai.google.dev/gemini-api/docs/rate-limits.', 'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '37s'}]}}"
+  },
+  {
+    "requirement": {
+      "req_id": "SAMPLE1-REQ-004",
+      "text": "The system SHALL collect the following information from job seekers through a multi-level onboarding process (via mobile/email): - Level 1: First and last name, email, mobile number, password, gender - Level 2: Education, work experience, skills, training, certificates, recent salary (optional), current address, permanent address/residence - Level 3 (optional): Social media links (e.g., LinkedIn, IEEE, X), personal statement, bio FR-04.",
+      "req_type": "Functional",
+      "section": "Extracted from SRS Document"
+    },
+    "layer1_result": null,
+    "layer2_result": null,
+    "layer3_result": null,
+    "layer4_result": null,
+    "layer5_result": null,
+    "execution_time_seconds": 0.743,
+    "status": "error",
+    "error_message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.6-flash, description: Generate content requests per minute limit exceeded on Free Tier. See https://ai.google.dev/gemini-api/docs/rate-limits.\\nPlease retry in 36.263627735s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'description': 'Generate content requests per minute limit exceeded on Free Tier. See https://ai.google.dev/gemini-api/docs/rate-limits.', 'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-3.6-flash', 'location': 'global'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '36s'}]}}"
+  },
+  {
+    "requirement": {
+      "req_id": "SAMPLE1-REQ-005",
+      "text": "The system SHALL support resume/CV upload in common formats (PDF, DOCX, TXT).",
+      "req_type": "Functional",
+      "section": "Extracted from SRS Document"
+    },
+    "layer1_result": null,
+    "layer2_result": null,
+    "layer3_result": null,
+    "layer4_result": null,
+    "layer5_result": null,
+    "execution_time_seconds": 0.759,
+    "status": "error",
+    "error_message": "429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 5, model: gemini-3.6-flash, description: Generate content requests per minute limit exceeded on Free Tier. See https://ai.google.dev/gemini-api/docs/rate-limits.\\nPlease retry in 35.467515148s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'description': 'Generate content requests per minute limit exceeded on Free Tier. See https://ai.google.dev/gemini-api/docs/rate-limits.', 'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerMinutePerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.6-flash'}, 'quotaValue': '5'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '35s'}]}}"
+  }
+]

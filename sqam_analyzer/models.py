@@ -9,7 +9,7 @@ defects, refinements, validation audits, and human-in-the-loop decisions.
 from __future__ import annotations
 
 from enum import Enum
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 from pydantic import BaseModel, Field
 
 
@@ -34,12 +34,51 @@ class QualityAttribute(str, Enum):
 DEFAULT_QUALITY_WEIGHTS: Dict[QualityAttribute, float] = {
     QualityAttribute.UNAMBIGUITY: 0.20,
     QualityAttribute.COMPLETENESS: 0.20,
-    QualityAttribute.CONSISTENCY: 0.15,
+    QualityAttribute.VERIFIABILITY_FEASIBILITY: 0.20,
+    QualityAttribute.CONSISTENCY: 0.10,
     QualityAttribute.CONFORMANCE: 0.10,
-    QualityAttribute.CORRECTNESS: 0.15,
+    QualityAttribute.CORRECTNESS: 0.10,
     QualityAttribute.SINGULARITY: 0.10,
-    QualityAttribute.VERIFIABILITY_FEASIBILITY: 0.10,
 }
+
+
+def compute_overall_quality_score(
+    attribute_scores: Union[List[AttributeScore], Dict[Any, float]],
+) -> float:
+    """
+    Computes Q_req deterministically according to Eq. (1) of the SQAM paper:
+        Q_req = sum(w_i * S(A_i))
+    with w_unambig = w_complete = w_verif = 0.20
+    and w_consist = w_conform = w_correct = w_sing = 0.10.
+    """
+    weights: Dict[str, float] = {
+        QualityAttribute.UNAMBIGUITY.value: 0.20,
+        QualityAttribute.COMPLETENESS.value: 0.20,
+        QualityAttribute.VERIFIABILITY_FEASIBILITY.value: 0.20,
+        QualityAttribute.CONSISTENCY.value: 0.10,
+        QualityAttribute.CONFORMANCE.value: 0.10,
+        QualityAttribute.CORRECTNESS.value: 0.10,
+        QualityAttribute.SINGULARITY.value: 0.10,
+    }
+
+    score_map: Dict[str, float] = {}
+    if isinstance(attribute_scores, list):
+        for item in attribute_scores:
+            attr_val = item.attribute.value if hasattr(item.attribute, "value") else str(item.attribute)
+            score_map[attr_val] = float(item.score)
+    elif isinstance(attribute_scores, dict):
+        for k, v in attribute_scores.items():
+            attr_val = k.value if hasattr(k, "value") else str(k)
+            score_map[attr_val] = float(v)
+    else:
+        raise TypeError("attribute_scores must be a list of AttributeScore or a dictionary of scores")
+
+    # Handle alias if Verifiability was passed without Feasibility
+    if "Verifiability/Feasibility" not in score_map and "Verifiability" in score_map:
+        score_map["Verifiability/Feasibility"] = score_map["Verifiability"]
+
+    total = sum(w * score_map.get(attr, 0.0) for attr, w in weights.items())
+    return round(total, 2)
 
 
 class SeverityLevel(str, Enum):

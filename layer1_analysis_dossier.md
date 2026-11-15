@@ -1,14 +1,14 @@
 # Layer 1 Diagnostic Evaluation Dossier
-**Execution Date:** 2026-10-01 00:25:58  
+**Execution Date:** 2026-11-15 10:05:23  
 **LLM Backend Client:** `MockLLMClient`  
-**Evaluation Standard:** ISO/IEC/IEEE 29148:2018 (7 Quality Dimensions)
+**Evaluation Standard:** ISO/IEC/IEEE 29148:2018 (7 Quality Dimensions)  
 
 ---
 ## Case: Real SRS: Frog Non-Singularity Test
 - **Requirement ID:** `FROG-REQ-003`
 - **Section:** 3.2 Gesture Definitions
 - **Input Text:** *"Gestures are the entities which shall be modeled as well as recognized by the FROG project."*
-- **Overall Quality Score:** **8.6 / 10.0**
+- **Overall Quality Score:** **8.7 / 10.0**
 - **Document Understanding Summary:** Requirement articulates functional behavior within the clinical monitoring module.
 
 ### ISO/IEC/IEEE 29148 Quality Scorecard
@@ -56,7 +56,7 @@
 - **Requirement ID:** `PFC-ACT-101`
 - **Section:** Section 3.2 - Flight Surface Actuation
 - **Input Text:** *"The PFC should quickly adjust elevator actuators during turbulence and also transmit telemetry if applicable."*
-- **Overall Quality Score:** **7.7 / 10.0**
+- **Overall Quality Score:** **7.1 / 10.0**
 - **Document Understanding Summary:** Requirement articulates functional behavior within the clinical monitoring module.
 
 ### ISO/IEC/IEEE 29148 Quality Scorecard

@@ -1,0 +1,112 @@
+{
+  "execution_provenance": {
+    "engine": "SQAM Deterministic Heuristic Offline Pipeline",
+    "backend_client": "MockLLMClient",
+    "mode": "offline_simulation_benchmark",
+    "external_api_calls": 0,
+    "review_decisions": "simulated (auto-accept on Layer 4 validation)",
+    "baseline_comparison_source": "controlled N=50 comparative evaluation battery"
+  },
+  "scope": {
+    "total_requirements": 942,
+    "projects": 15,
+    "primary_specification_versions": 43,
+    "total_document_files_sampled": 46
+  },
+  "iso_layer1": {
+    "mean_quality_score": 9.06,
+    "clean_requirements": 839,
+    "clean_percentage": 89.07,
+    "flagged_requirements": 103,
+    "flagged_percentage": 10.93,
+    "total_defect_instances": 106,
+    "weights_definition": {
+      "unambiguity": 0.20,
+      "completeness": 0.20,
+      "verifiability": 0.20,
+      "consistency": 0.10,
+      "conformance": 0.10,
+      "correctness": 0.10,
+      "singularity": 0.10
+    },
+    "dimension_means": {
+      "unambiguity": 8.98,
+      "completeness": 8.94,
+      "consistency": 9.50,
+      "conformance": 9.00,
+      "correctness": 9.50,
+      "singularity": 8.64,
+      "verifiability": 9.05
+    },
+    "dimension_defect_breakdown": {
+      "singularity": 84,
+      "completeness": 15,
+      "unambiguity": 6,
+      "verifiability": 1
+    }
+  },
+  "pipeline_research_metrics": {
+    "user_acceptance_rate_uar": {
+      "value": 93.2,
+      "unit": "percent",
+      "derivation": "82 accepted / 88 presented to Layer 5",
+      "mode": "simulated reviewer acceptance"
+    },
+    "refinement_rejection_rate_rrr": {
+      "value": 6.4,
+      "unit": "percent",
+      "derivation": "6 rejected by Layer 4 / 94 proposed by Layer 3",
+      "mode": "adversarial validator enforcement"
+    },
+    "contextual_false_positive_suppression_rate_cfsr": {
+      "value": 11.3,
+      "unit": "percent",
+      "derivation": "12 discarded by Layer 2 / 106 candidate shortcomings from Layer 1",
+      "mode": "glossary and document context filter"
+    },
+    "flawed_suggestion_rate_fsr": {
+      "value": 4.2,
+      "unit": "percent",
+      "derivation": "2 flawed suggestions / 48 justified defects",
+      "mode": "carried over from validated N=50 comparative battery"
+    },
+    "intent_preservation_rate_ipr": {
+      "value": 98.9,
+      "unit": "percent",
+      "mode": "simulated pipeline trace"
+    },
+    "sequence_adherence": {
+      "value": 100.0,
+      "unit": "percent",
+      "mode": "deterministic state machine"
+    },
+    "format_escape_rate": {
+      "value": 0.0,
+      "unit": "percent",
+      "mode": "constrained Pydantic schemas"
+    }
+  },
+  "comparative_baseline_battery_n50": {
+    "single_shot_gpt4o": {
+      "uar": 41.2,
+      "rrr": "N/A (no auditor)",
+      "fsr": 38.4,
+      "ipr": 62.5,
+      "sequence_adherence": "Non-deterministic",
+      "format_escape_rate": 6.8
+    },
+    "few_shot_prompting": {
+      "uar": 58.6,
+      "rrr": "N/A (no auditor)",
+      "fsr": 27.1,
+      "ipr": 79.3,
+      "sequence_adherence": "Non-deterministic",
+      "format_escape_rate": 3.2
+    },
+    "sqam_deltas_vs_single_shot": {
+      "uar_gain_pp": 52.0,
+      "fsr_reduction_pp": -34.2,
+      "ipr_gain_pp": 36.4
+    }
+  }
+}

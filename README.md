@@ -149,6 +149,48 @@ python example.py
 
 ## 💻 CLI Commands & Usage
 
+### 0. Test Any Custom / New SRS (Pipeline 1)
+Any user can analyze their own custom SRS document by providing a JSON file containing the requirements and system context:
+
+```bash
+# 1. Run analysis on a custom SRS JSON file
+python main.py --srs-file sample_new_srs.json
+
+# 2. Run with interactive terminal review (Human-in-the-Loop)
+python main.py --srs-file sample_new_srs.json --interactive
+
+# 3. Specify LLM provider (Gemini or OpenAI) and export Markdown audit report
+python main.py --srs-file sample_new_srs.json --provider gemini --model gemini-2.5-flash --output-report report.md
+
+# 4. Limit the number of requirements analyzed (e.g. first 3)
+python main.py --srs-file sample_new_srs.json --limit 3
+```
+
+#### JSON Format for Custom SRS:
+Create a JSON file (or copy [`sample_new_srs.json`](file:///sample_new_srs.json)):
+```json
+{
+  "document_title": "My System SRS v1.0",
+  "domain_summary": "System overview, domain constraints, safety levels, etc.",
+  "glossary": {
+    "SpecificTerm": "Precise definition to eliminate false positives in Layer 2"
+  },
+  "applicable_standards": ["ISO/IEC/IEEE 29148:2018"],
+  "surrounding_requirements": [
+    "REQ-000: Neighboring or context requirements"
+  ],
+  "requirements": [
+    {
+      "req_id": "REQ-001",
+      "text": "The system shall quickly process user queries.",
+      "req_type": "Functional / Performance",
+      "section": "Section 3.1"
+    }
+  ]
+}
+```
+*(Alternatively, a simple JSON array `[{"req_id": "REQ-1", "text": "..."}]` is also accepted!)*
+
 ### 1. Test Real SRS Documents Directly
 Test any project PDF or Markdown file from `srs doc versions/`:
 ```bash

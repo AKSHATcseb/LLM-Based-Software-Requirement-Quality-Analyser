@@ -1,0 +1,15 @@
+{
+  "raw_response": "{\n  \"req_id\": \"REQ-SRS_v1.1-0001\",\n  \"is_valid\": true,\n  \"verdict\": \"validated\",\n  \"checks\": [\n    {\n      \"criterion\": \"Defect Resolution\",\n      \"passed\": true,\n      \"observations\": \"Successfully resolved compound functionality by isolating gesture recognition, replaced passive voice, and incorporated domain context to eliminate ambiguity and incompleteness.\"\n    },\n    {\n      \"criterion\": \"No New Ambiguities\",\n      \"passed\": true,\n      \"observations\": \"No subjective descriptors or vague bounds were introduced. 'Predefined' clearly indicates a bounded set of target gestures.\"\n    },\n    {\n      \"criterion\": \"No Unwarranted Assumptions\",\n      \"passed\": true,\n      \"observations\": \"The terms '3D vision-based', 'patient gestures', and 'telemetry data' are strictly derived from the provided SRS domain context and glossary without introducing arbitrary technical specifics.\"\n    },\n    {\n      \"criterion\": \"Functional Intent Preservation\",\n      \"passed\": true,\n      \"observations\": \"Maintains the core functional goal of recognizing gestures within the FROG medical rehabilitation context while eliminating the vague 'modeled' component.\"\n    },\n    {\n      \"criterion\": \"Syntactic Conformance\",\n      \"passed\": true,\n      \"observations\": \"Fully conforms to ISO/IEC/IEEE 29148 requirements syntax using active voice ('The FROG system shall recognize...').\"\n    }\n  ],\n  \"unwarranted_assumptions_detected\": [],\n  \"new_ambiguities_detected\": [],\n  \"critique_and_feedback\": \"The proposed refinement effectively addresses all identified defects (DEF-1 through DEF-5) without introducing scope creep, unwarranted technical assumptions, or vague terminology. The refined statement adheres to ISO/IEC/IEEE 29148 standards, utilizes domain context appropriately, and establishes a clear, singular, verifiable requirement.\"\n}",
+  "meta": {
+    "layer": "L4",
+    "req_id": "REQ-SRS_v1.1-0001",
+    "model": "gemini-3.5-flash",
+    "temperature": 0.0,
+    "input_tokens": 1382,
+    "output_tokens": 440,
+    "total_tokens": 1822,
+    "cost_usd": 0.00031420000000000005,
+    "latency_seconds": 10.592,
+    "cached": false
+  }
+}

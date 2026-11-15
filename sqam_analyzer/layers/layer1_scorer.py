@@ -22,7 +22,7 @@ import logging
 from typing import Optional
 from sqam_analyzer.layers.base import BaseLayer
 from sqam_analyzer.llm_provider import BaseLLMClient
-from sqam_analyzer.models import Layer1Output, Requirement, SRSContext
+from sqam_analyzer.models import Layer1Output, Requirement, SRSContext, compute_overall_quality_score
 from sqam_analyzer.prompts import LAYER_1_SYSTEM_PROMPT, LAYER_1_USER_TEMPLATE
 
 logger = logging.getLogger(__name__)
@@ -72,6 +72,9 @@ class Layer1DocumentScorer(BaseLayer):
             schema_class=Layer1Output,
             temperature=temperature,
         )
+
+        # Deterministically compute Q_req in Python from the 7 attribute scores per Eq. (1)
+        output.overall_quality_score = compute_overall_quality_score(output.attribute_scores)
 
         logger.info(
             "Layer 1 complete for %s: Overall score %.1f/10, %d candidate shortcomings identified",

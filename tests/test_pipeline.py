@@ -360,6 +360,48 @@ class TestSQAMPipeline(unittest.TestCase):
         self.assertIn('"overall_quality_score"', json_str)
 
 
+    # -----------------------------------------------------------------------
+    # Deterministic Equation (1) Quality Scoring
+    # -----------------------------------------------------------------------
+    def test_deterministic_weighted_q_req_calculation(self):
+        """Verifies that Q_req is computed deterministically using ISO 29148 Eq. (1) weights."""
+        from sqam_analyzer.models import AttributeScore, QualityAttribute, compute_overall_quality_score
+
+        # Distinct scores for each attribute
+        # unambig=8.0 (w=0.20 -> 1.6), complete=6.0 (w=0.20 -> 1.2), verif=10.0 (w=0.20 -> 2.0)
+        # consist=7.0 (w=0.10 -> 0.7), conform=9.0 (w=0.10 -> 0.9), correct=8.0 (w=0.10 -> 0.8), sing=5.0 (w=0.10 -> 0.5)
+        # Total = 1.6 + 1.2 + 2.0 + 0.7 + 0.9 + 0.8 + 0.5 = 7.7
+        scores_list = [
+            AttributeScore(attribute=QualityAttribute.UNAMBIGUITY, score=8.0, rationale="ok"),
+            AttributeScore(attribute=QualityAttribute.COMPLETENESS, score=6.0, rationale="ok"),
+            AttributeScore(attribute=QualityAttribute.CONSISTENCY, score=7.0, rationale="ok"),
+            AttributeScore(attribute=QualityAttribute.CONFORMANCE, score=9.0, rationale="ok"),
+            AttributeScore(attribute=QualityAttribute.CORRECTNESS, score=8.0, rationale="ok"),
+            AttributeScore(attribute=QualityAttribute.SINGULARITY, score=5.0, rationale="ok"),
+            AttributeScore(attribute=QualityAttribute.VERIFIABILITY_FEASIBILITY, score=10.0, rationale="ok"),
+        ]
+        q_calc = compute_overall_quality_score(scores_list)
+        self.assertAlmostEqual(q_calc, 7.7, places=2)
+
+        # Test dictionary input
+        scores_dict = {
+            "Unambiguity": 10.0,
+            "Completeness": 10.0,
+            "Consistency": 10.0,
+            "Conformance": 10.0,
+            "Correctness": 10.0,
+            "Singularity": 10.0,
+            "Verifiability/Feasibility": 10.0,
+        }
+        self.assertAlmostEqual(compute_overall_quality_score(scores_dict), 10.0, places=2)
+
+        # Test Layer 1 execution deterministically overwrites overall_quality_score
+        scorer = Layer1DocumentScorer(llm_client=self.mock_llm)
+        out = scorer.execute(self.sample_req, self.srs_context)
+        expected = compute_overall_quality_score(out.attribute_scores)
+        self.assertEqual(out.overall_quality_score, expected)
+
+
 if __name__ == "__main__":
     unittest.main()
 

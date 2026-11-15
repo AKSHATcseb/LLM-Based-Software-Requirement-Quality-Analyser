@@ -1,0 +1,15 @@
+{
+  "raw_response": "{\n  \"req_id\": \"REQ-SRS_v1.1-0001\",\n  \"original_text\": \"Gestures are the entities which shall be modeled as well as recognized by the FROG project.\",\n  \"refined_text\": \"The FROG system shall recognize predefined 3D vision-based patient gestures from telemetry data.\",\n  \"changes_made\": [\n    \"Restructured statement to standard EARS active phrasing ('The FROG system shall recognize...') addressing non-conformance (DEF-2).\",\n    \"Focused statement on gesture recognition capability, removing compound 'modeled as well as' phrasing to satisfy singularity (DEF-1) and clear ambiguity (DEF-4).\",\n    \"Specified 'predefined 3D vision-based patient gestures from telemetry data' using context and domain glossary to resolve completeness (DEF-3) and verifiability (DEF-5).\"\n  ],\n  \"addressed_defect_ids\": [\n    \"DEF-1\",\n    \"DEF-2\",\n    \"DEF-3\",\n    \"DEF-4\",\n    \"DEF-5\"\n  ],\n  \"functional_intent_preservation_rationale\": \"The original requirement established gesture recognition as a core functional capability of the FROG project. The refined text maintains this exact scope and domain context (3D vision gesture recognition from telemetry data) while converting the passive, ambiguous compound formulation into a singular, verifiable system requirement.\"\n}",
+  "meta": {
+    "layer": "L3",
+    "req_id": "REQ-SRS_v1.1-0001",
+    "model": "gemini-3.5-flash",
+    "temperature": 0.0,
+    "input_tokens": 1143,
+    "output_tokens": 314,
+    "total_tokens": 1457,
+    "cost_usd": 0.00023990000000000003,
+    "latency_seconds": 8.958,
+    "cached": false
+  }
+}
