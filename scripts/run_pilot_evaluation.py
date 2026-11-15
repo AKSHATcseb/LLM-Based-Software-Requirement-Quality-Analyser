@@ -304,29 +304,38 @@ class ResilientGeminiClient(BaseLLMClient):
 
 def build_capped_srs_context(project_name: str, version_file: str) -> SRSContext:
     domain_map = {
-        "1_FROG": "3D vision-based gesture recognition system for medical rehabilitation.",
-        "2_SMIRK": "Machine learning pedestrian safety braking system under ISO 26262 ASIL D.",
-        "3_ONEM": "Global IoT/M2M architecture specification for interoperable services.",
-        "4_UIC": "EIRENE radio telecom standard for European high-speed railway networks.",
-        "5_EVLA BACKEND SYSTEM REQUIREMENTS": "Radio astronomy correlator backend signal processing.",
-        "6": "ETSI multi-access edge computing (MEC) telecommunication architecture.",
-        "7": "Industrial programmable logic controller embedded monitoring and safety.",
-        "8": "Robotic embedded actuator positioning and telemetry acquisition.",
-        "9": "Critical medical patient monitoring system with real-time alerting.",
-        "10": "Satellite avionics telemetry, power distribution, and command routing.",
-        "11": "Infusion pump medical firmware under IEC 62304 life-critical standards.",
-        "12": "Distributed smart-city cyber-physical sensor grid and telemetry.",
-        "13": "Onto-DESIDE EU circular economy semantic data platform deliverable.",
-        "14": "Secure boundary gateway firewall and cryptographic traffic inspection.",
-        "15": "Enterprise cloud financial banking transaction ledger platform.",
+        "1_FROG": "FROG: 3D vision and sensor-based gesture recognition system (Team Better Recognize, TCU).",
+        "2_SMIRK": "SMIRK: Machine learning pedestrian emergency braking system for autonomous vehicles under ISO 26262 ASIL D and AMLAS safety assurance.",
+        "3_ONEM": "oneM2M: Global IoT and Machine-to-Machine service layer technical specifications and interoperable functional architecture.",
+        "4_UIC": "UIC EIRENE: European Integrated Railway Radio Enhanced Network radio telecom standard for high-speed railway interoperability.",
+        "5_EVLA BACKEND SYSTEM REQUIREMENTS": "EVLA: NRAO Expanded Very Large Array radio astronomy correlator backend signal processing and data acquisition system.",
+        "6": "ETSI GS MEC 002: Multi-access Edge Computing (MEC) technical requirements and architectural framework for telecommunication systems.",
+        "7": "InteropEHRate (EU H2020 GA 826106): Integrated Electronic Health Record (EHR) web application for Healthcare Professionals (HCP App) enabling secure cross-border health data exchange.",
+        "8": "IMPULSE (EU H2020 GA 101004459): Identity Management in Public Services using electronic identification (eID), verifiable credentials, and GDPR-compliant identity verification.",
+        "9": "DECIDE (EU H2020 GA 731533): DevOps framework for multi-cloud applications enabling automated microservice deployment, non-functional property monitoring, and multi-cloud adaptation.",
+        "10": "CPaaS.io (EU-Japan H2020 GA 723076 / NICT 18302): City Platform as a Service, open urban IoT platform for smart cities (smart parking, enhanced user experience, emergency response, and federated cloud services).",
+        "11": "URBANITE (EU H2020 GA 870338): Decision-support ecosystem for urban mobility and public transportation transformation using big data, IoT, and mobility analytics.",
+        "12": "CLARUS (EU H2020 GA 644024): User-centered framework for cloud privacy and security, providing a cryptographic proxy for data encryption, anonymization, and access auditing.",
+        "13": "Onto-DESIDE (EU Horizon Europe GA 101058682): Decentralized semantic circular economy platform using shared ontologies to support circular material and product data exchange.",
+        "14": "ECOders CPCESU (Northern Arizona University CS 476 Capstone): Web-based project management system for the Colorado Plateau Cooperative Ecosystem Studies Unit to track research task agreements.",
+        "15": "Guru99 Banking Project (Guru99.com): Web-based commercial online banking application managing customer accounts, transactions, balances, fund transfers, and financial statements.",
     }
     glossary_map = {
-        "1_FROG": {"SunSPOT": "Wireless transducer sensor node", "Telemetry": "Sensor data stream"},
-        "2_SMIRK": {"Ego-Vehicle": "Subject autonomous rail vehicle", "ASIL D": "Highest safety level"},
-        "3_ONEM": {"AE": "Application Entity", "CSE": "Common Services Entity", "M2M": "Machine to Machine"},
-        "4_UIC": {"eMLPP": "Enhanced Multi-Level Precedence and Pre-emption", "REC": "Railway Emergency Call"},
-        "9": {"Vital Anomaly": "Systolic > 180 mmHg or HR < 40 bpm", "Central Station": "Nurse monitoring node"},
-        "13": {"WP2": "Work Package 2 Research Methodology", "Onto-DESIDE": "Circular economy platform"},
+        "1_FROG": {"SunSPOT": "Wireless transducer sensor node", "Telemetry": "Sensor data stream", "FROG": "Gesture recognition system"},
+        "2_SMIRK": {"Ego-Vehicle": "Subject autonomous vehicle", "ASIL D": "Automotive Safety Integrity Level D", "AMLAS": "Assurance of Machine Learning for Aerospace and Autonomous Systems"},
+        "3_ONEM": {"AE": "Application Entity", "CSE": "Common Services Entity", "M2M": "Machine to Machine", "IN": "Infrastructure Node"},
+        "4_UIC": {"eMLPP": "Enhanced Multi-Level Precedence and Pre-emption", "REC": "Railway Emergency Call", "CAB radio": "Driver cabin radio transceiver"},
+        "5_EVLA BACKEND SYSTEM REQUIREMENTS": {"Correlator": "Backend radio signal correlation hardware/software", "NRAO": "National Radio Astronomy Observatory", "WIDAR": "Wideband Interferometric Digital Architecture"},
+        "6": {"MEC": "Multi-access Edge Computing", "ME host": "Multi-access Edge host", "ME app": "Multi-access Edge application", "Mp1": "MEC application reference point"},
+        "7": {"EHR": "Electronic Health Record", "HCP": "Healthcare Professional", "S-EHR": "Smart Electronic Health Record mobile app", "FHIR": "Fast Healthcare Interoperability Resources"},
+        "8": {"eID": "Electronic Identification", "IMPULSE": "Identity Management in Public Services project", "Verifiable Credential": "Cryptographically verifiable identity assertion", "GDPR": "General Data Protection Regulation"},
+        "9": {"DECIDE": "DevOps framework for multi-cloud applications", "NFP": "Non-Functional Property", "ARCHES": "Architecture description and assessment tool", "ADAPT": "Multi-cloud dynamic adaptation engine"},
+        "10": {"CPaaS.io": "City Platform as a Service", "EUE": "Enhanced User Experience application", "Smart Parking": "Urban parking monitoring and reservation", "Federation": "Cross-platform cloud linking EU and Japan"},
+        "11": {"URBANITE": "Urban mobility decision-support ecosystem", "Mobility Data": "Traffic, transit, and commute telemetry", "Decision Support": "Simulation and impact assessment engine for city planners"},
+        "12": {"CLARUS": "Cloud privacy and security proxy framework", "Cryptographic Proxy": "Data security mediation module between client and cloud", "Anonymization": "Privacy-preserving data sanitization"},
+        "13": {"Onto-DESIDE": "Circular economy semantic data sharing platform", "Circular Economy": "Materials lifecycle and waste elimination framework", "WP2": "Work Package 2 Research Methodology"},
+        "14": {"CPCESU": "Colorado Plateau Cooperative Ecosystem Studies Unit", "Task Agreement": "Sponsored research award and funding agreement", "ECOders": "Software engineering project team"},
+        "15": {"Guru99 Banking": "Commercial online banking web application", "Mini Statement": "Recent transactions summary report", "Fund Transfer": "Inter-account capital relocation"},
     }
 
     d_summary = domain_map.get(project_name, f"Automated specification quality analysis for {project_name}.")
@@ -514,6 +523,11 @@ def run_evaluation(
     # Detailed metric aggregations
     overall_scores = [r["layer1"]["overall_quality_score"] for r in eval_results if r.get("layer1")]
     mean_q = sum(overall_scores) / len(overall_scores) if overall_scores else 0.0
+    flagged_in_l1_count = sum(
+        1 for r in eval_results
+        if len(r.get("layer1", {}).get("shortcomings", [])) > 0
+        or any(a.get("score", 10.0) < 8.0 for a in r.get("layer1", {}).get("attribute_scores", []))
+    )
 
     attr_sums = defaultdict(float)
     attr_counts = defaultdict(int)
@@ -550,12 +564,12 @@ def run_evaluation(
         "model": model_name,
         "total_evaluated": len(eval_results),
         "schema_failures": schema_failures,
-        "flagged_in_l1": flagged_in_l1,
-        "clean_pass_in_l1": len(eval_results) - flagged_in_l1,
+        "flagged_in_l1": flagged_in_l1_count,
+        "clean_pass_in_l1": len(eval_results) - flagged_in_l1_count,
         "retained_in_l2": retained_in_l2,
         "validated_in_l4": validated_in_l4,
         "rejected_in_l4": rejected_in_l4,
-        "flag_rate_pct": round(flagged_in_l1 / len(eval_results) * 100, 1) if eval_results else 0.0,
+        "flag_rate_pct": round(flagged_in_l1_count / len(eval_results) * 100, 1) if eval_results else 0.0,
         "mean_overall_quality_score": round(mean_q, 2),
         "attribute_means": attr_means,
         "total_candidate_defects_l1": total_l1_defects,

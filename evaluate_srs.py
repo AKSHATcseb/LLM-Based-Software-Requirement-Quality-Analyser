@@ -60,8 +60,8 @@ def main():
     )
     parser.add_argument(
         "--model",
-        default="gpt-4o",
-        help="Model name (e.g. gpt-4o, gemini-2.5-flash)",
+        default="gemini-3.5-flash-lite",
+        help="Model name (e.g. gemini-3.5-flash-lite, gpt-4o)",
     )
     parser.add_argument(
         "--output",

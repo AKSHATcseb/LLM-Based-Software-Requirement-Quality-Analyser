@@ -569,7 +569,7 @@ def resolve_llm_client(
         return MockLLMClient()
 
     if p == "gemini":
-        return GeminiLLMClient(model_name=model or "gemini-3.5-flash")
+        return GeminiLLMClient(model_name=model or "gemini-3.5-flash-lite")
 
     if p == "openai":
         return OpenAILLMClient(model_name=model or "gpt-4o")
@@ -579,7 +579,7 @@ def resolve_llm_client(
     openai_key = os.getenv("OPENAI_API_KEY")
 
     if gemini_key:
-        return GeminiLLMClient(model_name=model or "gemini-3.5-flash")
+        return GeminiLLMClient(model_name=model or "gemini-3.5-flash-lite")
     elif openai_key:
         return OpenAILLMClient(model_name=model or "gpt-4o")
     else:

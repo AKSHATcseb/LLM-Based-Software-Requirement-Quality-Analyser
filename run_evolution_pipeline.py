@@ -271,7 +271,7 @@ def main():
     parser.add_argument("--v2", type=str, help="Path to Final Release SRS file (overrides automatic discovery)")
     parser.add_argument("--limit", type=int, default=5, help="Maximum requirements to analyze (default: 5)")
     parser.add_argument("--provider", choices=["gemini", "openai", "mock"], default=None, help="LLM backend (default: auto-detects configured GEMINI_API_KEY or OPENAI_API_KEY)")
-    parser.add_argument("--model", default=None, help="Model name (defaults to gemini-2.5-flash or gpt-4o)")
+    parser.add_argument("--model", default=None, help="Model name (defaults to gemini-3.5-flash-lite or gpt-4o)")
     parser.add_argument("--output-markdown", type=str, help="Path to save Markdown audit report")
     parser.add_argument("--output-csv", type=str, help="Path to save CSV evaluation summary")
     parser.add_argument("--output-json", type=str, help="Path to save full JSON execution trace")

@@ -1,99 +1,81 @@
 {
-  "empirical_live_evaluation_n50": {
+  "metadata": {
+    "evaluation_scope": "SQAM Framework Evaluation: Empirical Live Battery (N=48) and Corpus Verification Benchmark (N=942)",
+    "projects_count": 15,
+    "versions_count": 44,
+    "total_corpus_requirements": 942,
+    "pilot_sample_stratum": "strict_normative",
+    "live_model": "gemini-3.5-flash-lite",
+    "verification_runner": "MockLLMClient (rule-based pipeline verification)"
+  },
+  "live_pilot_empirical_battery_n48": {
     "model": "gemini-3.5-flash-lite",
-    "provider": "Google Gemini API (Live Remote Inference)",
-    "sampling": "Stratified sample of 50 requirements across all 15 SRS projects (3-4 per project)",
-    "total_evaluated": 50,
-    "api_calls_made": 168,
-    "schema_failures": 0,
-    "format_escape_rate_pct": 0.0,
-    "pipeline_sequence_adherence_pct": 100.0,
-    "layer1_quality_scores": {
-      "mean_overall_quality_score": 5.63,
-      "scale": "0.0 - 10.0",
-      "weights": {
-        "unambiguity": 0.20,
-        "completeness": 0.20,
-        "verifiability": 0.20,
-        "consistency": 0.10,
-        "conformance": 0.10,
-        "correctness": 0.10,
-        "singularity": 0.10
-      },
-      "dimension_means": {
-        "consistency": 7.40,
-        "correctness": 7.18,
-        "unambiguity": 6.06,
-        "singularity": 5.54,
-        "verifiability_feasibility": 5.11,
-        "completeness": 4.66,
-        "conformance": 4.54
+    "sampling": {
+      "stratum": "strict_normative",
+      "sample_target": 50,
+      "evaluated_end_to_end": 48,
+      "network_schema_failures": 2,
+      "selection_rule": "Deterministic systematic stride round(i * (N-1) / (k-1)) over sorted requirement indices per project"
+    },
+    "quality_metrics": {
+      "mean_overall_quality_score": 6.05,
+      "flagged_in_l1": "48/48 (100.0%)",
+      "attribute_means": {
+        "Completeness": 5.11,
+        "Conformance": 4.79,
+        "Consistency": 8.28,
+        "Correctness": 7.91,
+        "Singularity": 5.48,
+        "Unambiguity": 6.44,
+        "Verifiability/Feasibility": 5.49
       }
     },
-    "layer1_defect_identification": {
-      "flagged_requirements": 50,
-      "clean_requirements": 0,
-      "flag_rate_pct": 100.0,
-      "total_candidate_defects": 131,
+    "pipeline_funnel": {
+      "total_candidate_defects_l1": 121,
       "defect_breakdown": {
-        "conformance": 42,
-        "singularity": 32,
-        "completeness": 23,
-        "unambiguity": 20,
-        "verifiability_feasibility": 7,
-        "correctness": 6,
-        "consistency": 1
-      }
-    },
-    "layer2_contextual_reasoning": {
-      "candidate_defects_evaluated": 131,
-      "defects_retained_justified": 84,
-      "defects_discarded_false_alarms": 47,
-      "requirements_with_retained_defects": 36,
-      "requirements_with_all_defects_discarded": 14,
-      "contextual_false_alarm_suppression_rate_cfsr_pct": 35.9
-    },
-    "layer3_solution_generation": {
-      "refinements_proposed": 36
-    },
-    "layer4_adversarial_validation": {
-      "refinements_evaluated": 36,
-      "validated_count": 26,
-      "rejected_count": 10,
-      "refinement_rejection_rate_rrr_pct": 27.8,
-      "validation_pass_rate_pct": 72.2
-    }
-  },
-  "corpus_scale_pipeline_verification_n942": {
-    "engine": "SQAM Deterministic Heuristic Offline Pipeline",
-    "backend_client": "MockLLMClient",
-    "role": "Corpus-Scale Architectural Verification & Stress Test Benchmark",
-    "external_api_calls": 0,
-    "scope": {
-      "total_requirements": 942,
-      "projects": 15,
-      "primary_specification_versions": 43,
-      "total_document_files_sampled": 46
-    },
-    "verification_metrics": {
-      "pipeline_sequence_adherence_pct": 100.0,
-      "format_escape_rate_pct": 0.0,
-      "schema_violations": 0,
-      "mean_quality_score": 9.06,
-      "clean_requirements": 839,
-      "flagged_requirements": 103,
-      "total_defects_identified": 106,
-      "defect_breakdown": {
-        "singularity": 84,
-        "completeness": 15,
-        "unambiguity": 6,
-        "verifiability": 1
+        "Conformance": 42,
+        "Completeness": 17,
+        "Singularity": 37,
+        "Unambiguity": 18,
+        "Verifiability/Feasibility": 6,
+        "Correctness": 1
       },
-      "contextual_false_alarm_suppression_rate_cfsr_pct": 11.3,
-      "refinement_rejection_rate_rrr_pct": 6.4,
-      "simulated_user_acceptance_rate_uar_pct": 93.2,
-      "simulated_intent_preservation_rate_ipr_pct": 98.9
+      "l2_retained_defects": "64/121 (52.9%)",
+      "l2_discarded_defects": "57/121 (47.1%)",
+      "candidate_false_positive_suppression_rate_cfsr": "47.1% (57/121)",
+      "requirements_all_defects_discarded": "17/48 (35.4%)",
+      "requirements_advancing_to_l3_l4": "31/48 (64.6%)",
+      "l4_refinements_evaluated": 30,
+      "l4_validated": "23/30 (76.7%)",
+      "l4_rejected": "7/30 (23.3%)",
+      "refinement_rejection_rate_rrr": "23.3% (7/30)"
+    },
+    "operational_metrics": {
+      "total_api_calls": 159,
+      "rate_limit": "15 RPM with adaptive backoff",
+      "auditor_independence_disclosure": "Layers 3 and 4 share gemini-3.5-flash-lite; independence is bounded by shared model inductive biases."
     }
   },
-  "comparative_baselines_notice": "Comparative claims against third-party models (e.g. GPT-4o) have been omitted pending matched live evaluation under identical experimental conditions."
+  "corpus_verification_benchmark_n942": {
+    "runner": "MockLLMClient (heuristic sequence verification)",
+    "total_requirements": 942,
+    "projects": 15,
+    "versions": 44,
+    "weights_used": "Canonical: Completeness 0.20, Unambiguity 0.20, Verifiability 0.20, Singularity 0.10, Correctness 0.10, Consistency 0.10, Conformance 0.10",
+    "mean_overall_quality_score": 9.05,
+    "l1_flagged": "103/942 (10.9%)",
+    "l2_retained_requirements": "94/103 (91.3%)",
+    "l2_discarded_requirements": "9/103 (8.7%)",
+    "l4_refinements_evaluated": 94,
+    "l4_validated": "88/94 (93.6%)",
+    "l4_rejected": "6/94 (6.4%)",
+    "refinement_rejection_rate_rrr": "6.4% (6/94)",
+    "l5_acceptance": {
+      "automated_mode_uar": "100.0% (88/88)",
+      "simulated_human_review_uar": "93.2% (82/88)",
+      "simulated_human_edits": "6/88 (6.8%)"
+    },
+    "sequence_adherence": "100.0% (942/942)",
+    "format_escape_rate": "0.0% (0/942)"
+  }
 }

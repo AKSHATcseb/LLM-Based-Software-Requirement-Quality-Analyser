@@ -8,7 +8,7 @@ Department of Computer Science & Engineering
 
 ## Abstract
 
-Natural language software requirements specifications (SRS) remain the dominant medium of stakeholder–developer communication, yet informal natural language is inherently susceptible to ambiguity, underspecification, and inconsistency. Recent applications of generative Large Language Models (LLMs) to Requirements Engineering (RE) have largely relied on *single-shot rewriting*, a paradigm in which an entire requirement statement is regenerated in one inference pass. This approach is fragile in practice: it frequently hallucinates unwarranted technical or architectural detail, silently expands or contracts functional scope, and raises spurious quality flags because the model reasons over an isolated sentence rather than the surrounding specification. We present a **5-layer LLM pipeline**, compliant with **ISO/IEC/IEEE 29148:2018**, that reframes automated requirements quality improvement as a *surgical editing* problem rather than a generative rewriting problem. The pipeline evaluates each requirement across seven formal quality dimensions, filters candidate defects through a context-aware reasoning layer that consults the SRS glossary, domain summary, and neighboring requirements to eliminate false positives, applies minimal targeted edits that resolve only the retained, justified defects, and subjects every proposed edit to an independent adversarial auditor before a human reviewer ever sees it. To evaluate the system without resorting to lexical-overlap metrics such as BLEU or ROUGE — which are known to correlate poorly with engineers' qualitative judgments of specification quality — we additionally construct a companion **Historical SRS Version Evolution Benchmark**. This second pipeline aligns requirements across chronological document releases ($Version_N$ vs. $Version_{N+1}$) using exact-identifier matching and TF-IDF cosine-similarity fallback, classifies the observed stakeholder edits into a nine-category empirical taxonomy, and rates the correspondence between the automated pipeline's independent proposals and the ground-truth human revisions on a three-tier qualitative scale. Evaluated across fifteen real-world, multi-domain, versioned SRS corpora spanning avionics, autonomous-driving ML safety, IoT machine-to-machine services, railway telecommunications, radio astronomy, and industrial embedded control, the architecture achieves a 100% deterministic pipeline-sequence adherence rate, zero JSON format escapes or Pydantic schema violations, an 89.4% User Acceptance Rate, and a 98.8% Intent Preservation Rate, substantially outperforming both a naive single-shot GPT-4o baseline and a few-shot prompted variant. These results indicate that decomposing LLM-based requirements quality improvement into discrete reasoning, generation, and adversarial-validation stages meaningfully reduces hallucination and specification drift relative to monolithic generative approaches.
+Natural language software requirements specifications (SRS) remain the dominant medium of stakeholder–developer communication, yet informal natural language is inherently susceptible to ambiguity, underspecification, and inconsistency. Recent applications of generative Large Language Models (LLMs) to Requirements Engineering (RE) have largely relied on *single-shot rewriting*, a paradigm in which an entire requirement statement is regenerated in one inference pass. This approach is fragile in practice: it frequently hallucinates unwarranted technical or architectural detail, silently expands or contracts functional scope, and raises spurious quality flags because the model reasons over an isolated sentence rather than the surrounding specification. We present a **5-layer LLM pipeline**, compliant with **ISO/IEC/IEEE 29148:2018**, that reframes automated requirements quality improvement as a *surgical editing* problem rather than a generative rewriting problem. The pipeline evaluates each requirement across seven formal quality dimensions, filters candidate defects through a context-aware reasoning layer that consults the SRS glossary, domain summary, and neighboring requirements to eliminate false positives, applies minimal targeted edits that resolve only the retained, justified defects, and subjects every proposed edit to an independent adversarial auditor before a human reviewer ever sees it. To evaluate the system without resorting to lexical-overlap metrics such as BLEU or ROUGE — which are known to correlate poorly with engineers' qualitative judgments of specification quality — we additionally construct a companion **Historical SRS Version Evolution Benchmark**. This second pipeline aligns requirements across chronological document releases ($Version_N$ vs. $Version_{N+1}$) using exact-identifier matching and TF-IDF cosine-similarity fallback, classifies the observed stakeholder edits into a nine-category empirical taxonomy, and rates the correspondence between the automated pipeline's independent proposals and the ground-truth human revisions on a three-tier qualitative scale. Evaluated across fifteen real-world, multi-domain, versioned SRS corpora spanning healthcare EHR, identity management, multi-cloud DevOps, smart city IoT, autonomous-driving ML safety, IoT standards, and railway telecommunications, the architecture achieves a 100.0% deterministic pipeline-sequence adherence rate (48/48 live, 942/942 corpus), zero JSON format escapes or Pydantic schema violations (0/159 calls), a 47.1% Contextual False Alarm Suppression Rate (57/121), an 88.1% (37/42) human User Acceptance Rate, and a 97.6% (41/42) Intent Preservation Rate under adversarial validation (RRR = 23.3%, 7/30). These results indicate that decomposing LLM-based requirements quality improvement into discrete reasoning, generation, and adversarial-validation stages meaningfully reduces hallucination and specification drift relative to monolithic generative approaches.
 
 **Keywords:** Requirements Engineering, Large Language Models, ISO/IEC/IEEE 29148, Requirements Quality, Software Requirements Specification, LLM Hallucination Mitigation, Human-in-the-Loop Validation, Empirical Software Engineering
 
@@ -208,18 +208,18 @@ All layers are invoked with generation temperature fixed to $0.0$ to maximize re
 | 4 | 4_UIC | Railway Telecom (EIRENE Radio) | `eirene_srs_15.1.pdf` | `eirene_srs_16.0.pdf` | 142 |
 | 5 | 5_EVLA | Radio Astronomy Correlator Backend | `be_srs_2.1.pdf` | `be_srs_2.3.pdf` | 65 |
 | 6 | 6 | Telecommunication Infrastructure | `gs_mec002v010101p.pdf` | `gs_mec002v020101p.pdf` | 89 |
-| 7 | 7 | Industrial Embedded Control | `Attachment_0 (1).pdf` | `Attachment_0 (2).pdf` | 44 |
-| 8 | 8 | Embedded Robotic Actuation | `Attachment_0 (1).pdf` | `Attachment_0 (2).pdf` | 51 |
-| 9 | 9 | Critical Real-Time Monitoring | `Attachment_0 (1).pdf` | `Attachment_0 (2).pdf` | 38 |
-| 10 | 10 | Spacecraft Avionics Subsystem | `Attachment_0 (1).pdf` | `Attachment_0 (2).pdf` | 58 |
-| 11 | 11 | Medical Device Firmware | `Attachment_0 (2).pdf` | `Attachment_0 (3).pdf` | 62 |
-| 12 | 12 | Distributed Cyber-Physical System | `Attachment_0 (1).pdf` | `Attachment_0 (2).pdf` | 49 |
-| 13 | 13 | EU Circular Economy (Onto-DESIDE) | `Attachment_0 (2).pdf` | `Attachment_0 (3).pdf` | 43 |
-| 14 | 14 | Secure Network Boundary Gateway | `1.pdf` | `2.pdf` | 52 |
-| 15 | 15 | Cloud Enterprise Data Platform | `SRS_v1.pdf` | `SRS_v2.pdf` | 55 |
+| 7 | 7 | Electronic Health Record Web App (InteropEHRate) | `Attachment_0 (1).pdf` | `Attachment_0 (2).pdf` | 44 |
+| 8 | 8 | Public Identity Management / eID (IMPULSE) | `Attachment_0 (1).pdf` | `Attachment_0 (2).pdf` | 51 |
+| 9 | 9 | Multi-Cloud DevOps Framework (DECIDE) | `Attachment_0 (1).pdf` | `Attachment_0 (2).pdf` | 38 |
+| 10 | 10 | Smart City Urban IoT Platform (CPaaS.io) | `Attachment_0 (1).pdf` | `Attachment_0 (2).pdf` | 58 |
+| 11 | 11 | Urban Mobility Decision Support (URBANITE) | `Attachment_0 (2).pdf` | `Attachment_0 (3).pdf` | 62 |
+| 12 | 12 | Cloud Privacy & Cryptographic Proxy (CLARUS) | `Attachment_0 (1).pdf` | `Attachment_0 (2).pdf` | 49 |
+| 13 | 13 | Circular Economy Semantic Data (Onto-DESIDE) | `Attachment_0 (2).pdf` | `Attachment_0 (3).pdf` | 43 |
+| 14 | 14 | Cooperative Project Management (CPCESU) | `1.pdf` | `2.pdf` | 52 |
+| 15 | 15 | Commercial Online Banking (Guru99 Banking) | `SRS_v1.pdf` | `SRS_v2.pdf` | 55 |
 | **Total** | **15 Projects** | **Multi-Domain Empirical Corpus** | — | — | **942 Requirements** |
 
-The corpus deliberately spans ten distinct engineering domains — aerospace and avionics, autonomous-vehicle ML safety, IoT/M2M standards, railway telecommunications, radio astronomy, industrial and robotic embedded control, medical device firmware, distributed cyber-physical systems, network security, and cloud data platforms — to support the external-validity claims discussed in Section 5. (Note: Projects 13--15 were allocated 43, 52, and 55 requirements based on empirical parser yield from available PDF specifications, preserving the canonical 942 total).
+The corpus deliberately spans ten distinct engineering domains — healthcare EHR systems, public digital identity, multi-cloud DevOps, smart cities, urban mobility analytics, cloud cryptographic privacy, autonomous-vehicle ML safety, IoT/M2M standards, railway telecommunications, and online banking — to support the external-validity claims discussed in Section 5. (Note: Projects 13--15 were allocated 43, 52, and 55 requirements based on empirical parser yield from available PDF specifications, preserving the canonical 942 total).
 
 ### 4.2 Empirical Evaluation Results
 
@@ -227,27 +227,27 @@ The evaluation protocol encompasses two complementary experimental tiers:
 1. **Live Empirical Multi-Layer Evaluation ($N=50$, `gemini-3.5-flash-lite`):** Evaluates live remote LLM inference across a stratified sample of 50 requirements covering all 15 projects (3--4 per project).
 2. **Corpus-Scale Architectural Pipeline Verification ($N=942$, `MockLLMClient`):** Stress-tests pipeline state transitions, Pydantic schema validation, and syntactic defect distribution across the complete corpus.
 
-**Table 2. Empirical Pipeline Results across Live ($N=50$) and Corpus Verification ($N=942$)**
+**Table 2. Empirical Pipeline Results across Live ($N=48$ Evaluated) and Corpus Verification ($N=942$)**
 
-| Evaluation Metric | Live Empirical Battery ($N=50$, Gemini-3.5-flash-lite) | Full Architectural Benchmark ($N=942$, Offline Rule Engine) | Operational Scope / Derivation |
+| Evaluation Metric | Live Empirical Battery ($N=48$, Gemini-3.5-flash-lite) | Full Architectural Benchmark ($N=942$, Offline Rule Engine) | Operational Scope / Derivation |
 | :--- | :---: | :---: | :--- |
-| Requirements Evaluated | **50** | **942** | Multi-domain SRS requirements |
-| Remote LLM Calls | **168** | 0 (Offline Heuristic) | Discrete inference invocations |
-| Mean Quality Score ($Q_{\text{req}}$) | **5.63 / 10.0** | **9.06 / 10.0** | Weighted 7-dimension ISO sum |
-| Candidate Defects Flagged (L1) | **131** (50 reqs) | **106** (103 reqs) | Preliminary defect identification |
-| Contextual False Positives Discarded (L2) | **47** | **12** | Domain / glossary false alarm filtering |
-| Contextual Suppression Rate (CFSR) | **35.9%** (47/131) | **11.3%** (12/106) | Spurious defect elimination rate |
-| Requirements Requiring Refinement | **36** (72.0\%) | **94** (9.9\%) | Retained justified defects |
-| Surgical Refinements Proposed (L3) | **36** | **94** | Minimal-diff targeted rewrites |
-| Validated Refinements (L4) | **26** (72.2\%) | **88** (93.6\%) | Approved for human sign-off |
-| Rejected Refinements (L4) | **10** (27.8\%) | **6** (6.4\%) | Caught by adversarial critic |
-| Refinement Rejection Rate (RRR) | **27.8%** (10/36) | **6.4%** (6/94) | Active adversarial safety filter rate |
-| Sequence Adherence Rate | **100.0%** (50/50) | **100.0%** (942/942) | Deterministic state machine |
-| Format Escape Rate | **0.0%** (0/168) | **0.0%** (0/942) | Pydantic JSON schema compliance |
+| Requirements Evaluated | **48** (50 sampled) | **942** | Multi-domain SRS requirements |
+| Remote LLM Calls | **159** | 0 (Offline Heuristic) | Discrete inference invocations |
+| Mean Quality Score ($Q_{\text{req}}$) | **6.05 / 10.0** | **9.05 / 10.0** | Weighted 7-dimension ISO sum |
+| Candidate Defects Flagged (L1) | **121** (48 reqs) | **106** (103 reqs) | Preliminary defect identification |
+| Contextual False Positives Discarded (L2) | **57** | **12** | Domain / glossary false alarm filtering |
+| Contextual Suppression Rate (CFSR) | **47.1%** (57/121) | **11.3%** (12/106) | Spurious defect elimination rate |
+| Requirements Requiring Refinement | **31** (64.6\%) | **94** (9.9\%) | Retained justified defects |
+| Surgical Refinements Proposed (L3) | **30** | **94** | Minimal-diff targeted rewrites |
+| Validated Refinements (L4) | **23** (76.7\%) | **88** (93.6\%) | Approved for human sign-off |
+| Rejected Refinements (L4) | **7** (23.3\%) | **6** (6.4\%) | Caught by adversarial critic |
+| Refinement Rejection Rate (RRR) | **23.3%** (7/30) | **6.4%** (6/94) | Active adversarial safety filter rate |
+| Sequence Adherence Rate | **100.0%** (48/48) | **100.0%** (942/942) | Deterministic state machine |
+| Format Escape Rate | **0.0%** (0/159) | **0.0%** (0/942) | Pydantic JSON schema compliance |
 
 *Note: Comparative claims against external baseline models (e.g. GPT-4o) are omitted pending matched simultaneous live execution under identical API conditions.*
 
-The live empirical results directly demonstrate the operational efficacy of the multi-layer pipeline: Layer 2 suppressed **35.9%** of candidate flags as domain-justified false alarms, while Layer 4 intercepted **27.8%** of proposed rewrites for introducing ungrounded assumptions or modifying functional scope. Under corpus-scale verification ($N=942$), the system achieved 100.0% sequence adherence and zero schema escapes.
+The live empirical results directly demonstrate the operational efficacy of the multi-layer pipeline: Layer 2 suppressed **47.1%** (57/121) of candidate flags as domain-justified false alarms, while Layer 4 intercepted **23.3%** (7/30) of proposed rewrites for introducing ungrounded assumptions or modifying functional scope. Under corpus-scale verification ($N=942$), the system achieved 100.0% sequence adherence and zero schema escapes.
 
 ### 4.3 Format and Sequence Compliance Sweep
 

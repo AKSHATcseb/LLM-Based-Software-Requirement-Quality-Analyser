@@ -111,7 +111,7 @@ def main():
     parser.add_argument(
         "--model",
         default=None,
-        help="LLM model name (defaults to gemini-2.5-flash or gpt-4o)",
+        help="LLM model name (defaults to gemini-3.5-flash-lite or gpt-4o)",
     )
     parser.add_argument(
         "--interactive",
