@@ -15,6 +15,7 @@ Features:
 """
 
 import argparse
+from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 import hashlib
 import json
@@ -356,7 +357,7 @@ def run_evaluation(
 
     if pilot_only:
         items = [r for r in manifest["requirements"] if r.get("is_pilot_sample")]
-        run_name = f"PILOT (20 items) on {model_name}"
+        run_name = f"PILOT ({len(items)} items) on {model_name}"
     else:
         items = manifest["requirements"]
         run_name = f"FULL CORPUS ({len(items)} items) on {model_name}"
@@ -509,15 +510,60 @@ def run_evaluation(
 
     # Save summary report
     summary_path = PROJECT_ROOT / "results" / "raw" / ("pilot_report.json" if pilot_only else "full_report.json")
+    
+    # Detailed metric aggregations
+    overall_scores = [r["layer1"]["overall_quality_score"] for r in eval_results if r.get("layer1")]
+    mean_q = sum(overall_scores) / len(overall_scores) if overall_scores else 0.0
+
+    attr_sums = defaultdict(float)
+    attr_counts = defaultdict(int)
+    defect_counts = defaultdict(int)
+    total_l1_defects = 0
+    total_l2_retained = 0
+    total_l2_discarded = 0
+
+    for r in eval_results:
+        l1 = r.get("layer1")
+        if l1:
+            for sc in l1.get("attribute_scores", []):
+                a_name = sc.get("attribute")
+                a_score = sc.get("score")
+                if a_name and a_score is not None:
+                    attr_sums[a_name] += float(a_score)
+                    attr_counts[a_name] += 1
+            for df in l1.get("shortcomings", []):
+                a_name = df.get("attribute")
+                defect_counts[a_name] += 1
+                total_l1_defects += 1
+
+        l2 = r.get("layer2")
+        if l2:
+            total_l2_retained += len(l2.get("retained_defects", []))
+            total_l2_discarded += len(l2.get("discarded_defects", []))
+
+    attr_means = {k: round(attr_sums[k] / attr_counts[k], 2) for k in sorted(attr_sums.keys())}
+    cfsr = round(total_l2_discarded / total_l1_defects * 100, 1) if total_l1_defects > 0 else 0.0
+    l4_total = validated_in_l4 + rejected_in_l4
+    rrr = round(rejected_in_l4 / l4_total * 100, 1) if l4_total > 0 else 0.0
+
     summary = {
         "model": model_name,
         "total_evaluated": len(eval_results),
         "schema_failures": schema_failures,
         "flagged_in_l1": flagged_in_l1,
+        "clean_pass_in_l1": len(eval_results) - flagged_in_l1,
         "retained_in_l2": retained_in_l2,
         "validated_in_l4": validated_in_l4,
         "rejected_in_l4": rejected_in_l4,
-        "flag_rate": flagged_in_l1 / len(eval_results) if eval_results else 0.0,
+        "flag_rate_pct": round(flagged_in_l1 / len(eval_results) * 100, 1) if eval_results else 0.0,
+        "mean_overall_quality_score": round(mean_q, 2),
+        "attribute_means": attr_means,
+        "total_candidate_defects_l1": total_l1_defects,
+        "defect_breakdown_by_attribute": dict(defect_counts),
+        "total_defects_retained_l2": total_l2_retained,
+        "total_defects_discarded_l2": total_l2_discarded,
+        "cfsr_pct": cfsr,
+        "rrr_pct": rrr,
         "calls_made": len(client.call_log),
     }
     with open(summary_path, "w", encoding="utf-8") as f:
@@ -526,8 +572,10 @@ def run_evaluation(
     print("\n=======================================================")
     print("EVALUATION FINISHED")
     print(f"Evaluated: {len(eval_results)} | Schema Failures: {schema_failures}")
-    print(f"Flagged L1: {flagged_in_l1}/{len(eval_results)} ({summary['flag_rate']*100:.1f}%)")
-    print(f"Retained L2: {retained_in_l2} | Validated L4: {validated_in_l4}")
+    print(f"Mean Quality Score: {summary['mean_overall_quality_score']:.2f} / 10.0")
+    print(f"Flagged L1: {flagged_in_l1}/{len(eval_results)} ({summary['flag_rate_pct']}%)")
+    print(f"Candidate Defects: {total_l1_defects} | Retained L2: {total_l2_retained} | CFSR: {cfsr}%")
+    print(f"Refinements Evaluated L4: {l4_total} | Validated: {validated_in_l4} | Rejected: {rejected_in_l4} | RRR: {rrr}%")
     print("=======================================================\n")
     return summary
 

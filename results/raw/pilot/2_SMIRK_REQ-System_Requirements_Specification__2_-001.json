@@ -1,0 +1,207 @@
+{
+  "req_id": "REQ-System Requirements Specification (2)-001",
+  "project": "2_SMIRK",
+  "version_file": "System Requirements Specification (2).md",
+  "stratum": "strict_normative",
+  "original_text": "We expect that sensors and actuators will be shared among different systems.",
+  "model": "gemini-3.5-flash-lite",
+  "layer1": {
+    "req_id": "REQ-System Requirements Specification (2)-001",
+    "attribute_scores": [
+      {
+        "attribute": "Unambiguity",
+        "score": 4.0,
+        "rationale": "The statement uses vague phrasing ('We expect that') rather than definitive technical specifications."
+      },
+      {
+        "attribute": "Completeness",
+        "score": 3.0,
+        "rationale": "It completely lacks operational conditions, specific interfaces, fault-tolerance measures, or performance criteria required for ASIL D resource sharing."
+      },
+      {
+        "attribute": "Consistency",
+        "score": 7.0,
+        "rationale": "It does not overtly contradict glossary terms, but fails to use precise architectural terminology."
+      },
+      {
+        "attribute": "Conformance",
+        "score": 2.0,
+        "rationale": "It fails to use standard syntactic structure and lacks the mandatory modal verb 'shall', using 'will' and 'We expect that' instead."
+      },
+      {
+        "attribute": "Correctness",
+        "score": 6.0,
+        "rationale": "While sensor/actuator sharing is common, in an ASIL D safety-critical system, shared resources require stringent freedom from interference analysis which is completely missing."
+      },
+      {
+        "attribute": "Singularity",
+        "score": 5.0,
+        "rationale": "It groups sensors and actuators together into a single broad stakeholder expectation statement rather than precise, atomic technical requirements."
+      },
+      {
+        "attribute": "Verifiability/Feasibility",
+        "score": 3.0,
+        "rationale": "An expectation starting with 'We expect that' is nearly impossible to objectively verify through standard test procedures."
+      }
+    ],
+    "overall_quality_score": 4.0,
+    "shortcomings": [
+      {
+        "defect_id": "DEF-1",
+        "attribute": "Conformance",
+        "problematic_excerpt": "We expect that",
+        "explanation": "Requirements must state mandatory system capabilities using normative language ('shall'), not stakeholder expectations or beliefs.",
+        "severity": "high"
+      },
+      {
+        "defect_id": "DEF-2",
+        "attribute": "Conformance",
+        "problematic_excerpt": "will be shared",
+        "explanation": "Uses 'will' instead of the mandatory modal verb 'shall' required by ISO/IEC/IEEE 29148 for binding requirements.",
+        "severity": "high"
+      },
+      {
+        "defect_id": "DEF-3",
+        "attribute": "Unambiguity",
+        "problematic_excerpt": "sensors and actuators will be shared among different systems",
+        "explanation": "Fails to specify which exact sensors, actuators, and target systems are involved, leaving the statement open to multiple interpretations.",
+        "severity": "medium"
+      },
+      {
+        "defect_id": "DEF-4",
+        "attribute": "Completeness",
+        "problematic_excerpt": "We expect that sensors and actuators will be shared among different systems.",
+        "explanation": "Omit safety criteria, arbitration mechanisms, and fault isolation requirements critical for ASIL D sensor/actuator sharing.",
+        "severity": "high"
+      }
+    ],
+    "document_understanding_summary": "This statement addresses resource sharing (sensors and actuators) across multiple systems within an ISO 26262 ASIL D machine learning pedestrian safety braking system, which touches upon architectural constraints and allocation."
+  },
+  "layer2": {
+    "req_id": "REQ-System Requirements Specification (2)-001",
+    "evaluations": [
+      {
+        "defect_id": "DEF-1",
+        "attribute": "Conformance",
+        "original_problematic_excerpt": "We expect that",
+        "status": "justified",
+        "context_reasoning": "The phrasing relies on stakeholder expectation rather than mandatory requirements language ('shall'). No context in the SRS resolves this phrasing violation against ISO/IEC/IEEE 29148.",
+        "confidence": 0.99
+      },
+      {
+        "defect_id": "DEF-2",
+        "attribute": "Conformance",
+        "original_problematic_excerpt": "will be shared",
+        "status": "justified",
+        "context_reasoning": "The modal verb 'will' is non-normative for binding system requirements. Compliance with ISO 26262 ASIL D mandates precise, normative phrasing using 'shall'.",
+        "confidence": 0.99
+      },
+      {
+        "defect_id": "DEF-3",
+        "attribute": "Unambiguity",
+        "original_problematic_excerpt": "sensors and actuators will be shared among different systems",
+        "status": "justified",
+        "context_reasoning": "The statement is overly broad and vague. It fails to identify which specific sensors, actuators, and external systems are permitted to share resources, creating architectural ambiguity.",
+        "confidence": 0.95
+      },
+      {
+        "defect_id": "DEF-4",
+        "attribute": "Completeness",
+        "original_problematic_excerpt": "We expect that sensors and actuators will be shared among different systems.",
+        "status": "justified",
+        "context_reasoning": "Given the ASIL D pedestrian safety braking context, sharing sensors and actuators requires rigorous safety mechanisms, arbitration, and fault isolation, none of which are specified.",
+        "confidence": 0.98
+      }
+    ],
+    "retained_defects": [
+      {
+        "defect_id": "DEF-1",
+        "attribute": "Conformance",
+        "problematic_excerpt": "We expect that",
+        "explanation": "Requirements must state mandatory system capabilities using normative language ('shall'), not stakeholder expectations or beliefs.",
+        "severity": "high"
+      },
+      {
+        "defect_id": "DEF-2",
+        "attribute": "Conformance",
+        "problematic_excerpt": "will be shared",
+        "explanation": "Uses 'will' instead of the mandatory modal verb 'shall' required by ISO/IEC/IEEE 29148 for binding requirements.",
+        "severity": "high"
+      },
+      {
+        "defect_id": "DEF-3",
+        "attribute": "Unambiguity",
+        "problematic_excerpt": "sensors and actuators will be shared among different systems",
+        "explanation": "Fails to specify which exact sensors, actuators, and target systems are involved, leaving the statement open to multiple interpretations.",
+        "severity": "medium"
+      },
+      {
+        "defect_id": "DEF-4",
+        "attribute": "Completeness",
+        "problematic_excerpt": "We expect that sensors and actuators will be shared among different systems.",
+        "explanation": "Omit safety criteria, arbitration mechanisms, and fault isolation requirements critical for ASIL D sensor/actuator sharing.",
+        "severity": "high"
+      }
+    ],
+    "discarded_defects": [],
+    "reasoning_summary": "All candidate defects are confirmed as genuine shortcomings. The target requirement uses non-normative language ('We expect that ... will'), lacks specification of which sensors/actuators/systems are involved, and completely omits critical ASIL D safety criteria, arbitration mechanisms, and fault isolation requirements necessary for a machine learning pedestrian safety braking system."
+  },
+  "layer3": {
+    "req_id": "REQ-System Requirements Specification (2)-001",
+    "original_text": "We expect that sensors and actuators will be shared among different systems.",
+    "refined_text": "The Ego-Vehicle pedestrian safety braking system shall share designated sensors and actuators with external vehicle systems while maintaining ASIL D fault isolation and safety arbitration mechanisms.",
+    "changes_made": [
+      "Replaced stakeholder expectation phrasing ('We expect that') with normative mandatory phrasing ('The Ego-Vehicle pedestrian safety braking system shall').",
+      "Replaced non-compliant auxiliary verb ('will') with the mandatory modal verb ('shall').",
+      "Specified exact domain entities ('Ego-Vehicle pedestrian safety braking system', 'designated sensors and actuators', 'external vehicle systems') to eliminate ambiguity.",
+      "Integrated ASIL D safety criteria, fault isolation, and arbitration mechanisms to satisfy completeness requirements for safety-critical sharing."
+    ],
+    "addressed_defect_ids": [
+      "DEF-1",
+      "DEF-2",
+      "DEF-3",
+      "DEF-4"
+    ],
+    "functional_intent_preservation_rationale": "The refined requirement retains the core technical intent of sharing sensors and actuators across different systems while transforming the vague stakeholder expectation into a normative, auditable system requirement compliant with ISO/IEC/IEEE 29148 and ASIL D safety standards."
+  },
+  "layer4": {
+    "req_id": "REQ-System Requirements Specification (2)-001",
+    "is_valid": false,
+    "verdict": "rejected",
+    "checks": [
+      {
+        "criterion": "Defect Resolution",
+        "passed": true,
+        "observations": "The refinement successfully eliminates the non-normative phrase 'We expect that' and replaces 'will' with 'shall'."
+      },
+      {
+        "criterion": "No New Ambiguities",
+        "passed": false,
+        "observations": "The phrase 'designated sensors and actuators' remains vague as it does not define which specific sensors or actuators are eligible for sharing."
+      },
+      {
+        "criterion": "No Unwarranted Assumptions",
+        "passed": false,
+        "observations": "The introduction of 'external vehicle systems', 'ASIL D fault isolation', and 'safety arbitration mechanisms' invents architectural and safety design details not present in the original brief text or general SRS context without specifying their exact operational parameters."
+      },
+      {
+        "criterion": "Functional Intent Preservation",
+        "passed": true,
+        "observations": "The core functional intent of sharing sensors and actuators across systems is retained."
+      },
+      {
+        "criterion": "Syntactic Conformance",
+        "passed": true,
+        "observations": "The sentence uses proper IEEE 29148 syntax with 'shall' and active voice."
+      }
+    ],
+    "unwarranted_assumptions_detected": [
+      "external vehicle systems",
+      "ASIL D fault isolation and safety arbitration mechanisms"
+    ],
+    "new_ambiguities_detected": [
+      "designated sensors and actuators"
+    ],
+    "critique_and_feedback": "The refinement fails the audit due to the introduction of unwarranted architectural assumptions ('external vehicle systems', 'ASIL D fault isolation and safety arbitration mechanisms') and unresolved ambiguity regarding 'designated sensors and actuators'. While fixing the normative language issue ('shall'), Layer 3 expanded the scope into design and safety-case specifications that exceed the original requirement's text without sufficient contextual definition."
+  }
+}

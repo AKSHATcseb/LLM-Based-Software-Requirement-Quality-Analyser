@@ -1,0 +1,36 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "total_evaluated": 50,
+  "schema_failures": 0,
+  "flagged_in_l1": 50,
+  "clean_pass_in_l1": 0,
+  "retained_in_l2": 36,
+  "validated_in_l4": 26,
+  "rejected_in_l4": 10,
+  "flag_rate_pct": 100.0,
+  "mean_overall_quality_score": 5.63,
+  "attribute_means": {
+    "Completeness": 4.66,
+    "Conformance": 4.54,
+    "Consistency": 7.4,
+    "Correctness": 7.18,
+    "Singularity": 5.54,
+    "Unambiguity": 6.06,
+    "Verifiability/Feasibility": 5.11
+  },
+  "total_candidate_defects_l1": 131,
+  "defect_breakdown_by_attribute": {
+    "Conformance": 42,
+    "Completeness": 23,
+    "Singularity": 32,
+    "Unambiguity": 20,
+    "Verifiability/Feasibility": 7,
+    "Correctness": 6,
+    "Consistency": 1
+  },
+  "total_defects_retained_l2": 84,
+  "total_defects_discarded_l2": 47,
+  "cfsr_pct": 35.9,
+  "rrr_pct": 27.8,
+  "calls_made": 168
+}

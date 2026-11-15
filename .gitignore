@@ -84,6 +84,8 @@ Thumbs.db
 Desktop.ini
 
 # Output reports & temporary audit files (Keep sample_benchmark.json, ignore generated runs)
+results/raw/cache/
+scratch/
 audit_results.md
 test_report.md
 evaluation_report.md

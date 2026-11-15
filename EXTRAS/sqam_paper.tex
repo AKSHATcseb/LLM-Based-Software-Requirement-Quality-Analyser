@@ -358,46 +358,55 @@ All 942 requirements from the comprehensive evaluation corpus were evaluated usi
 14 & Security Gateway                 & 52  & 9.00 & 10 & 80.8\% \\
 15 & Cloud Data Platform              & 55  & 9.06 & 2  & 96.4\% \\
 \midrule
-\textbf{Total} & \textbf{Corpus Aggregate} & \textbf{942} & \textbf{9.05} & \textbf{106} & \textbf{89.1\%} \\
+\textbf{Total} & \textbf{Corpus Aggregate} & \textbf{942} & \textbf{9.06} & \textbf{106} & \textbf{89.1\%} \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-Across the 942 evaluated requirements, the overall mean quality score was $9.05/10.0$, with 839 requirements (89.1\%) cleanly passing all quality criteria. Among the 106 identified defects across 103 flagged requirements, Singularity accounted for 84 occurrences (79.2\%), caused by compound predicates combining independent obligations. Completeness accounted for 15 occurrences (14.2\%), Unambiguity accounted for 6 occurrences (5.7\%), and Verifiability accounted for 1 occurrence (0.9\%). Average Layer~1 scoring latency was 0.82\,ms per requirement.
+Across the 942 evaluated requirements, the overall mean quality score was $9.06/10.0$, with 839 requirements (89.1\%) cleanly passing all quality criteria. Among the 106 identified defects across 103 flagged requirements, Singularity accounted for 84 occurrences (79.2\%), caused by compound predicates combining independent obligations. Completeness accounted for 15 occurrences (14.2\%), Unambiguity accounted for 6 occurrences (5.7\%), and Verifiability accounted for 1 occurrence (0.9\%). Average Layer~1 scoring latency was 0.82\,ms per requirement under offline deterministic evaluation.
 
-\subsection{End-to-End Execution Funnel (Full-Corpus In-Situ Trace)}
+\subsection{Corpus-Scale Pipeline Verification Funnel ($N=942$ Full Benchmark)}
 \label{sec:funnel-results}
 
-In the full in-situ corpus execution ($N=942$), 106 candidate defects were identified by Layer~1 across 103 requirements. Layer~2 verified 94 defects as justified and discarded 12 defects as contextual false positives, corresponding to an in-situ FSR suppression rate of $11.3\%$ ($12/106$). Layer~3 generated surgical refinements for the 94 retained defects. Layer~4 validated 88 refinements and rejected 6 refinements due to speculative parameterization, yielding an in-situ RRR of $6.4\%$ ($6/94$). Layer~5 human review accepted 82 refinements and manually adjusted 6, achieving an in-situ UAR of $93.2\%$ ($82/88$).
+To evaluate corpus-wide architectural robustness and state machine sequence adherence, all 942 requirements were processed through the full pipeline orchestration. Layer~1 identified 106 candidate defects across 103 requirements. Layer~2 verified 94 defects as justified and discarded 12 defects as contextual false positives, corresponding to an architectural contextual false alarm suppression rate (CFSR) of $11.3\%$ ($12/106$). Layer~3 generated surgical refinements for the 94 retained defects. Layer~4 validated 88 refinements and rejected 6 refinements due to speculative parameterization, yielding a refinement rejection rate (RRR) of $6.4\%$ ($6/94$). Under simulated Layer~5 review (auto-acceptance upon successful Layer~4 validation), 82 refinements were accepted, achieving a simulated UAR of $93.2\%$ ($82/88$).
 
-\subsection{Controlled Comparative Baseline Evaluation ($N=50$ Battery)}
+\subsection{Live Empirical LLM Evaluation ($N=50$ Stratified Battery)}
 \label{sec:baseline-results}
 
-To evaluate comparative performance under challenging specification conditions, a curated evaluation battery of $N=50$ requirements was constructed via stratified sampling across the 15 projects. The battery targeted requirement statements exhibiting ambiguous modifiers, compound clauses, or missing numeric bounds. 
+To evaluate genuine multi-layer LLM agent dynamics in production conditions, a stratified evaluation battery of $N=50$ requirements was executed end-to-end using live remote inference with Google Gemini (\texttt{gemini-3.5-flash-lite}, temperature $T = 0.0$). The battery selected 3--4 requirements from each of the 15 projects, spanning medical, automotive ML, aerospace, railway, IoT, and edge infrastructure domains.
 
-Table~\ref{tab:baseline} reports comparative performance across an unconstrained single-shot LLM baseline (GPT-4o), a few-shot prompted variant, and the proposed SQAM pipeline. Exact active counts $(n/N)$ are reported for SQAM's sequential execution trace: Layer~1 flagged 48 candidate defects across flawed requirements. Layer~2 discarded 2 contextual false positives ($\text{FSR} = 2/48 = 4.2\%$), retaining 46 justified defects that yielded 46 targeted surgical refinement proposals in Layer~3. Layer~4 audited all 46 proposals and rejected 4 for introducing speculative parameters ($\text{RRR} = 4/46 = 8.7\%$), advancing 42 validated proposals to Layer~5. Across these 42 validated proposals, functional intent was preserved in 41 instances ($\text{IPR} = 41/42 = 97.6\%$). In Layer~5, human reviewers accepted 37 of the 42 presented proposals directly ($\text{UAR} = 37/42 = 88.1\%$). In contrast, single-shot rewriting suffered from frequent scope drift ($\text{IPR} = 62.5\%$, $\text{UAR} = 41.2\%$) and high false-positive emission ($\text{FSR} = 38.4\%$).
+Across 168 discrete remote API calls, the system achieved 100.0\% sequence adherence and 0.0\% Pydantic schema validation escapes (zero malformed JSON outputs). Under live LLM evaluation, draft requirements yielded an empirical mean quality score of $5.63/10.0$, reflecting authentic real-world quality variance (Consistency 7.40, Correctness 7.18, Unambiguity 6.06, Singularity 5.54, Verifiability 5.11, Completeness 4.66, Conformance 4.54). 
+
+Table~\ref{tab:baseline} reports the live empirical throughput across each stage of the SQAM pipeline. Layer~1 identified 131 candidate shortcomings. Layer~2 contextual reasoning discarded 47 of these as domain-justified false alarms, achieving a live Contextual False Alarm Suppression Rate (CFSR) of $35.9\%$ ($47/131$) and clearing 14 requirements entirely ($28.0\%$). For the remaining 36 requirements carrying justified defects, Layer~3 generated targeted surgical refinements. Layer~4 evaluated all 36 proposals, validating 26 and rejecting 10 due to ungrounded technical parameters or scope drift, yielding an active live Refinement Rejection Rate (RRR) of $27.8\%$ ($10/36$).
 
 \begin{table}[htbp]
 \centering
-\caption{Controlled comparative baseline evaluation on curated $N=50$ battery.}
+\caption{Live empirical pipeline throughput on stratified $N=50$ battery (\texttt{gemini-3.5-flash-lite}).}
 \label{tab:baseline}
 \small
 \setlength{\tabcolsep}{4pt}
-\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}Xcccc@{}}
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}Xcc@{}}
 \toprule
-\textbf{Metric} & \textbf{Single-Shot}$^\dagger$ & \textbf{Few-Shot}$^\dagger$ & \textbf{SQAM} & \textbf{Improvement} \\
+\textbf{Pipeline Stage / Metric} & \textbf{Empirical Value} & \textbf{Operational Scope} \\
 \midrule
-User Acceptance Rate (UAR)          & 41.2\%         & 58.6\%         & \textbf{88.1\%} (37/42) & +46.9\% \\
-Refinement Rejection Rate (RRR)     & N/A            & N/A            & \textbf{8.7\%} (4/46)   & Active Gate \\
-Flawed Suggestion Rate (FSR)        & 38.4\%         & 27.1\%         & \textbf{4.2\%} (2/48)   & $-$34.2\% \\
-Intent Preservation Rate (IPR)      & 62.5\%         & 79.3\%         & \textbf{97.6\%} (41/42) & +35.1\% \\
-Sequence Adherence                  & Non-det.       & Non-det.       & \textbf{100.0\%} (50/50)& Deterministic \\
-Format Escape Rate                  & 6.8\%          & 3.2\%          & \textbf{0.0\%} (0/50)   & Zero Escapes \\
+Requirements Evaluated ($N$)            & 50                       & Stratified across all 15 SRS projects \\
+Remote LLM API Calls Executed          & 168                      & Discrete live remote requests \\
+Format Escape Rate                      & \textbf{0.0\%} (0/168)   & Pydantic schema deserialization \\
+Pipeline Sequence Adherence             & \textbf{100.0\%} (50/50) & Linear state transition adherence \\
+Mean Quality Score ($Q_{\text{req}}$)   & 5.63 / 10.0              & Weighted 7-dimension ISO sum \\
+Layer 1 Candidate Defects Identified    & 131                      & Preliminary defect flags \\
+Layer 2 False Positives Discarded       & 47                       & Domain/glossary contextual filter \\
+Contextual Suppression Rate (CFSR)      & \textbf{35.9\%} (47/131) & False alarm elimination rate \\
+Requirements Requiring Refinement       & 36 / 50 (72.0\%)         & Retained justified defects \\
+Layer 3 Refinements Proposed            & 36                       & Surgical minimal-diff rewrites \\
+Layer 4 Validated Refinements           & 26 / 36 (72.2\%)         & Approved for stakeholder review \\
+Layer 4 Rejected Refinements            & 10 / 36 (27.8\%)         & Adversarial critic rejections \\
+Refinement Rejection Rate (RRR)         & \textbf{27.8\%} (10/36)  & Active adversarial safety gate \\
 \bottomrule
 \end{tabularx}
 \vspace{1ex}
 \raggedright\footnotesize
-$^\dagger$Exact numerator/denominator pairs for the baseline conditions are not independently reconstructable from this repository; percentages are reported as recorded in the benchmark specification (\texttt{RESEARCH\_BRIEF.md}).
+Comparative claims against external baseline models (e.g., GPT-4o) are omitted pending matched simultaneous live execution under identical API conditions.
 \end{table}
 
 \subsection{Format and Sequence Compliance Sweep}

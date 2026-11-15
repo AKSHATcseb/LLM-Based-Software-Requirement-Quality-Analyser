@@ -1,112 +1,99 @@
 {
-  "execution_provenance": {
+  "empirical_live_evaluation_n50": {
+    "model": "gemini-3.5-flash-lite",
+    "provider": "Google Gemini API (Live Remote Inference)",
+    "sampling": "Stratified sample of 50 requirements across all 15 SRS projects (3-4 per project)",
+    "total_evaluated": 50,
+    "api_calls_made": 168,
+    "schema_failures": 0,
+    "format_escape_rate_pct": 0.0,
+    "pipeline_sequence_adherence_pct": 100.0,
+    "layer1_quality_scores": {
+      "mean_overall_quality_score": 5.63,
+      "scale": "0.0 - 10.0",
+      "weights": {
+        "unambiguity": 0.20,
+        "completeness": 0.20,
+        "verifiability": 0.20,
+        "consistency": 0.10,
+        "conformance": 0.10,
+        "correctness": 0.10,
+        "singularity": 0.10
+      },
+      "dimension_means": {
+        "consistency": 7.40,
+        "correctness": 7.18,
+        "unambiguity": 6.06,
+        "singularity": 5.54,
+        "verifiability_feasibility": 5.11,
+        "completeness": 4.66,
+        "conformance": 4.54
+      }
+    },
+    "layer1_defect_identification": {
+      "flagged_requirements": 50,
+      "clean_requirements": 0,
+      "flag_rate_pct": 100.0,
+      "total_candidate_defects": 131,
+      "defect_breakdown": {
+        "conformance": 42,
+        "singularity": 32,
+        "completeness": 23,
+        "unambiguity": 20,
+        "verifiability_feasibility": 7,
+        "correctness": 6,
+        "consistency": 1
+      }
+    },
+    "layer2_contextual_reasoning": {
+      "candidate_defects_evaluated": 131,
+      "defects_retained_justified": 84,
+      "defects_discarded_false_alarms": 47,
+      "requirements_with_retained_defects": 36,
+      "requirements_with_all_defects_discarded": 14,
+      "contextual_false_alarm_suppression_rate_cfsr_pct": 35.9
+    },
+    "layer3_solution_generation": {
+      "refinements_proposed": 36
+    },
+    "layer4_adversarial_validation": {
+      "refinements_evaluated": 36,
+      "validated_count": 26,
+      "rejected_count": 10,
+      "refinement_rejection_rate_rrr_pct": 27.8,
+      "validation_pass_rate_pct": 72.2
+    }
+  },
+  "corpus_scale_pipeline_verification_n942": {
     "engine": "SQAM Deterministic Heuristic Offline Pipeline",
     "backend_client": "MockLLMClient",
-    "mode": "offline_simulation_benchmark",
+    "role": "Corpus-Scale Architectural Verification & Stress Test Benchmark",
     "external_api_calls": 0,
-    "review_decisions": "simulated (auto-accept on Layer 4 validation)",
-    "baseline_comparison_source": "controlled N=50 comparative evaluation battery"
-  },
-  "scope": {
-    "total_requirements": 942,
-    "projects": 15,
-    "primary_specification_versions": 43,
-    "total_document_files_sampled": 46
-  },
-  "iso_layer1": {
-    "mean_quality_score": 9.06,
-    "clean_requirements": 839,
-    "clean_percentage": 89.07,
-    "flagged_requirements": 103,
-    "flagged_percentage": 10.93,
-    "total_defect_instances": 106,
-    "weights_definition": {
-      "unambiguity": 0.20,
-      "completeness": 0.20,
-      "verifiability": 0.20,
-      "consistency": 0.10,
-      "conformance": 0.10,
-      "correctness": 0.10,
-      "singularity": 0.10
+    "scope": {
+      "total_requirements": 942,
+      "projects": 15,
+      "primary_specification_versions": 43,
+      "total_document_files_sampled": 46
     },
-    "dimension_means": {
-      "unambiguity": 8.98,
-      "completeness": 8.94,
-      "consistency": 9.50,
-      "conformance": 9.00,
-      "correctness": 9.50,
-      "singularity": 8.64,
-      "verifiability": 9.05
-    },
-    "dimension_defect_breakdown": {
-      "singularity": 84,
-      "completeness": 15,
-      "unambiguity": 6,
-      "verifiability": 1
+    "verification_metrics": {
+      "pipeline_sequence_adherence_pct": 100.0,
+      "format_escape_rate_pct": 0.0,
+      "schema_violations": 0,
+      "mean_quality_score": 9.06,
+      "clean_requirements": 839,
+      "flagged_requirements": 103,
+      "total_defects_identified": 106,
+      "defect_breakdown": {
+        "singularity": 84,
+        "completeness": 15,
+        "unambiguity": 6,
+        "verifiability": 1
+      },
+      "contextual_false_alarm_suppression_rate_cfsr_pct": 11.3,
+      "refinement_rejection_rate_rrr_pct": 6.4,
+      "simulated_user_acceptance_rate_uar_pct": 93.2,
+      "simulated_intent_preservation_rate_ipr_pct": 98.9
     }
   },
-  "pipeline_research_metrics": {
-    "user_acceptance_rate_uar": {
-      "value": 93.2,
-      "unit": "percent",
-      "derivation": "82 accepted / 88 presented to Layer 5",
-      "mode": "simulated reviewer acceptance"
-    },
-    "refinement_rejection_rate_rrr": {
-      "value": 6.4,
-      "unit": "percent",
-      "derivation": "6 rejected by Layer 4 / 94 proposed by Layer 3",
-      "mode": "adversarial validator enforcement"
-    },
-    "contextual_false_positive_suppression_rate_cfsr": {
-      "value": 11.3,
-      "unit": "percent",
-      "derivation": "12 discarded by Layer 2 / 106 candidate shortcomings from Layer 1",
-      "mode": "glossary and document context filter"
-    },
-    "flawed_suggestion_rate_fsr": {
-      "value": 4.2,
-      "unit": "percent",
-      "derivation": "2 flawed suggestions / 48 justified defects",
-      "mode": "carried over from validated N=50 comparative battery"
-    },
-    "intent_preservation_rate_ipr": {
-      "value": 98.9,
-      "unit": "percent",
-      "mode": "simulated pipeline trace"
-    },
-    "sequence_adherence": {
-      "value": 100.0,
-      "unit": "percent",
-      "mode": "deterministic state machine"
-    },
-    "format_escape_rate": {
-      "value": 0.0,
-      "unit": "percent",
-      "mode": "constrained Pydantic schemas"
-    }
-  },
-  "comparative_baseline_battery_n50": {
-    "single_shot_gpt4o": {
-      "uar": 41.2,
-      "rrr": "N/A (no auditor)",
-      "fsr": 38.4,
-      "ipr": 62.5,
-      "sequence_adherence": "Non-deterministic",
-      "format_escape_rate": 6.8
-    },
-    "few_shot_prompting": {
-      "uar": 58.6,
-      "rrr": "N/A (no auditor)",
-      "fsr": 27.1,
-      "ipr": 79.3,
-      "sequence_adherence": "Non-deterministic",
-      "format_escape_rate": 3.2
-    },
-    "sqam_deltas_vs_single_shot": {
-      "uar_gain_pp": 52.0,
-      "fsr_reduction_pp": -34.2,
-      "ipr_gain_pp": 36.4
-    }
-  }
+  "comparative_baselines_notice": "Comparative claims against third-party models (e.g. GPT-4o) have been omitted pending matched live evaluation under identical experimental conditions."
 }
